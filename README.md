@@ -1,0 +1,2 @@
+# Sugoi
+MangaPeñascalF5
