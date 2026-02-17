@@ -95,10 +95,9 @@
 
 /* Newsletter Section */
 .newsletter {
-  padding: var(--spacing-xxl) var(--spacing-lg);
+  padding: var(--spacing-xl) var(--spacing-lg);
   text-align: center;
-  border-bottom: var(--border-thin);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .newsletter-title {
@@ -109,7 +108,7 @@
 
 .newsletter-description {
   color: var(--color-accent-gris-azulado);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
   font-size: var(--font-size-md);
 }
 
@@ -143,7 +142,7 @@
 
 /* Footer Main */
 .footer-main {
-  padding: var(--spacing-xxl) 0;
+  padding: var(--spacing-xl) 0;
 }
 
 .footer-grid {
@@ -156,7 +155,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
 }
 
 .logo-dot {
@@ -183,7 +182,7 @@
 .links-title {
   font-size: var(--font-size-sm);
   color: var(--color-accent-gris-azulado);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
   letter-spacing: 1px;
 }
 
@@ -194,7 +193,7 @@
 }
 
 .links-list li {
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
 }
 
 .links-list a {
@@ -237,7 +236,7 @@
 
 /* Footer Bottom */
 .footer-bottom {
-  padding: var(--spacing-lg) 0;
+  padding: var(--spacing-md) 0;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: var(--font-size-xs);
   color: var(--color-accent-gris-azulado);

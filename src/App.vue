@@ -12,9 +12,4 @@ import Footer from "./components/Layout/Footer.vue";
   <Footer />
 </template>
 
-<style>
-.container {
-  min-height: calc(100vh - 160px);
-}
-</style>
 
