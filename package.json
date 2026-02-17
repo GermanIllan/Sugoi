@@ -8,9 +8,11 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
-    "type-check": "vue-tsc --build"
+    "type-check": "vue-tsc --build",
+    "json-server": "json-server --watch mock-api/db.json --port 5174"
   },
   "dependencies": {
+    "json-server": "^1.0.0-beta.6",
     "pinia": "^3.0.4",
     "vue": "^3.5.27",
     "vue-router": "^5.0.1"
@@ -28,5 +30,18 @@
   },
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
-  }
+  },
+  "description": "MangaPeñascalF5",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GermanIllan/Sugoi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GermanIllan/Sugoi/issues"
+  },
+  "homepage": "https://github.com/GermanIllan/Sugoi#readme"
 }
