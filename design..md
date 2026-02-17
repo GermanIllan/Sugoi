@@ -259,3 +259,10 @@ Características clave:
 - Animaciones cortas y físicas
 
 Es un diseño fuerte, estructurado y con identidad clara.
+
+
+# NOTA:
+  - Los diseños deben ser responsivos para dispositivos móviles.
+  - Los estilos los encuentras en el archivo base.css
+  - Las animaciones que no las encuentres en el archivo base.css, Crealas en main.css
+  - Los demas estilos que necesites, crealos dentro de los componentes o vistas en style scoped
