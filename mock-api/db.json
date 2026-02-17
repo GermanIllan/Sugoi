@@ -1,12 +1,41 @@
 {
-    "comments": [
-        {
-            "id": 1,
-            "text": "This is a comment",
-            "user": "John Doe",
-            "likes": 0,
-            "createdAt": "2022-01-01T00:00:00.000Z",
-            "idResponse": null
-        }
-    ]
+  "topics": [
+    {
+      "id": "1",
+      "title": "Bienvenido al foro Sugoi",
+      "author": "Admin",
+      "content": "¡Hola a todos! Este es el nuevo foro de discusión creado con Vue y TypeScript. Siéntanse libres de crear sus propios hilos y responder a los demás.",
+      "createdAt": "2023-11-20T10:00:00Z"
+    },
+    {
+      "id": "2",
+      "title": "Mejor anime de la temporada",
+      "author": "OtakuMaster",
+      "content": "¿Cuál creen que es el mejor anime de esta temporada de otoño? Yo voto por Frieren.",
+      "createdAt": "2023-11-21T15:30:00Z"
+    },
+    {
+      "id": "itjryo4il",
+      "title": "De motos ",
+      "author": "Motero",
+      "content": "Yo solo lo hago en mi moto",
+      "createdAt": "2026-02-17T12:32:33.429Z"
+    }
+  ],
+  "replies": [
+    {
+      "id": "1",
+      "topicId": "1",
+      "author": "NekoChan",
+      "content": "¡Wow! Se ve genial. Me encanta la interfaz.",
+      "createdAt": "2023-11-20T11:20:00Z"
+    },
+    {
+      "id": "2",
+      "topicId": "2",
+      "author": "GamerZ",
+      "content": "Frieren es increíble, pero Jujutsu Kaisen está a otro nivel.",
+      "createdAt": "2023-11-21T16:00:00Z"
+    }
+  ]
 }

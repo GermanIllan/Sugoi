@@ -1,13 +1,20 @@
 <script setup lang="ts">
+import { RouterView } from 'vue-router'
 import NavBar from "./components/Layout/NavBar.vue";
 import Footer from "./components/Layout/Footer.vue";
 </script>
 
 <template>
   <NavBar />
-  <main>
-    <h1>SUGOI!</h1>
+  <main class="container">
+    <RouterView />
   </main>
   <Footer />
 </template>
+
+<style>
+.container {
+  min-height: calc(100vh - 160px);
+}
+</style>
 
