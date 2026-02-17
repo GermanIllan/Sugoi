@@ -1,3 +1,12 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const counter = ref<number>(0)
+
+function increment() {
+    counter.value++
+}
+</script>
 <template>
   <nav class="navbar">
     <!-- Logo -->
