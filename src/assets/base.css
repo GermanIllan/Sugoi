@@ -1,86 +1,268 @@
-/* color palette from <https://github.com/vuejs/theme> */
+/* =====================================================
+   SUGOI - DESIGN SYSTEM CSS
+   Versión 1.0
+   ===================================================== */
+
 :root {
-  --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
+  /* =====================================================
+     🎨 PALETA PRINCIPAL
+     ===================================================== */
 
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
+  --color-primary: #FF0000;
+  /* Rojo Vibrante */
+  --color-black-carbon: #1A1A1A;
+  /* Negro Carbono */
+  --color-white-snow: #FFFFFF;
+  /* Blanco Nieve */
 
-  --vt-c-indigo: #2c3e50;
+  /* =====================================================
+     🎨 COLORES DE ACENTO (PASTELES)
+     ===================================================== */
 
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+  --color-accent-rosa: #E8CFCF;
+  --color-accent-crema: #E9DCCF;
+  --color-accent-gris-azulado: #C9CED6;
 
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+  /* =====================================================
+     🖋 TIPOGRAFÍA
+     ===================================================== */
+
+  --font-heading: 'Archivo Black', 'Montserrat', sans-serif;
+  --font-body: 'Inter', 'Roboto', sans-serif;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --font-weight-extra-bold: 800;
+  --font-weight-black: 900;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 2rem;
+  --font-size-xxl: 3rem;
+  --font-size-hero: 4rem;
+
+  --line-height-tight: 1.1;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.7;
+
+  /* =====================================================
+     📏 ESPACIADO
+     ===================================================== */
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+
+  /* =====================================================
+     ⬛ BORDES (Neo-Brutalism)
+     ===================================================== */
+
+  --border-thin: 2px solid var(--color-black-carbon);
+  --border-thick: 4px solid var(--color-black-carbon);
+
+  /* =====================================================
+     🌑 SOMBRAS (SÓLIDAS, NO DIFUSAS)
+     ===================================================== */
+
+  --shadow-offset-sm: 4px 4px 0 var(--color-black-carbon);
+  --shadow-offset-md: 6px 6px 0 var(--color-black-carbon);
+  --shadow-offset-lg: 8px 8px 0 var(--color-black-carbon);
+
+  /* =====================================================
+     🔘 BOTONES
+     ===================================================== */
+
+  --button-bg-primary: var(--color-primary);
+  --button-text-primary: var(--color-white-snow);
+
+  --button-padding-y: 12px;
+  --button-padding-x: 24px;
+
+  --button-letter-spacing: 1px;
 }
 
-/* semantic color variables for this project */
-:root {
-  --color-background: var(--vt-c-white);
-  --color-background-soft: var(--vt-c-white-soft);
-  --color-background-mute: var(--vt-c-white-mute);
-
-  --color-border: var(--vt-c-divider-light-2);
-  --color-border-hover: var(--vt-c-divider-light-1);
-
-  --color-heading: var(--vt-c-text-light-1);
-  --color-text: var(--vt-c-text-light-1);
-
-  --section-gap: 160px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: var(--vt-c-black);
-    --color-background-soft: var(--vt-c-black-soft);
-    --color-background-mute: var(--vt-c-black-mute);
-
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
-
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
-  }
-}
+/* =====================================================
+   RESET BÁSICO
+   ===================================================== */
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-  margin: 0;
-  font-weight: normal;
 }
 
 body {
-  min-height: 100vh;
-  color: var(--color-text);
-  background: var(--color-background);
-  transition:
-    color 0.5s,
-    background-color 0.5s;
-  line-height: 1.6;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif;
-  font-size: 15px;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-normal);
+  background-color: #F5F5F5;
+  color: var(--color-black-carbon);
+}
+
+/* =====================================================
+   TIPOGRAFÍA
+   ===================================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-black);
+  text-transform: uppercase;
+  line-height: var(--line-height-tight);
+  margin: 0 0 var(--spacing-md);
+}
+
+h1 {
+  font-size: var(--font-size-hero);
+}
+
+h2 {
+  font-size: var(--font-size-xxl);
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+}
+
+p {
+  margin: 0 0 var(--spacing-md);
+}
+
+.text-bold {
+  font-weight: var(--font-weight-bold);
+}
+
+.text-medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.text-regular {
+  font-weight: var(--font-weight-regular);
+}
+
+/* =====================================================
+   COMPONENTES BASE
+   ===================================================== */
+
+/* Card Neo-Brutalista */
+.card {
+  background-color: var(--color-white-snow);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-offset-md);
+  padding: var(--spacing-lg);
+}
+
+/* Variante oscura */
+.card-dark {
+  background-color: var(--color-black-carbon);
+  color: var(--color-white-snow);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-offset-md);
+}
+
+/* =====================================================
+   BOTONES
+   ===================================================== */
+
+.button-primary {
+  display: inline-block;
+  background-color: var(--button-bg-primary);
+  color: var(--button-text-primary);
+  border: var(--border-thick);
+  padding: var(--button-padding-y) var(--button-padding-x);
+  text-transform: uppercase;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--button-letter-spacing);
+  cursor: pointer;
+  box-shadow: var(--shadow-offset-sm);
+  transition: transform 0.1s ease;
+}
+
+.button-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--color-black-carbon);
+}
+
+.button-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--color-black-carbon);
+}
+
+/* =====================================================
+   ACENTOS
+   ===================================================== */
+
+.badge-rosa {
+  background-color: var(--color-accent-rosa);
+  border: var(--border-thin);
+  padding: 6px 12px;
+}
+
+.badge-crema {
+  background-color: var(--color-accent-crema);
+  border: var(--border-thin);
+  padding: 6px 12px;
+}
+
+.badge-gris-azulado {
+  background-color: var(--color-accent-gris-azulado);
+  border: var(--border-thin);
+  padding: 6px 12px;
+}
+
+/* =====================================================
+   UTILIDADES
+   ===================================================== */
+
+.border-thick {
+  border: var(--border-thick);
+}
+
+.border-thin {
+  border: var(--border-thin);
+}
+
+.shadow-sm {
+  box-shadow: var(--shadow-offset-sm);
+}
+
+.shadow-md {
+  box-shadow: var(--shadow-offset-md);
+}
+
+.shadow-lg {
+  box-shadow: var(--shadow-offset-lg);
+}
+
+.bg-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white-snow);
+}
+
+.bg-black {
+  background-color: var(--color-black-carbon);
+  color: var(--color-white-snow);
+}
+
+.bg-white {
+  background-color: var(--color-white-snow);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.uppercase {
+  text-transform: uppercase;
 }
