@@ -2,7 +2,11 @@
     "comments": [
         {
             "id": 1,
-            "text": "This is a comment"
+            "text": "This is a comment",
+            "user": "John Doe",
+            "likes": 0,
+            "createdAt": "2022-01-01T00:00:00.000Z",
+            "idResponse": null
         }
     ]
 }
