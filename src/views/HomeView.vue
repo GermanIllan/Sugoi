@@ -10,6 +10,6 @@
 
 <style scoped>
 h1 {
-  color: rgb(2, 71, 221);
+  color: rgb(139, 153, 182);
 }
 </style>
