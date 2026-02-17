@@ -1,9 +1,15 @@
-<script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+<template>
+  <div>
+    <h1>Mi página personalizada</h1>
+    <p>Estoy trabajando con Vue 🚀</p>
+  </div>
+</template>
+
+<script setup>
 </script>
 
-<template>
-  <main>
-    <TheWelcome />
-  </main>
-</template>
+<style scoped>
+h1 {
+  color: rgb(2, 71, 221);
+}
+</style>
