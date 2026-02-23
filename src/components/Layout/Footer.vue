@@ -25,8 +25,7 @@
         <!-- Columna Marca -->
         <div class="footer-brand">
           <div class="logo">
-            <span class="logo-dot"></span>
-            <span class="logo-text">SUGOI</span>
+            <img src="@/assets/images/image/sugoiw.jpg" alt="SUGOI" class="logo-img" />
           </div>
           <p class="brand-description">
             Tu portal de Anime y Manga de referencia para fans de habla hispana.
@@ -81,10 +80,10 @@
 
 <style scoped>
 .footer {
-  background-color: var(--color-black-carbon);
+  background-color: #000000;
   color: var(--color-white-snow);
   width: 100%;
-  border-top: 4px solid var(--color-primary);
+  border-top: var(--border-thick);
 }
 
 .container {
@@ -95,21 +94,21 @@
 
 /* Newsletter Section */
 .newsletter {
-  padding: var(--spacing-xxl) var(--spacing-lg);
+  padding: var(--spacing-xl) var(--spacing-lg);
   text-align: center;
-  border-bottom: var(--border-thin);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .newsletter-title {
-  font-size: var(--font-size-xl);
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
   margin-bottom: var(--spacing-xs);
   color: var(--color-white-snow);
 }
 
 .newsletter-description {
   color: var(--color-accent-gris-azulado);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
   font-size: var(--font-size-md);
 }
 
@@ -138,12 +137,12 @@
 
 .newsletter-button {
   box-shadow: none; /* In form, we might want a flatter look or keep the system shadow */
-  border-left: none;
+  border:1px solid var(--color-primary);
 }
 
 /* Footer Main */
 .footer-main {
-  padding: var(--spacing-xxl) 0;
+  padding: var(--spacing-xl) 0;
 }
 
 .footer-grid {
@@ -156,21 +155,13 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
 }
 
-.logo-dot {
-  width: 12px;
-  height: 12px;
-  background-color: var(--color-primary);
-  border-radius: 50%;
-}
-
-.logo-text {
-  font-family: var(--font-heading);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-black);
-  font-style: italic;
+.logo-img {
+  height: 40px;
+  width: auto;
+  display: block;
 }
 
 .brand-description {
@@ -181,10 +172,12 @@
 }
 
 .links-title {
+  font-family: var(--font-heading);
   font-size: var(--font-size-sm);
   color: var(--color-accent-gris-azulado);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
   letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .links-list {
@@ -194,14 +187,17 @@
 }
 
 .links-list li {
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
 }
 
 .links-list a {
   color: var(--color-white-snow);
   text-decoration: none;
+  font-family: var(--font-heading);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
+  letter-spacing: 1px;
+  text-transform: uppercase;
   transition: color 0.2s ease;
 }
 
@@ -237,7 +233,7 @@
 
 /* Footer Bottom */
 .footer-bottom {
-  padding: var(--spacing-lg) 0;
+  padding: var(--spacing-md) 0;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: var(--font-size-xs);
   color: var(--color-accent-gris-azulado);
