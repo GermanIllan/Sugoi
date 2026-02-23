@@ -3,6 +3,7 @@
  * Componente Footer
  * Sigue los principios de Neo-Brutalismo Editorial Japonés.
  */
+import { Youtube } from 'lucide-vue-next';
 </script>
 
 <template>
@@ -59,7 +60,7 @@
           <div class="social-icons">
             <a href="#" class="social-icon">X</a>
             <a href="#" class="social-icon">IG</a>
-            <a href="https://www.youtube.com/watch?v=db8FRxYM97Y" class="social-icon">YT</a>
+            <a href="https://www.youtube.com/watch?v=db8FRxYM97Y" class="social-icon"><Youtube /></a>
           </div>
         </div>
       </div>
