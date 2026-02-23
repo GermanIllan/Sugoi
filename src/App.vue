@@ -1,9 +1,20 @@
 <script setup lang="ts">
-import NavBar from "./components/Layout/NavBar.vue";
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <NavBar />
-  <h1>SUGOI!</h1>
+  <div class="app">
+    <RouterView />
+  </div>
 </template>
 
+<style>
+@import './assets/base.css';
+@import './assets/main.css';
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+</style>
