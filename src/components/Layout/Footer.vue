@@ -137,7 +137,7 @@
 
 .newsletter-button {
   box-shadow: none; /* In form, we might want a flatter look or keep the system shadow */
-  border-left: none;
+  border:1px solid var(--color-primary);
 }
 
 /* Footer Main */
