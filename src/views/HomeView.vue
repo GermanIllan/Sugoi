@@ -152,6 +152,7 @@ const comments = [
 
 <style scoped>
 .home {
+  
   min-height: 100vh;
   background-image: 
     linear-gradient(rgba(246, 247, 247, 0.85), rgba(255, 255, 255, 0.85)),
@@ -160,11 +161,13 @@ const comments = [
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  
 }
 
 /* Hero Section */
 .hero {
   background-color: var(--color-primary);
+  box-shadow: 0 10px 7px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background-image: repeating-linear-gradient(
     90deg,
     transparent,
@@ -290,7 +293,7 @@ const comments = [
 
 /* Content Cards Section */
 .content-cards {
-  padding: 0;
+  padding: 56px var(--spacing-lg) 24px;
   background-color: transparent;
 }
 
