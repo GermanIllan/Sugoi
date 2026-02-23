@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import loadingGif from '@/assets/images/gif/loading.gif';
+import loadingGif from '@/assets/images/gif/loading.webp';
 
 interface MenuItem {
   label: string;
@@ -9,10 +9,10 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  { label: 'Home', link: '/' },
-  { label: 'Filtros', link: '/filtros' },
+  { label: 'Inicio', link: '/' },
   { label: 'Noticias', link: '/noticias' },
-  { label: 'Blog', link: '/blog' },
+  { label: 'Filtros', link: '/filtros' },
+  { label: 'Foro', link: '/blog' },
   { label: 'Crear Avatar', link: '/avatar' },
 ];
 
@@ -50,7 +50,7 @@ function isActive(path: string): boolean {
     
       <!-- Logo -->
       <router-link to="/" class="logo">
-        <img src="@/assets/images/image/sugoiw.jpg" alt="SUGOI" class="logo-img" />
+        <img src="@/assets/images/image/sugoiw.jpg" alt="sugoi" class="logo-img" />
       </router-link>
 
       <!-- Desktop Menu -->
@@ -118,7 +118,7 @@ function isActive(path: string): boolean {
   top: 0;
   z-index: 1000;
   background-color:#000000;
-  border-bottom: var(--border-thick);
+  border-bottom: var(--border-thick-primary);
   width: 100%;
 }
 
@@ -127,14 +127,14 @@ function isActive(path: string): boolean {
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-md) var(--spacing-lg);
-  max-width: 1440px;
-  margin: 0 auto;
+  max-width: 1840px;
+  margin: 0px auto;
   height: 80px;
 }
 
 
 .logo-img {
-  height: 40px; /* Adjust as needed */
+  height: 70px; /* Adjust as needed */
   width: auto;
   display: block;
 }

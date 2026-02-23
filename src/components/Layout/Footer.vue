@@ -59,7 +59,7 @@
           <div class="social-icons">
             <a href="#" class="social-icon">X</a>
             <a href="#" class="social-icon">IG</a>
-            <a href="#" class="social-icon">YT</a>
+            <a href="https://www.youtube.com/watch?v=db8FRxYM97Y" class="social-icon">YT</a>
           </div>
         </div>
       </div>
@@ -160,7 +160,7 @@
 }
 
 .logo-img {
-  height: 40px;
+  height: 80px;
   width: auto;
   display: block;
 }
