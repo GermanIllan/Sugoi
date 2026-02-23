@@ -38,6 +38,8 @@ Queda prohibido:
 - No usar `any`.
 - Interfaces obligatorias para estructuras de datos.
 - Props tipadas correctamente.
+- Variables en ingles.
+- Convencion de variables camelCase.
 
 ### 3.2 Vue
 - Usar `<script setup lang="ts">`
