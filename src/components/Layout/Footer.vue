@@ -83,7 +83,7 @@
   background-color: #000000;
   color: var(--color-white-snow);
   width: 100%;
-  border-top: var(--border-thick);
+  border-top: var(--border-thick-primary);
 }
 
 .container {
@@ -97,6 +97,7 @@
   padding: var(--spacing-xl) var(--spacing-lg);
   text-align: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  /* background-color: var(--color-primary) !important; */
 }
 
 .newsletter-title {
