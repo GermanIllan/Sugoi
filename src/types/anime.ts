@@ -67,6 +67,10 @@ export interface AnimeSearchResponse {
     pagination: PaginationInfo;
 }
 
+export interface AnimeSingleResponse {
+    data: Anime;
+}
+
 export interface AnimeSearchParams {
     q?: string;
     page?: number;

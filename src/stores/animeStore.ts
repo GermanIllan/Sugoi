@@ -15,6 +15,11 @@ export const useAnimeStore = defineStore('anime', () => {
     const error = ref<string | null>(null);
     const currentSearchQuery = ref<string>('');
 
+    // Detail State
+    const animeDetail = ref<Anime | null>(null);
+    const isDetailLoading = ref<boolean>(false);
+    const detailError = ref<string | null>(null);
+
     // Actions
 
     /**
@@ -81,6 +86,26 @@ export const useAnimeStore = defineStore('anime', () => {
         }
     };
 
+    /**
+     * Fetch a single Anime by ID and store it in animeDetail.
+     * @param id - The mal_id of the anime.
+     */
+    const fetchAnimeById = async (id: number) => {
+        isDetailLoading.value = true;
+        detailError.value = null;
+
+        try {
+            const response = await animeService.getAnimeById(id);
+            animeDetail.value = response.data;
+        } catch (err: any) {
+            const apiError = err as ApiError;
+            detailError.value = apiError.message || 'Error fetching anime detail';
+            animeDetail.value = null;
+        } finally {
+            isDetailLoading.value = false;
+        }
+    };
+
     return {
         // State
         animeList,
@@ -88,9 +113,13 @@ export const useAnimeStore = defineStore('anime', () => {
         isLoading,
         error,
         currentSearchQuery,
+        animeDetail,
+        isDetailLoading,
+        detailError,
 
         // Actions
         fetchAnimeList,
-        loadMoreAnime
+        loadMoreAnime,
+        fetchAnimeById
     };
 });
