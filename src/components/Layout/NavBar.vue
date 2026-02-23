@@ -134,7 +134,7 @@ function isActive(path: string): boolean {
 
 
 .logo-img {
-  height: 200px; /* Adjust as needed */
+  height: 70px; /* Adjust as needed */
   width: auto;
   display: block;
 }
