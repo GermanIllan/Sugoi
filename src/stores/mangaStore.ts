@@ -59,7 +59,7 @@ export const useMangaStore = defineStore('manga', () => {
             const response = await mangaService.getMangaList({ q: query, page: 1 });
             mangaList.value = response.data;
             pagination.value = response.pagination;
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError = err as ApiError;
             error.value = apiError.message || 'Error fetching mangas';
             mangaList.value = [];
@@ -82,7 +82,7 @@ export const useMangaStore = defineStore('manga', () => {
             const response = await mangaService.getMangaList({ q: currentSearchQuery.value, page: nextPage });
             mangaList.value = [...mangaList.value, ...response.data];
             pagination.value = response.pagination;
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError = err as ApiError;
             error.value = apiError.message || 'Error loading more mangas';
         } finally {
@@ -100,7 +100,7 @@ export const useMangaStore = defineStore('manga', () => {
         try {
             const response = await mangaService.getMangaById(id);
             mangaDetail.value = response.data;
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError = err as ApiError;
             detailError.value = apiError.message || 'Error fetching manga detail';
             mangaDetail.value = null;
@@ -120,7 +120,7 @@ export const useMangaStore = defineStore('manga', () => {
             const response = await mangaService.getMangaRanking(1);
             mangaRanking.value = response.data;
             rankingPagination.value = response.pagination;
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError = err as ApiError;
             rankingError.value = apiError.message || 'Error fetching ranking';
             mangaRanking.value = [];
@@ -140,7 +140,7 @@ export const useMangaStore = defineStore('manga', () => {
         try {
             const response = await mangaService.getMangaGenres();
             mangaGenres.value = response.data;
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError = err as ApiError;
             genresError.value = apiError.message || 'Error fetching genres';
             mangaGenres.value = [];
@@ -160,7 +160,7 @@ export const useMangaStore = defineStore('manga', () => {
         try {
             const response = await mangaService.getMangaNews(id);
             mangaNews.value = response.data;
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError = err as ApiError;
             newsError.value = apiError.message || 'Error fetching news';
             mangaNews.value = [];
@@ -179,7 +179,7 @@ export const useMangaStore = defineStore('manga', () => {
         try {
             const response = await mangaService.getMangaRecommendations();
             mangaRecommendations.value = response.data;
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError = err as ApiError;
             recommendationsError.value = apiError.message || 'Error fetching recommendations';
             mangaRecommendations.value = [];
