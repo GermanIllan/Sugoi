@@ -72,7 +72,7 @@ export const useAnimeStore = defineStore('anime', () => {
             const response = await animeService.getAnimeList(params);
             animeList.value = response.data;
             pagination.value = response.pagination;
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError = err as ApiError;
             error.value = apiError.message || 'Error fetching animes';
             animeList.value = []; // Clear list on error, or keep previous state? Usually clear.
@@ -107,7 +107,7 @@ export const useAnimeStore = defineStore('anime', () => {
 
             // Update the pagination info
             pagination.value = response.pagination;
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError = err as ApiError;
             error.value = apiError.message || 'Error loading more animes';
             // Do NOT clear list here, we want to keep what we already loaded
@@ -127,7 +127,7 @@ export const useAnimeStore = defineStore('anime', () => {
         try {
             const response = await animeService.getAnimeById(id);
             animeDetail.value = response.data;
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError = err as ApiError;
             detailError.value = apiError.message || 'Error fetching anime detail';
             animeDetail.value = null;
@@ -147,7 +147,7 @@ export const useAnimeStore = defineStore('anime', () => {
             const response = await animeService.getAnimeRanking(1);
             animeRanking.value = response.data;
             rankingPagination.value = response.pagination;
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError = err as ApiError;
             rankingError.value = apiError.message || 'Error fetching ranking';
             animeRanking.value = [];
@@ -173,7 +173,7 @@ export const useAnimeStore = defineStore('anime', () => {
             const response = await animeService.getAnimeRanking(nextPage);
             animeRanking.value = [...animeRanking.value, ...response.data];
             rankingPagination.value = response.pagination;
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError = err as ApiError;
             rankingError.value = apiError.message || 'Error loading more ranking';
         } finally {
@@ -191,7 +191,7 @@ export const useAnimeStore = defineStore('anime', () => {
         try {
             const response = await animeService.getAnimeGenres();
             animeGenres.value = response.data;
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError = err as ApiError;
             genresError.value = apiError.message || 'Error fetching genres';
             animeGenres.value = [];
@@ -211,7 +211,7 @@ export const useAnimeStore = defineStore('anime', () => {
         try {
             const response = await animeService.getAnimeNews(id);
             animeNews.value = response.data;
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError = err as ApiError;
             newsError.value = apiError.message || 'Error fetching news';
             animeNews.value = [];
@@ -230,7 +230,7 @@ export const useAnimeStore = defineStore('anime', () => {
         try {
             const response = await animeService.getAnimeRecommendations();
             animeRecommendations.value = response.data;
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError = err as ApiError;
             recommendationsError.value = apiError.message || 'Error fetching recommendations';
             animeRecommendations.value = [];
@@ -250,7 +250,7 @@ export const useAnimeStore = defineStore('anime', () => {
             const response = await animeService.getUpcomingSeason(1);
             upcomingAnime.value = response.data;
             upcomingPagination.value = response.pagination;
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError = err as ApiError;
             upcomingError.value = apiError.message || 'Error fetching upcoming anime';
             upcomingAnime.value = [];
