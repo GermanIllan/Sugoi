@@ -28,14 +28,11 @@ const router = createRouter({
       name: "topic-detail",
       component: TopicDetailView,
     },
-<<<<<<< HEAD
-=======
     {
       path: '/test-anime-connection',
       name: 'test-anime-connection',
       component: TestAnimeConnection,
     }
->>>>>>> 7d49df95cf033769faf28efd1304562fb4d0315d
   ],
 });
 
