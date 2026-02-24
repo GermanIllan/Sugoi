@@ -73,7 +73,7 @@ const comments = [
         <!-- Right Image -->
         <div class="hero-image">
           <div class="hero-image-container">
-            <img src="/unnamed.png" alt="Anime Character" />
+            <img src="@/assets/images/image/unnamed.png" alt="Anime Character" />
           </div>
         </div>
       </div>
@@ -159,7 +159,7 @@ h1 {
   min-height: 100vh;
   background-image: 
     linear-gradient(rgba(246, 247, 247, 0.85), rgba(255, 255, 255, 0.85)),
-    url('/lineas4.jpg');
+    url('@/assets/images/image/lineas4.jpg');
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
@@ -428,29 +428,32 @@ h1 {
 
 .section-header {
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 40px;
 }
 
 .section-kanji {
-  font-size: 3rem;
+  font-size: 5rem;
   margin: 0;
   color: var(--color-primary);
-  letter-spacing: 2px;
+  letter-spacing: 4px;
+  line-height: 1;
 }
 
 .section-subtitle {
   font-family: var(--font-heading);
-  font-size: 0.56rem;
-  letter-spacing: 3.2px;
-  margin: 6px 0 0;
-  color: #4f5560;
+  font-size: 1rem;
+  letter-spacing: 6px;
+  margin: 12px 0 0;
+  color: var(--color-black-carbon);
+  text-transform: uppercase;
+  font-weight: var(--font-weight-black);
 }
 
 .ratings-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  max-width: 760px;
+  gap: 16px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -458,11 +461,11 @@ h1 {
   background: var(--color-white-snow);
   border: var(--border-thick);
   box-shadow: var(--shadow-offset-sm);
-  padding: 8px;
+  padding: 16px;
   display: grid;
-  grid-template-columns: 32px 1fr auto;
+  grid-template-columns: 60px 1fr auto;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: 24px;
   transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
 }
 
@@ -472,24 +475,25 @@ h1 {
 }
 
 .rating-cover {
-  width: 28px;
-  height: 28px;
+  width: 60px;
+  height: 60px;
   border: var(--border-thin);
 }
 
 .rating-title {
   font-family: var(--font-body);
-  font-size: 0.78rem;
-  margin: 0;
+  font-size: 1.1rem;
+  margin: 0 0 4px;
   text-transform: none;
   font-weight: var(--font-weight-extra-bold);
 }
 
 .rating-genres {
   margin: 0;
-  font-size: 0.48rem;
+  font-size: 0.9rem;
   letter-spacing: 1px;
-  color: #666c77;
+  color: #333;
+  font-weight: var(--font-weight-bold);
 }
 
 .rating-score {
@@ -501,7 +505,7 @@ h1 {
 .stars {
   color: var(--color-primary);
   letter-spacing: 1px;
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: var(--font-weight-bold);
 }
 
@@ -509,8 +513,8 @@ h1 {
   background: var(--color-primary);
   color: var(--color-white-snow);
   font-family: var(--font-heading);
-  font-size: 0.62rem;
-  padding: 4px 7px;
+  font-size: 1rem;
+  padding: 8px 12px;
   line-height: 1;
 }
 
@@ -519,8 +523,8 @@ h1 {
 .comments-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  max-width: 720px;
+  gap: 16px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -529,7 +533,7 @@ h1 {
   box-shadow: var(--shadow-offset-sm);
   background: var(--color-white-snow);
   display: grid;
-  grid-template-columns: 34px 1fr;
+  grid-template-columns: 80px 1fr;
   transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
 }
 
@@ -545,41 +549,55 @@ h1 {
   align-items: center;
   justify-content: center;
   font-family: var(--font-heading);
-  font-size: 0.72rem;
+  font-size: 1.25rem;
+  min-height: 80px;
 }
 
 .comment-content {
-  padding: 8px 9px;
+  padding: 16px 20px;
 }
 
 .comment-name {
-  margin: 0 0 3px;
+  margin: 0 0 6px;
   font-family: var(--font-body);
   text-transform: none;
-  font-size: 0.72rem;
+  font-size: 1.15rem;
+  font-weight: var(--font-weight-black);
 }
 
 .comment-text {
   margin: 0;
-  font-size: 0.62rem;
-  line-height: 1.4;
-  color: #444;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #000;
+  font-weight: var(--font-weight-medium);
 }
 
 
 
 @media (max-width: 900px) {
-  .merch-grid {
-    grid-template-columns: 1fr;
+  .rating-item {
+    grid-template-columns: 48px 1fr;
+    gap: 16px;
   }
 
-  .rating-item {
-    grid-template-columns: 28px 1fr;
+  .rating-cover {
+    width: 48px;
+    height: 48px;
   }
 
   .rating-score {
     grid-column: 1 / -1;
     justify-content: flex-end;
+  }
+
+  .comment-item {
+    grid-template-columns: 60px 1fr;
+  }
+
+  .comment-avatar {
+    font-size: 1rem;
+    min-height: 60px;
   }
 }
 </style>
