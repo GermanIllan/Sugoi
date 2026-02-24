@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import ForumView from "../views/ForumView.vue";
 import TopicDetailView from "../views/TopicDetailView.vue";
 import FilterView from "../views/FilterView.vue";
+import TestAnimeConnection from '../views/TestAnimeConnection.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,14 @@ const router = createRouter({
       name: "topic-detail",
       component: TopicDetailView,
     },
+<<<<<<< HEAD
+=======
+    {
+      path: '/test-anime-connection',
+      name: 'test-anime-connection',
+      component: TestAnimeConnection,
+    }
+>>>>>>> 7d49df95cf033769faf28efd1304562fb4d0315d
   ],
 });
 
