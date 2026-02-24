@@ -36,7 +36,7 @@ onMounted(() => {
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 20px; max-height: 400px; overflow-y: auto;">
         <div v-for="anime in store.animeList" :key="anime.mal_id" style="border: 1px solid #333; padding: 5px; font-size: 12px;">
           <img :src="anime.images.jpg.image_url" :alt="anime.title" style="width: 100%; height: auto;"/>
-          <p><strong>{{ anime.title }}</strong></p>
+          <p><strong>{{ anime.title }} - {{ anime.mal_id }}</strong></p>
         </div>
       </div>
     </div>
@@ -62,5 +62,58 @@ onMounted(() => {
         </div>
       </div>
     </div>
+
+    <!-- RANKING SECTION -->
+    <div style="margin-bottom: 20px; border: 1px solid green; padding: 20px;">
+      <h3>Anime Ranking (Top Anime)</h3>
+      <button @click="store.fetchAnimeRanking()" :disabled="store.loadingRanking" style="background: green; color: white; padding: 10px;">
+        Fetch Ranking
+      </button>
+      <button @click="store.loadMoreRanking()" :disabled="!store.rankingPagination?.has_next_page || store.loadingRanking" style="background: white; color: black; padding: 10px; margin-left: 10px;">
+        Load More Ranking
+      </button>
+
+      <div v-if="store.loadingRanking">Loading ranking...</div>
+      <div v-if="store.rankingError" style="color: red;">Ranking Error: {{ store.rankingError }}</div>
+
+      <div v-if="store.rankingPagination" style="margin-top: 10px;">
+        <p>Ranking Items: {{ store.animeRanking.length }} | Page: {{ store.rankingPagination.current_page }}</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 20px; max-height: 400px; overflow-y: auto;">
+        <div v-for="(anime, index) in store.animeRanking" :key="anime.mal_id" style="border: 1px solid #333; padding: 5px; font-size: 12px;">
+          <p><strong>#{{ index + 1 }}</strong></p>
+          <img :src="anime.images.jpg.image_url" :alt="anime.title" style="width: 100%; height: auto;"/>
+          <p><strong>{{ anime.title }}</strong></p>
+          <p>Score: {{ anime.score }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- GENRE SECTION -->
+    <div style="margin-bottom: 20px; border: 1px solid orange; padding: 20px;">
+      <h3>Anime Genres</h3>
+      <button @click="store.fetchAnimeGenres()" :disabled="store.isLoadingGenres" style="background: orange; color: black; padding: 10px;">
+        Fetch Genres
+      </button>
+
+      <div v-if="store.isLoadingGenres">Loading genres...</div>
+      <div v-if="store.genresError" style="color: red;">Genres Error: {{ store.genresError }}</div>
+
+      <div v-if="store.animeGenres.length > 0" style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
+        <div v-for="genre in store.animeGenres" :key="genre.mal_id" style="background: #333; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
+          {{ genre.name }} ({{ genre.count }})
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.test-container {
+  padding-top: 100px;
+  color: red;
+  padding-bottom: 100px;
+  background-color: black !important;
+}
+</style>

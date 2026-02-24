@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ForumView from '../views/ForumView.vue'
 import TopicDetailView from '../views/TopicDetailView.vue'
+import TestAnimeConnection from '../views/TestAnimeConnection.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,6 +21,11 @@ const router = createRouter({
       path: '/forum/topic/:id',
       name: 'topic-detail',
       component: TopicDetailView,
+    },
+    {
+      path: '/test-anime-connection',
+      name: 'test-anime-connection',
+      component: TestAnimeConnection,
     }
   ],
 })
