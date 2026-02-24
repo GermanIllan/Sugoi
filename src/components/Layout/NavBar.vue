@@ -12,7 +12,7 @@ const menuItems: MenuItem[] = [
   { label: 'Inicio', link: '/' },
   { label: 'Noticias', link: '/noticias' },
   { label: 'Filtros', link: '/filtros' },
-  { label: 'Foro', link: '/blog' },
+  { label: 'Foro', link: '/forum' },
   { label: 'Crear Avatar', link: '/avatar' },
 ];
 
