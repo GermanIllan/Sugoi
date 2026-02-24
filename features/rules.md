@@ -121,5 +121,9 @@ Cada respuesta técnica debe incluir:
 2. Código
 3. Ubicación del archivo
 4. Justificación técnica (si aplica)
+5. Reutilizar las funciones de API ya creadas.
+6. No crear archivos innecesarios.
+7. No repetir codigo para conectar con la API.
+8. Utiilizar SIEMPRE las funciones de API ya creadas.
 
 Sin texto innecesario.
