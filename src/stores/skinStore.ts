@@ -8,6 +8,8 @@ import { pollinationsService } from '@/services/pollinationsService';
 interface GenerationState {
     timestamps: number[];
     lastGeneratedUrl: string | null;
+    galleryUrls: string[];
+    activeHomeAvatarUrl: string | null;
 }
 
 export const useSkinStore = defineStore('skin', () => {
@@ -16,9 +18,11 @@ export const useSkinStore = defineStore('skin', () => {
     const isLoading = ref<boolean>(false);
     const error = ref<string | null>(null);
     const generationTimestamps = ref<number[]>([]);
+    const galleryUrls = ref<string[]>([]);
+    const activeHomeAvatarUrl = ref<string | null>(null);
 
     const STORAGE_KEY = 'sugoi_skin_generations';
-    const LIMIT_COUNT = 3;
+    const LIMIT_COUNT = 100;
     const LIMIT_DAYS_MS = 5 * 24 * 60 * 60 * 1000;
 
     // Initialize from LocalStorage
@@ -29,6 +33,8 @@ export const useSkinStore = defineStore('skin', () => {
                 const data: GenerationState = JSON.parse(saved);
                 generationTimestamps.value = data.timestamps || [];
                 lastImageUrl.value = data.lastGeneratedUrl || null;
+                galleryUrls.value = data.galleryUrls || [];
+                activeHomeAvatarUrl.value = data.activeHomeAvatarUrl || null;
             } catch (e) {
                 console.error('Error parsing saved skin state', e);
             }
@@ -41,7 +47,9 @@ export const useSkinStore = defineStore('skin', () => {
     const saveToStorage = () => {
         const data: GenerationState = {
             timestamps: generationTimestamps.value,
-            lastGeneratedUrl: lastImageUrl.value
+            lastGeneratedUrl: lastImageUrl.value,
+            galleryUrls: galleryUrls.value,
+            activeHomeAvatarUrl: activeHomeAvatarUrl.value
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     };
@@ -95,6 +103,7 @@ export const useSkinStore = defineStore('skin', () => {
 
             lastImageUrl.value = url;
             generationTimestamps.value.push(Date.now());
+            galleryUrls.value.unshift(url); // Add to gallery (at the beginning)
             saveToStorage();
         } catch (err: unknown) {
             error.value = err instanceof Error ? err.message : 'An error occurred during generation';
@@ -104,12 +113,46 @@ export const useSkinStore = defineStore('skin', () => {
         }
     };
 
+    /**
+     * Set the current active avatar for the Home page
+     */
+    const setActiveHomeAvatar = (url: string) => {
+        activeHomeAvatarUrl.value = url;
+        saveToStorage();
+    };
+
+    /**
+     * Triggers a browser download for the given image URL
+     */
+    const downloadImage = async (url: string) => {
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const blobUrl = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = `sugoi-avatar-${Date.now()}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(blobUrl);
+        } catch (err) {
+            console.error('Download failed', err);
+            error.value = 'Failed to download image. Please try again.';
+        }
+    };
+
     return {
         lastImageUrl,
         isLoading,
         error,
         generationTimestamps,
+        galleryUrls,
+        activeHomeAvatarUrl,
         generateSkin,
-        checkLimit
+        checkLimit,
+        setActiveHomeAvatar,
+        downloadImage
     };
 });
