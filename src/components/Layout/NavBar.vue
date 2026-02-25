@@ -12,8 +12,8 @@ const menuItems: MenuItem[] = [
   { label: 'Inicio', link: '/' },
   { label: 'Noticias', link: '/noticias' },
   { label: 'Filtros', link: '/filtros' },
-  { label: 'Foro', link: '/forum' },
-  { label: 'Crear Avatar', link: '/avatar' },
+  { label: 'Foro', link: '/blog' },
+  { label: 'Crear Avatar', link: '/create-skin' },
 ];
 
 const isMobileMenuOpen = ref(false);

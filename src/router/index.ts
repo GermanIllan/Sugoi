@@ -32,6 +32,11 @@ const router = createRouter({
       path: '/test-anime-connection',
       name: 'test-anime-connection',
       component: TestAnimeConnection,
+    },
+    {
+      path: '/create-skin',
+      name: 'create-skin',
+      component: () => import('../views/SkinView.vue'),
     }
   ],
 });
