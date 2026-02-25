@@ -65,6 +65,7 @@
 
   --border-thin: 2px solid var(--color-black-carbon);
   --border-thick: 4px solid var(--color-black-carbon);
+  --border-thick-primary: 4px solid var(--color-primary);
 
   /* =====================================================
      🌑 SOMBRAS (SÓLIDAS, NO DIFUSAS)

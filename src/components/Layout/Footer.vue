@@ -3,6 +3,7 @@
  * Componente Footer
  * Sigue los principios de Neo-Brutalismo Editorial Japonés.
  */
+import { Youtube, Twitter, Instagram } from 'lucide-vue-next';
 </script>
 
 <template>
@@ -57,9 +58,9 @@
         <div class="footer-socials">
           <h4 class="links-title">Síguenos</h4>
           <div class="social-icons">
-            <a href="#" class="social-icon">X</a>
-            <a href="#" class="social-icon">IG</a>
-            <a href="#" class="social-icon">YT</a>
+            <a href="#" class="social-icon"><Twitter /></a>
+            <a href="#" class="social-icon"><Instagram /></a>
+            <a href="https://www.youtube.com/watch?v=db8FRxYM97Y" class="social-icon"><Youtube /></a>
           </div>
         </div>
       </div>
@@ -83,7 +84,7 @@
   background-color: #000000;
   color: var(--color-white-snow);
   width: 100%;
-  border-top: var(--border-thick);
+  border-top: var(--border-thick-primary);
 }
 
 .container {
@@ -97,6 +98,7 @@
   padding: var(--spacing-xl) var(--spacing-lg);
   text-align: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  /* background-color: var(--color-primary) !important; */
 }
 
 .newsletter-title {
@@ -159,7 +161,7 @@
 }
 
 .logo-img {
-  height: 40px;
+  height: 80px;
   width: auto;
   display: block;
 }
