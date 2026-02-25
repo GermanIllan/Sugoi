@@ -13,7 +13,7 @@ const menuItems: MenuItem[] = [
   { label: 'Noticias', link: '/noticias' },
   { label: 'Filtros', link: '/filtros' },
   { label: 'Foro', link: '/forum' },
-  { label: 'Crear Avatar', link: '/avatar' },
+  { label: 'Crear Avatar', link: '/create-skin' },
 ];
 
 const isMobileMenuOpen = ref(false);
