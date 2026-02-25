@@ -57,7 +57,7 @@ export const useAnimeStore = defineStore('anime', () => {
      * Resets the previous list and error state.
      * @param query - The search string to look for.
      */
-    const fetchAnimeList = async (query: string = '') => {
+    const fetchAnimeList = async (query: string = '', genres: string = '') => {
         isLoading.value = true;
         error.value = null;
         currentSearchQuery.value = query;
@@ -65,6 +65,7 @@ export const useAnimeStore = defineStore('anime', () => {
         const params: AnimeSearchParams = {
             q: query,
             page: 1,
+            genres: genres || undefined,
             // You can add more default params here if needed, like limit: 24
         };
 
