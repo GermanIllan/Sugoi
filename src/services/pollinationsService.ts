@@ -12,11 +12,11 @@ class PollinationsService {
      */
     generateImageUrl(prompt: string, seed: number = 0): string {
         // Requirements: Always include "ANIME" prefix
-        const fullPrompt = `ANIME, ${prompt.trim()}`;
+        const fullPrompt = `ANIME,PixelArt, ${prompt.trim()}`;
         const encodedPrompt = encodeURIComponent(fullPrompt);
 
         // Model configuration as per HU-SKIN-002
-        return `${this.baseUrl}${encodedPrompt}?model=flux&width=1024&height=1024&seed=${seed}&enhance=false&key=${this.apiKey}`;
+        return `${this.baseUrl}${encodedPrompt}?model=gptimage&width=1024&height=1024&seed=${seed}&enhance=true&key=${this.apiKey}`;
     }
 }
 

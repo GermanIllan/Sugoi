@@ -18,7 +18,7 @@ export const useSkinStore = defineStore('skin', () => {
     const generationTimestamps = ref<number[]>([]);
 
     const STORAGE_KEY = 'sugoi_skin_generations';
-    const LIMIT_COUNT = 2;
+    const LIMIT_COUNT = 3;
     const LIMIT_DAYS_MS = 5 * 24 * 60 * 60 * 1000;
 
     // Initialize from LocalStorage
