@@ -23,7 +23,7 @@ export const useSkinStore = defineStore('skin', () => {
     const activeHomeAvatarUrl = ref<string | null>(null);
 
     const STORAGE_KEY = 'sugoi_skin_generations';
-    const TIME_LIMIT_COUNT = 3; // Keep the original time limit logic for rate limiting
+    const TIME_LIMIT_COUNT = 8; // Keep the original time limit logic for rate limiting
     const GLOBAL_LIMIT_COUNT = 8; // User wants max 8 images total
     const LIMIT_DAYS_MS = 5 * 24 * 60 * 60 * 1000;
 

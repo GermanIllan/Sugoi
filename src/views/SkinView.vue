@@ -13,7 +13,7 @@ const selectedItem = ref<GalleryItem | null>(null);
 <template>
   <div class="skin-view container">
     <header class="skin-header">
-      <h1 class="title">Crea tu Avatar</h1>
+      <h1 class="title"><span class="kanji">アバターを作成しましょう</span> <br> Crea tu Avatar</h1>
       <p class="subtitle">Genera un avatar único estilo anime en pixel art</p>
     </header>
 
@@ -59,5 +59,15 @@ const selectedItem = ref<GalleryItem | null>(null);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xxl);
+}
+
+.kanji {
+  font-size: 2.6rem;
+  font-weight: var(--font-weight-black);
+  color: var(--color-primary);
+}
+
+.kanji.orange {
+  color: #FF6B00;
 }
 </style>

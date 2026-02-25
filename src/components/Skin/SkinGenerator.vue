@@ -1,10 +1,39 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch, onUnmounted } from 'vue';
 import { useSkinStore } from '@/stores/skinStore';
 import { storeToRefs } from 'pinia';
 
 const skinStore = useSkinStore();
 const { lastImageUrl, isLoading, error } = storeToRefs(skinStore);
+
+const secondsElapsed = ref(0);
+let timerInterval: number | null = null;
+
+const startTimer = () => {
+  secondsElapsed.value = 0;
+  timerInterval = window.setInterval(() => {
+    secondsElapsed.value++;
+  }, 1000);
+};
+
+const stopTimer = () => {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+};
+
+watch(isLoading, (loading) => {
+  if (loading) {
+    startTimer();
+  } else {
+    stopTimer();
+  }
+});
+
+onUnmounted(() => {
+  stopTimer();
+});
 
 const prompt = ref('');
 const showFeedback = ref(false);
@@ -74,7 +103,12 @@ const handleSetHome = () => {
 
     <div class="preview-section border-thick shadow-md">
       <div v-if="isLoading" class="skeleton-container">
-        <div class="skeleton-image"></div>
+        <div class="skeleton-image">
+          <div class="timer-overlay">
+            <span class="timer-value">{{ secondsElapsed }}s</span>
+            <span class="timer-label">GENERANDO...</span>
+          </div>
+        </div>
         <div class="skeleton-text"></div>
       </div>
       <div v-else-if="lastImageUrl" class="image-container-wrapper">
@@ -285,6 +319,33 @@ const handleSetHome = () => {
 @keyframes loading {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+.timer-overlay {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.timer-value {
+  font-family: var(--font-heading);
+  font-size: 4rem;
+  font-weight: var(--font-weight-black);
+  color: var(--color-primary);
+  text-shadow: 4px 4px 0 var(--color-black-carbon);
+  line-height: 1;
+}
+
+.timer-label {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-black);
+  font-size: var(--font-size-md);
+  color: var(--color-black-carbon);
+  letter-spacing: 2px;
 }
 
 /* Responsividad */
