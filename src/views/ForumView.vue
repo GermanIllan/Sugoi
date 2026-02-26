@@ -1,14 +1,24 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useForumStore } from '@/stores/forum'
 import TopicCard from '@/components/Forum/TopicCard.vue'
 import CreateTopicForm from '@/components/Forum/CreateTopicForm.vue'
 
 const forumStore = useForumStore()
 const showCreateForm = ref(false)
+const searchQuery = ref('')
 
 onMounted(async () => {
   await forumStore.fetchTopics()
+})
+
+const filteredTopics = computed(() => {
+  if (!searchQuery.value) return forumStore.topics
+  
+  const query = searchQuery.value.toLowerCase()
+  return forumStore.topics.filter(topic => 
+    topic.title.toLowerCase().includes(query)
+  )
 })
 
 const handleTopicCreated = () => {
@@ -23,12 +33,22 @@ const handleTopicCreated = () => {
         <h1 class="forum-title">Comunidad Sugoi</h1>
         <p class="forum-subtitle">Discute, comparte y explora el mundo del manga y el anime.</p>
       </div>
-      <button 
-        @click="showCreateForm = !showCreateForm" 
-        class="button-primary"
-      >
-        {{ showCreateForm ? 'Cancelar' : 'Nuevo Tema' }}
-      </button>
+      <div class="header-actions">
+        <div class="search-wrapper">
+          <input 
+            v-model="searchQuery" 
+            type="text" 
+            placeholder="Buscar temas..." 
+            class="search-input"
+          />
+        </div>
+        <button 
+          @click="showCreateForm = !showCreateForm" 
+          class="button-primary"
+        >
+          {{ showCreateForm ? 'Cancelar' : 'Nuevo Tema' }}
+        </button>
+      </div>
     </header>
 
     <div v-if="showCreateForm" class="create-section card">
@@ -41,12 +61,12 @@ const handleTopicCreated = () => {
       </div>
       <template v-else>
         <TopicCard 
-          v-for="topic in forumStore.topics" 
+          v-for="topic in filteredTopics" 
           :key="topic.id" 
           :topic="topic" 
         />
-        <div v-if="forumStore.topics.length === 0" class="empty-state card">
-          No hay temas aún. ¡Sé el primero en crear uno!
+        <div v-if="filteredTopics.length === 0" class="empty-state card">
+          {{ searchQuery ? 'No se encontraron temas que coincidan con tu búsqueda.' : 'No hay temas aún. ¡Sé el primero en crear uno!' }}
         </div>
       </template>
     </main>
@@ -92,11 +112,49 @@ const handleTopicCreated = () => {
   gap: var(--spacing-lg);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .forum-header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: var(--spacing-md);
   }
+}
+
+.header-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.search-wrapper {
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 15px;
+  font-family: var(--font-body);
+  font-size: var(--font-size-md);
+  border: var(--border-thick);
+  background: var(--color-white-snow);
+  color: var(--color-black-carbon);
+  box-shadow: var(--shadow-offset-sm);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  outline: none;
+}
+
+.search-input:focus {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-offset-md);
+  border-color: var(--color-primary);
 }
 
 .forum-title {
@@ -127,5 +185,8 @@ const handleTopicCreated = () => {
   padding: var(--spacing-xxl);
   font-family: var(--font-heading);
   text-transform: uppercase;
+  border: var(--border-thick);
+  background: var(--color-white-snow);
+  box-shadow: var(--shadow-offset-md);
 }
 </style>
