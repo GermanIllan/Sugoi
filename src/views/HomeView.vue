@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useSkinStore } from '@/stores/skinStore'
+import { storeToRefs } from 'pinia'
 
 const visible = ref(false)
+const skinStore = useSkinStore()
+const { activeHomeAvatarUrl } = storeToRefs(skinStore)
 
 onMounted(() => {
   setTimeout(() => {
@@ -73,7 +77,7 @@ const comments = [
         <!-- Right Image -->
         <div class="hero-image">
           <div class="hero-image-container">
-            <img src="/unnamed.png" alt="Anime Character" />
+            <img :src="activeHomeAvatarUrl || '/unnamed.png'" alt="Anime Character" />
           </div>
         </div>
       </div>
