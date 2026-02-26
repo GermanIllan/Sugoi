@@ -44,5 +44,46 @@
       "content": "Frieren es increíble, pero Jujutsu Kaisen está a otro nivel.",
       "createdAt": "2023-11-21T16:00:00Z"
     }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "username": "Admin",
+      "email": "admin@sugoi.com",
+      "password": "admin123"
+    }
+  ],
+  "avatars": [
+    {
+      "timestamps": [
+        1772021353538,
+        1772021433981,
+        1772103710365
+      ],
+      "lastGeneratedUrl": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Hombre%20con%20cabello%20rizado%2C%20lentes%2C%20sudadera%20roja%2C%20cuerpo%20completo?model=gptimage&width=1024&height=1024&seed=88239&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+      "galleryUrls": [
+        {
+          "url": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Hombre%20con%20cabello%20rizado%2C%20lentes%2C%20sudadera%20roja%2C%20cuerpo%20completo?model=gptimage&width=1024&height=1024&seed=88239&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "Hombre con cabello rizado, lentes, sudadera roja, cuerpo completo"
+        },
+        {
+          "url": "https://gen.pollinations.ai/image/ANIME%2CPixelArt%2C%20create%20anime%20dragon%20ball%20vegeta%20with%204k%20quality?model=gptimage&width=1024&height=1024&seed=931817&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "Generación previa"
+        },
+        {
+          "url": "https://gen.pollinations.ai/image/ANIME%2CPixelArt%2C%20create%20anime%20dragon%20ball%20vegeta?model=gptimage&width=1024&height=1024&seed=205721&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "Generación previa"
+        },
+        {
+          "url": "https://gen.pollinations.ai/image/ANIME%2CPixelArt%2C%20un%20humano%20con%20la%20esencia%20del%20kurama%20(zorro%20de%20las%20nueve%20colas)?model=gptimage&width=1024&height=1024&seed=926082&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "Generación previa"
+        },
+        {
+          "url": "https://gen.pollinations.ai/image/ANIME%2CPixelArt%2C%20Un%20calvo%20con%20dos%20espadas%20estilo%20kimetsu%20no%20yaiba?model=gptimage&width=1024&height=1024&seed=364291&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "Generación previa"
+        }
+      ],
+      "activeHomeAvatarUrl": "https://gen.pollinations.ai/image/ANIME%2CPixelArt%2C%20un%20humano%20con%20la%20esencia%20del%20kurama%20(zorro%20de%20las%20nueve%20colas)?model=gptimage&width=1024&height=1024&seed=926082&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d"
+    }
   ]
 }

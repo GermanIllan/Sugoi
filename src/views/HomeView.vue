@@ -77,7 +77,7 @@ const comments = [
         <!-- Right Image -->
         <div class="hero-image">
           <div class="hero-image-container">
-            <img :src="activeHomeAvatarUrl || '/unnamed.png'" alt="Anime Character" />
+            <img :src="activeHomeAvatarUrl || '../assets/images/image/unnamed.png'" alt="Anime Character" />
           </div>
         </div>
       </div>
