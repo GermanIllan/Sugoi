@@ -5,16 +5,24 @@ import Footer from "./components/Layout/Footer.vue";
 </script>
 
 <template>
-  <NavBar />
-  <main class="container">
-    <RouterView />
-  </main>
-      <Footer />
+  <div class="app-shell">
+    <NavBar />
+    <main class="container">
+      <RouterView />
+    </main>
+    <Footer />
+  </div>
 </template>
 
 <style scoped >
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .container {
-  min-height: calc(100vh - 160px);
+  flex: 1;
+  min-height: 0;
 }
 </style>
-

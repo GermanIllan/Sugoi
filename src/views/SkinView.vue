@@ -81,9 +81,31 @@ const handleGenerate = async () => {
 
 <style scoped>
 .container {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
   max-width: 1000px;
   margin: 0 auto;
   padding: var(--spacing-xxl) var(--spacing-md);
+}
+
+.container::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(246, 247, 247, 0.85), rgba(255, 255, 255, 0.85)),
+    url('@/assets/images/image/lineas4.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.container > * {
+  position: relative;
+  z-index: 1;
 }
 
 .skin-header {

@@ -4,6 +4,36 @@ import type { GenreResponse } from '@/types/genre';
 import type { NewsResponse } from '@/types/news';
 import type { RecommendationResponse } from '@/types/recommendation';
 
+export interface MangaReviewItem {
+    mal_id: number;
+    url: string;
+    date: string;
+    review: string;
+    score: number;
+    is_spoiler: boolean;
+    reactions: {
+        overall: number;
+    };
+    user: {
+        username: string;
+        url: string;
+    };
+    entry: {
+        mal_id: number;
+        url: string;
+        title: string;
+        images: {
+            jpg: {
+                image_url: string;
+            };
+        };
+    };
+}
+
+export interface MangaReviewResponse {
+    data: MangaReviewItem[];
+}
+
 /**
  * Service to handle API requests related to Mangas.
  */
@@ -83,6 +113,19 @@ class MangaService {
             return response.data;
         } catch (error) {
             console.error('MangaService.getMangaRecommendations Error:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Fetch latest manga reviews.
+     */
+    async getMangaReviews(page: number = 1): Promise<MangaReviewResponse> {
+        try {
+            const response = await apiClient.get<MangaReviewResponse>('/reviews/manga', { params: { page } });
+            return response.data;
+        } catch (error) {
+            console.error('MangaService.getMangaReviews Error:', error);
             throw error;
         }
     }
