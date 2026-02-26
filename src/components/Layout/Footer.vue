@@ -81,6 +81,8 @@ import { Youtube, Twitter, Instagram } from 'lucide-vue-next';
 
 <style scoped>
 .footer {
+  position: relative;
+  z-index: 20;
   background-color: #000000;
   color: var(--color-white-snow);
   width: 100%;
