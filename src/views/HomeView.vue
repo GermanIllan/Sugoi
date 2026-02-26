@@ -87,28 +87,35 @@ const comments = [
     <section class="content-cards">
       <div class="cards-container">
         <!-- Calificaciones Card -->
-        <div class="content-card">
-          <div class="card-inner">
-            <span class="card-kanji">ニュース</span>
-            <h3 class="card-title">NOTICIAS</h3>
-          </div>
+        <router-link to="/noticias" class="card-link content-card">
+        <div class="">
+            <div class="card-inner">
+              <span class="card-kanji">ニュース</span>
+              <h3 class="card-title">NOTICIAS</h3>
+            </div>
         </div>
+        </router-link>
 
-        <!-- Videojuegos Card -->
-        <div class="content-card">
-          <div class="card-inner">
-            <span class="card-kanji orange">フィルター</span>
-            <h3 class="card-title">FILTROS</h3>
+        <!-- Filtros Card -->
+        <router-link to="/filtros" class="card-link content-card">
+        <div class="">
+            <div class="card-inner">
+              <span class="card-kanji orange">フィルター</span>
+              <h3 class="card-title">FILTROS</h3>
+            </div>
           </div>
-        </div>
+        </router-link>
+
 
         <!-- Merchandising Card -->
-        <div class="content-card full-width">
-          <div class="card-inner">
-            <span class="card-kanji">アバターを作成</span>
-            <h3 class="card-title">CREAR AVATAR</h3>
-          </div>
+        <router-link to="/create-skin" class="card-link content-card  full-width">
+        <div class="">
+            <div class="card-inner">
+              <span class="card-kanji">アバターを作成</span>
+              <h3 class="card-title">CREAR AVATAR</h3>
+            </div>
         </div>
+        </router-link>
       </div>
     </section>
 
@@ -157,6 +164,9 @@ const comments = [
 <style scoped>
 h1 {
   color: rgb(139, 153, 182);
+}
+.card-link{
+  text-decoration: none;
 }
 .home {
   
