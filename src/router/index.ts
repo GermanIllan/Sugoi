@@ -4,6 +4,8 @@ import ForumView from "../views/ForumView.vue";
 import TopicDetailView from "../views/TopicDetailView.vue";
 import FilterView from "../views/FilterView.vue";
 import TestAnimeConnection from '../views/TestAnimeConnection.vue'
+import NewsView from '../views/NewsView.vue'
+import NewsDetailView from '../views/NewsDetailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,8 +16,18 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: "/forum",
-      name: "forum",
+      path: '/noticias',
+      name: 'news',
+      component: NewsView,
+    },
+    {
+      path: '/noticias/:source/:parentId/:newsId',
+      name: 'news-detail',
+      component: NewsDetailView,
+    },
+    {
+      path: '/forum',
+      name: 'forum',
       component: ForumView,
     },
     {
