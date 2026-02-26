@@ -57,15 +57,25 @@ export const useAnimeStore = defineStore('anime', () => {
      * Resets the previous list and error state.
      * @param query - The search string to look for.
      */
-    const fetchAnimeList = async (query: string = '') => {
+    const fetchAnimeList = async (
+        query: string = '', 
+        genres: string = '', 
+        page: number = 1, 
+        limit: number = 25,
+        orderBy: string = '',
+        sort: 'desc' | 'asc' = 'desc'
+    ) => {
         isLoading.value = true;
         error.value = null;
         currentSearchQuery.value = query;
 
         const params: AnimeSearchParams = {
             q: query,
-            page: 1,
-            // You can add more default params here if needed, like limit: 24
+            page: page,
+            limit: limit,
+            genres: genres || undefined,
+            order_by: orderBy as any || undefined,
+            sort: sort
         };
 
         try {
@@ -75,7 +85,7 @@ export const useAnimeStore = defineStore('anime', () => {
         } catch (err: unknown) {
             const apiError = err as ApiError;
             error.value = apiError.message || 'Error fetching animes';
-            animeList.value = []; // Clear list on error, or keep previous state? Usually clear.
+            animeList.value = [];
             pagination.value = null;
         } finally {
             isLoading.value = false;
