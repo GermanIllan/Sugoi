@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
@@ -10,10 +10,26 @@ const { user, isAuthenticated } = storeToRefs(authStore);
 const router = useRouter();
 
 const isUserDropdownOpen = ref(false);
+const dropdownContainer = ref<HTMLElement | null>(null);
 
-const toggleUserDropdown = () => {
+const toggleUserDropdown = (event: Event) => {
+  event.stopPropagation();
   isUserDropdownOpen.value = !isUserDropdownOpen.value;
 };
+
+const handleClickOutside = (event: MouseEvent) => {
+  if (dropdownContainer.value && !dropdownContainer.value.contains(event.target as Node)) {
+    isUserDropdownOpen.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
 
 const handleLogout = () => {
   authStore.logout();
@@ -101,10 +117,13 @@ function isActive(path: string): boolean {
         </router-link>
 
         <!-- Authenticated: User Dropdown -->
-        <div v-else class="user-dropdown-wrapper">
+        <div v-else class="user-dropdown-wrapper" ref="dropdownContainer">
           <button class="auth-btn user-btn" @click="toggleUserDropdown" :class="{ 'active': isUserDropdownOpen }">
             <div class="user-avatar-placeholder border-thin">
-              {{ user?.username.charAt(0).toUpperCase() }}
+              <img v-if="user?.avatarUrl" :src="user.avatarUrl" :alt="user.username" class="user-avatar-img" />
+              <template v-else>
+                {{ user?.username.charAt(0).toUpperCase() }}
+              </template>
             </div>
           </button>
 
@@ -137,7 +156,10 @@ function isActive(path: string): boolean {
         <li v-if="isAuthenticated" class="mobile-user-info-item">
           <div class="mobile-user-box border-thin shadow-sm">
             <div class="user-avatar-placeholder border-thin">
-              {{ user?.username.charAt(0).toUpperCase() }}
+              <img v-if="user?.avatarUrl" :src="user.avatarUrl" :alt="user.username" class="user-avatar-img" />
+              <template v-else>
+                {{ user?.username.charAt(0).toUpperCase() }}
+              </template>
             </div>
             <div class="mobile-user-details">
               <span class="user-name">{{ user?.username }}</span>
@@ -409,6 +431,13 @@ function isActive(path: string): boolean {
   font-weight: var(--font-weight-black);
   font-size: var(--font-size-md);
   border: 2px solid var(--color-white-snow);
+  overflow: hidden;
+}
+
+.user-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .user-dropdown-wrapper {
