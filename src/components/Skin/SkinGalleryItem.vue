@@ -10,6 +10,7 @@ defineEmits<{
   (e: 'select', item: GalleryItem): void;
   (e: 'download', url: string): void;
   (e: 'setHome', url: string): void;
+  (e: 'delete', url: string): void;
 }>();
 </script>
 
@@ -17,13 +18,17 @@ defineEmits<{
   <div class="gallery-item border-thick shadow-sm" @click="$emit('select', item)">
     <img :src="item.url" alt="Gallery creation" class="gallery-image" />
     <div class="gallery-item-overlay">
-      <button class="overlay-btn" @click.stop="$emit('download', item.url)">↓</button>
+      <button class="overlay-btn" @click.stop="$emit('download', item.url)" title="Descargar">↓</button>
       <button 
         class="overlay-btn" 
         :class="{ 'is-active': isActiveHome }"
         @click.stop="$emit('setHome', item.url)"
+        title="Usar en Home"
       >
         H
+      </button>
+      <button class="overlay-btn delete-btn" @click.stop="$emit('delete', item.url)" title="Eliminar">
+        ×
       </button>
     </div>
   </div>
@@ -91,5 +96,10 @@ defineEmits<{
 .overlay-btn.is-active {
   background-color: var(--color-primary);
   color: var(--color-white-snow);
+}
+
+.delete-btn:hover {
+  background-color: var(--color-black-carbon);
+  color: var(--color-primary);
 }
 </style>

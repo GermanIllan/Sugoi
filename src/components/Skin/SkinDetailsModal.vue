@@ -9,6 +9,7 @@ defineEmits<{
   (e: 'close'): void;
   (e: 'download', url: string): void;
   (e: 'setHome', url: string): void;
+  (e: 'delete', url: string): void;
 }>();
 </script>
 
@@ -26,6 +27,7 @@ defineEmits<{
       <div class="modal-actions">
         <button class="button-primary" @click="$emit('download', item.url)">DESCARGAR</button>
         <button class="button-primary home-btn" @click="$emit('setHome', item.url)">USAR EN HOME</button>
+        <button class="button-primary delete-btn" @click="$emit('delete', item.url)">ELIMINAR</button>
       </div>
     </div>
   </div>
@@ -110,5 +112,16 @@ defineEmits<{
 
 .modal-actions button {
   width: 100%;
+}
+
+.delete-btn {
+  background-color: var(--color-accent-rosa);
+  color: var(--color-black-carbon);
+  margin-top: var(--spacing-sm);
+}
+
+.delete-btn:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white-snow);
 }
 </style>

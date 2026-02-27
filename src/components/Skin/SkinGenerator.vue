@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref, computed, watch, onUnmounted } from 'vue';
 import { useSkinStore } from '@/stores/skinStore';
+import { useAuthStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
 
 const skinStore = useSkinStore();
+const authStore = useAuthStore();
 const { lastImageUrl, isLoading, error } = storeToRefs(skinStore);
+const { isAuthenticated } = storeToRefs(authStore);
 
 const secondsElapsed = ref(0);
 let timerInterval: number | null = null;
@@ -71,7 +74,17 @@ const handleSetHome = () => {
 
 <template>
   <div class="card creation-card">
-    <div class="input-section">
+    <div v-if="!isAuthenticated" class="auth-required">
+      <div class="kanji-large-bg">生成</div>
+      <h2 class="auth-required-title">INICIA SESIÓN PARA CREAR</h2>
+      <p class="auth-required-text">Necesitas estar registrado para generar y guardar tus propios avatares estilo anime.</p>
+      <router-link to="/sign-in" class="button-primary login-redirect-btn">
+        <span class="kanji-btn">ログイン</span>
+        ACCEDER AHORA
+      </router-link>
+    </div>
+
+    <div v-else class="input-section">
       <label for="avatar-prompt" class="input-label">Describe tu avatar</label>
       <div class="input-wrapper">
         <textarea
@@ -346,6 +359,57 @@ const handleSetHome = () => {
   font-size: var(--font-size-md);
   color: var(--color-black-carbon);
   letter-spacing: 2px;
+}
+
+/* Auth Required Styling */
+.auth-required {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--spacing-xxl);
+  background-color: var(--color-white-snow);
+  border: var(--border-thick);
+  position: relative;
+  overflow: hidden;
+  min-height: 250px;
+}
+
+.kanji-large-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10rem;
+  color: var(--color-primary);
+  opacity: 0.1;
+  pointer-events: none;
+  font-weight: var(--font-weight-black);
+}
+
+.auth-required-title {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-md);
+  z-index: 1;
+}
+
+.auth-required-text {
+  margin-bottom: var(--spacing-xl);
+  font-weight: var(--font-weight-medium);
+  z-index: 1;
+  max-width: 300px;
+}
+
+.login-redirect-btn {
+  z-index: 1;
+  padding: var(--spacing-md) var(--spacing-xxl);
+}
+
+.kanji-btn {
+  display: block;
+  font-size: 0.7rem;
+  opacity: 0.8;
 }
 
 /* Responsividad */

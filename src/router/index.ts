@@ -49,6 +49,7 @@ const router = createRouter({
       path: '/create-skin',
       name: 'create-skin',
       component: () => import('../views/SkinView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/description/:type/:id',
@@ -60,13 +61,28 @@ const router = createRouter({
       path: '/sign-in',
       name: 'sign-in',
       component: () => import('../views/AuthView.vue'),
+      meta: { guestOnly: true }
     },
     {
       path: '/sign-up',
       name: 'sign-up',
       component: () => import('../views/AuthView.vue'),
+      meta: { guestOnly: true }
     }
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  const authSession = localStorage.getItem('sugoi_auth_session');
+  const isAuthenticated = !!authSession;
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next({ name: 'sign-in' });
+  } else if (to.meta.guestOnly && isAuthenticated) {
+    next({ name: 'home' });
+  } else {
+    next();
+  }
 });
 
 export default router;

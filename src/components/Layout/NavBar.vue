@@ -1,7 +1,30 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/authStore';
+import { storeToRefs } from 'pinia';
 import loadingGif from '@/assets/images/gif/loading.webp';
+
+const authStore = useAuthStore();
+const { user, isAuthenticated } = storeToRefs(authStore);
+const router = useRouter();
+
+const isUserDropdownOpen = ref(false);
+
+const toggleUserDropdown = () => {
+  isUserDropdownOpen.value = !isUserDropdownOpen.value;
+};
+
+const handleLogout = () => {
+  authStore.logout();
+  isUserDropdownOpen.value = false;
+  router.push('/sign-in');
+};
+
+const handleLogoutMobile = () => {
+  isMobileMenuOpen.value = false;
+  handleLogout();
+};
 
 interface MenuItem {
   label: string;
@@ -67,6 +90,38 @@ function isActive(path: string): boolean {
         </li>
       </ul>
 
+      <!-- Auth Section -->
+      <div class="auth-section">
+        <!-- Not Authenticated: Login Icon -->
+        <router-link v-if="!isAuthenticated" to="/sign-in" class="auth-btn" title="Iniciar sesión">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="auth-icon">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </router-link>
+
+        <!-- Authenticated: User Dropdown -->
+        <div v-else class="user-dropdown-wrapper">
+          <button class="auth-btn user-btn" @click="toggleUserDropdown" :class="{ 'active': isUserDropdownOpen }">
+            <div class="user-avatar-placeholder border-thin">
+              {{ user?.username.charAt(0).toUpperCase() }}
+            </div>
+          </button>
+
+          <div v-if="isUserDropdownOpen" class="user-dropdown card shadow-md">
+            <div class="dropdown-header">
+              <span class="user-name">{{ user?.username }}</span>
+              <span class="user-email">{{ user?.email }}</span>
+            </div>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item" @click="handleLogout">
+              <span class="kanji-item">ログアウト</span>
+              Cerrar Sesión
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Burger Icon -->
       <button class="burger-menu" @click="toggleMobileMenu" aria-label="Toggle menu">
         <span class="burger-bar" :class="{ 'open': isMobileMenuOpen }"></span>
@@ -78,6 +133,19 @@ function isActive(path: string): boolean {
     <!-- Mobile Menu Overlay -->
     <div class="mobile-menu" :class="{ 'active': isMobileMenuOpen }">
       <ul class="mobile-nav-links">
+        <!-- User Info in Mobile -->
+        <li v-if="isAuthenticated" class="mobile-user-info-item">
+          <div class="mobile-user-box border-thin shadow-sm">
+            <div class="user-avatar-placeholder border-thin">
+              {{ user?.username.charAt(0).toUpperCase() }}
+            </div>
+            <div class="mobile-user-details">
+              <span class="user-name">{{ user?.username }}</span>
+              <span class="user-email">{{ user?.email }}</span>
+            </div>
+          </div>
+        </li>
+
         <li v-for="item in menuItems" :key="item.label">
           <router-link 
             :to="item.link" 
@@ -87,6 +155,24 @@ function isActive(path: string): boolean {
           >
             {{ item.label }}
           </router-link>
+        </li>
+
+        <!-- Auth Actions in Mobile -->
+        <li v-if="!isAuthenticated" class="auth-mobile-item">
+          <router-link 
+            to="/sign-in" 
+            class="mobile-nav-item" 
+            @click="handleNavigation('/sign-in')"
+          >
+            <span class="kanji-item">ログイン</span>
+            ACCEDER
+          </router-link>
+        </li>
+        <li v-else class="auth-mobile-item">
+          <button class="mobile-nav-item logout-mobile" @click="handleLogoutMobile">
+            <span class="kanji-item">ログアウト</span>
+            CERRAR SESIÓN
+          </button>
         </li>
       </ul>
     </div>
@@ -282,6 +368,142 @@ function isActive(path: string): boolean {
     width: 100%;
 }
 
+
+/* Auth Section Styles */
+.auth-section {
+  display: flex;
+  align-items: center;
+  margin-left: var(--spacing-md);
+}
+
+.auth-btn {
+  background: none;
+  border: none;
+  color: var(--color-white-snow);
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.auth-btn:hover {
+  color: var(--color-primary);
+  transform: scale(1.1);
+}
+
+.user-btn {
+  padding: 0;
+}
+
+.user-avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  background-color: var(--color-primary);
+  color: var(--color-white-snow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-black);
+  font-size: var(--font-size-md);
+  border: 2px solid var(--color-white-snow);
+}
+
+.user-dropdown-wrapper {
+  position: relative;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: var(--spacing-md);
+  min-width: 200px;
+  z-index: 1002;
+  padding: var(--spacing-md) !important;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.dropdown-header {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: var(--spacing-sm);
+}
+
+.user-name {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-black);
+  text-transform: uppercase;
+  font-size: var(--font-size-sm);
+  color: var(--color-black-carbon);
+}
+
+.user-email {
+  font-size: 10px;
+  color: #666;
+}
+
+.dropdown-divider {
+  height: 2px;
+  background-color: var(--color-black-carbon);
+  margin: var(--spacing-xs) 0;
+}
+
+.dropdown-item {
+  background: none;
+  border: none;
+  padding: var(--spacing-sm) 0;
+  text-align: left;
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  color: var(--color-black-carbon);
+  transition: color 0.1s ease;
+}
+
+.dropdown-item:hover {
+  color: var(--color-primary);
+}
+
+.kanji-item {
+  font-size: 0.6rem;
+  opacity: 0.6;
+}
+
+/* Mobile Auth Styles */
+.mobile-user-info-item {
+  padding: var(--spacing-md);
+  list-style: none;
+}
+
+.mobile-user-box {
+  background-color: var(--color-white-snow);
+  padding: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.mobile-user-details {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.logout-mobile {
+  color: var(--color-primary) !important;
+}
+
+.auth-mobile-item {
+  list-style: none;
+}
 
 /* Responsive Breakpoints */
 @media (max-width: 768px) {

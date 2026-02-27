@@ -8,6 +8,13 @@ import type { GalleryItem } from '@/types/skin';
 
 const skinStore = useSkinStore();
 const selectedItem = ref<GalleryItem | null>(null);
+
+const handleDelete = (url: string) => {
+  if (confirm('¿Estás seguro de que quieres eliminar esta creación?')) {
+    skinStore.deleteImage(url);
+    selectedItem.value = null;
+  }
+};
 </script>
 
 <template>
@@ -27,6 +34,7 @@ const selectedItem = ref<GalleryItem | null>(null);
         @close="selectedItem = null"
         @download="skinStore.downloadImage($event)"
         @set-home="skinStore.setActiveHomeAvatar($event)"
+        @delete="handleDelete"
       />
     </main>
   </div>

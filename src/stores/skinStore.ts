@@ -1,6 +1,7 @@
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { defineStore, storeToRefs } from 'pinia';
+import { ref, computed, watch } from 'vue';
 import { pollinationsService } from '@/services/pollinationsService';
+import { useAuthStore } from '@/stores/authStore';
 import type { GalleryItem } from '@/types/skin';
 
 /**
@@ -14,6 +15,9 @@ interface GenerationState {
 }
 
 export const useSkinStore = defineStore('skin', () => {
+    const authStore = useAuthStore();
+    const { user, isAuthenticated } = storeToRefs(authStore);
+
     // State
     const lastImageUrl = ref<string | null>(null);
     const isLoading = ref<boolean>(false);
@@ -22,33 +26,55 @@ export const useSkinStore = defineStore('skin', () => {
     const galleryItems = ref<GalleryItem[]>([]);
     const activeHomeAvatarUrl = ref<string | null>(null);
 
-    const STORAGE_KEY = 'sugoi_skin_generations';
-    const TIME_LIMIT_COUNT = 8; // Keep the original time limit logic for rate limiting
-    const GLOBAL_LIMIT_COUNT = 8; // User wants max 8 images total
+    const BASE_STORAGE_KEY = 'sugoi_skin_generations';
+    const TIME_LIMIT_COUNT = 8;
+    const GLOBAL_LIMIT_COUNT = 8;
     const LIMIT_DAYS_MS = 5 * 24 * 60 * 60 * 1000;
 
-    // Initialize from LocalStorage
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-        try {
-            const data: GenerationState = JSON.parse(saved);
-            generationTimestamps.value = data.timestamps || [];
-            lastImageUrl.value = data.lastGeneratedUrl || null;
+    const currentStorageKey = computed(() => {
+        return user.value ? `${BASE_STORAGE_KEY}_${user.value.id}` : BASE_STORAGE_KEY;
+    });
 
-            // Migration check: verify if items are strings or objects
-            const rawGallery = data.galleryUrls || [];
-            galleryItems.value = rawGallery.map((item: any) => {
-                if (typeof item === 'string') {
-                    return { url: item, prompt: 'Generación previa' };
-                }
-                return item;
-            });
+    /**
+     * Loads the state from localStorage based on current user
+     */
+    const loadFromStorage = () => {
+        const saved = localStorage.getItem(currentStorageKey.value);
+        if (saved) {
+            try {
+                const data: GenerationState = JSON.parse(saved);
+                generationTimestamps.value = data.timestamps || [];
+                lastImageUrl.value = data.lastGeneratedUrl || null;
 
-            activeHomeAvatarUrl.value = data.activeHomeAvatarUrl || null;
-        } catch (e) {
-            console.error('Error parsing saved skin state', e);
+                const rawGallery = data.galleryUrls || [];
+                galleryItems.value = rawGallery.map((item: any) => {
+                    if (typeof item === 'string') {
+                        return { url: item, prompt: 'Generación previa' };
+                    }
+                    return item;
+                });
+
+                activeHomeAvatarUrl.value = data.activeHomeAvatarUrl || null;
+            } catch (e) {
+                console.error('Error parsing saved skin state', e);
+                clearState();
+            }
+        } else {
+            clearState();
         }
-    }
+    };
+
+    const clearState = () => {
+        generationTimestamps.value = [];
+        lastImageUrl.value = null;
+        galleryItems.value = [];
+        activeHomeAvatarUrl.value = null;
+    };
+
+    // Watch for user changes to load appropriate gallery
+    watch(user, () => {
+        loadFromStorage();
+    }, { immediate: true });
 
     /**
      * Saves the current generation state to localStorage
@@ -57,10 +83,10 @@ export const useSkinStore = defineStore('skin', () => {
         const data: GenerationState = {
             timestamps: generationTimestamps.value,
             lastGeneratedUrl: lastImageUrl.value,
-            galleryUrls: galleryItems.value, // Match interface and key
+            galleryUrls: galleryItems.value,
             activeHomeAvatarUrl: activeHomeAvatarUrl.value
         };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        localStorage.setItem(currentStorageKey.value, JSON.stringify(data));
     };
 
     /**
@@ -94,6 +120,11 @@ export const useSkinStore = defineStore('skin', () => {
      * @param prompt User prompt (prefix "ANIME" is added in service)
      */
     const generateSkin = async (prompt: string) => {
+        if (!isAuthenticated.value) {
+            error.value = 'Debes iniciar sesión para generar un avatar.';
+            return;
+        }
+
         const limitStatus = checkLimit();
         if (!limitStatus.can) {
             if (limitStatus.reason === 'global_limit') {
@@ -131,6 +162,20 @@ export const useSkinStore = defineStore('skin', () => {
         } finally {
             isLoading.value = false;
         }
+    };
+
+    /**
+     * Delete an image from the gallery
+     */
+    const deleteImage = (url: string) => {
+        galleryItems.value = galleryItems.value.filter(item => item.url !== url);
+        if (activeHomeAvatarUrl.value === url) {
+            activeHomeAvatarUrl.value = null;
+        }
+        if (lastImageUrl.value === url) {
+            lastImageUrl.value = null;
+        }
+        saveToStorage();
     };
 
     /**
@@ -173,6 +218,7 @@ export const useSkinStore = defineStore('skin', () => {
         generateSkin,
         checkLimit,
         setActiveHomeAvatar,
-        downloadImage
+        downloadImage,
+        deleteImage
     };
 });
