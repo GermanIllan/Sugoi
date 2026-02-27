@@ -1,24 +1,16 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { ref, computed, watch } from 'vue';
 import { pollinationsService } from '@/services/pollinationsService';
+import { avatarService, type AvatarRecord } from '@/services/avatarService';
 import { useAuthStore } from '@/stores/authStore';
 import type { GalleryItem } from '@/types/skin';
-
-/**
- * Interface for internal state tracking
- */
-interface GenerationState {
-    timestamps: number[];
-    lastGeneratedUrl: string | null;
-    galleryUrls: GalleryItem[];
-    activeHomeAvatarUrl: string | null;
-}
 
 export const useSkinStore = defineStore('skin', () => {
     const authStore = useAuthStore();
     const { user, isAuthenticated } = storeToRefs(authStore);
 
     // State
+    const avatarRecordId = ref<string | null>(null);
     const lastImageUrl = ref<string | null>(null);
     const isLoading = ref<boolean>(false);
     const error = ref<string | null>(null);
@@ -26,23 +18,24 @@ export const useSkinStore = defineStore('skin', () => {
     const galleryItems = ref<GalleryItem[]>([]);
     const activeHomeAvatarUrl = ref<string | null>(null);
 
-    const BASE_STORAGE_KEY = 'sugoi_skin_generations';
     const TIME_LIMIT_COUNT = 8;
     const GLOBAL_LIMIT_COUNT = 8;
     const LIMIT_DAYS_MS = 5 * 24 * 60 * 60 * 1000;
 
-    const currentStorageKey = computed(() => {
-        return user.value ? `${BASE_STORAGE_KEY}_${user.value.id}` : BASE_STORAGE_KEY;
-    });
-
     /**
-     * Loads the state from localStorage based on current user
+     * Loads the state from JSON Server based on current user
      */
-    const loadFromStorage = () => {
-        const saved = localStorage.getItem(currentStorageKey.value);
-        if (saved) {
-            try {
-                const data: GenerationState = JSON.parse(saved);
+    const loadFromServer = async () => {
+        if (!user.value) {
+            clearState();
+            return;
+        }
+
+        isLoading.value = true;
+        try {
+            const data = await avatarService.getByUserId(user.value.id);
+            if (data) {
+                avatarRecordId.value = data.id || null;
                 generationTimestamps.value = data.timestamps || [];
                 lastImageUrl.value = data.lastGeneratedUrl || null;
 
@@ -55,16 +48,20 @@ export const useSkinStore = defineStore('skin', () => {
                 });
 
                 activeHomeAvatarUrl.value = data.activeHomeAvatarUrl || null;
-            } catch (e) {
-                console.error('Error parsing saved skin state', e);
+            } else {
                 clearState();
             }
-        } else {
+        } catch (e) {
+            console.error('Error loading skin state from server', e);
+            error.value = 'Error al cargar tu galería desde el servidor.';
             clearState();
+        } finally {
+            isLoading.value = false;
         }
     };
 
     const clearState = () => {
+        avatarRecordId.value = null;
         generationTimestamps.value = [];
         lastImageUrl.value = null;
         galleryItems.value = [];
@@ -72,21 +69,35 @@ export const useSkinStore = defineStore('skin', () => {
     };
 
     // Watch for user changes to load appropriate gallery
-    watch(user, () => {
-        loadFromStorage();
+    watch(user, async () => {
+        await loadFromServer();
     }, { immediate: true });
 
     /**
-     * Saves the current generation state to localStorage
+     * Saves the current generation state to JSON Server
      */
-    const saveToStorage = () => {
-        const data: GenerationState = {
+    const saveToServer = async () => {
+        if (!user.value) return;
+
+        const record: AvatarRecord = {
+            userId: user.value.id,
             timestamps: generationTimestamps.value,
             lastGeneratedUrl: lastImageUrl.value,
             galleryUrls: galleryItems.value,
             activeHomeAvatarUrl: activeHomeAvatarUrl.value
         };
-        localStorage.setItem(currentStorageKey.value, JSON.stringify(data));
+
+        if (avatarRecordId.value) {
+            record.id = avatarRecordId.value;
+        }
+
+        try {
+            const saved = await avatarService.save(record);
+            avatarRecordId.value = saved.id || null;
+        } catch (e) {
+            console.error('Error saving skin state to server', e);
+            error.value = 'Error al sincronizar con el servidor.';
+        }
     };
 
     /**
@@ -155,7 +166,7 @@ export const useSkinStore = defineStore('skin', () => {
             lastImageUrl.value = url;
             generationTimestamps.value.push(Date.now());
             galleryItems.value.unshift({ url, prompt }); // Add to gallery with prompt
-            saveToStorage();
+            await saveToServer();
         } catch (err: unknown) {
             error.value = err instanceof Error ? err.message : 'An error occurred during generation';
             console.error('SkinStore.generateSkin Error:', err);
@@ -167,7 +178,7 @@ export const useSkinStore = defineStore('skin', () => {
     /**
      * Delete an image from the gallery
      */
-    const deleteImage = (url: string) => {
+    const deleteImage = async (url: string) => {
         galleryItems.value = galleryItems.value.filter(item => item.url !== url);
         if (activeHomeAvatarUrl.value === url) {
             activeHomeAvatarUrl.value = null;
@@ -175,15 +186,15 @@ export const useSkinStore = defineStore('skin', () => {
         if (lastImageUrl.value === url) {
             lastImageUrl.value = null;
         }
-        saveToStorage();
+        await saveToServer();
     };
 
     /**
      * Set the current active avatar for the Home page
      */
-    const setActiveHomeAvatar = (url: string) => {
+    const setActiveHomeAvatar = async (url: string) => {
         activeHomeAvatarUrl.value = url;
-        saveToStorage();
+        await saveToServer();
     };
 
     /**

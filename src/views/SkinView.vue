@@ -4,14 +4,21 @@ import { useSkinStore } from '@/stores/skinStore';
 import SkinGenerator from '@/components/Skin/SkinGenerator.vue';
 import SkinGallery from '@/components/Skin/SkinGallery.vue';
 import SkinDetailsModal from '@/components/Skin/SkinDetailsModal.vue';
+import SkinConfirmModal from '@/components/Skin/SkinConfirmModal.vue';
 import type { GalleryItem } from '@/types/skin';
 
 const skinStore = useSkinStore();
 const selectedItem = ref<GalleryItem | null>(null);
+const itemToDelete = ref<string | null>(null);
 
-const handleDelete = (url: string) => {
-  if (confirm('¿Estás seguro de que quieres eliminar esta creación?')) {
-    skinStore.deleteImage(url);
+const handleDeleteRequest = (url: string) => {
+  itemToDelete.value = url;
+};
+
+const handleConfirmDelete = () => {
+  if (itemToDelete.value) {
+    skinStore.deleteImage(itemToDelete.value);
+    itemToDelete.value = null;
     selectedItem.value = null;
   }
 };
@@ -19,6 +26,14 @@ const handleDelete = (url: string) => {
 
 <template>
   <div class="skin-view container">
+    <!-- Global Confirmation Modal -->
+    <SkinConfirmModal
+      :show="!!itemToDelete"
+      title="¿ELIMINAR ESTA CREACIÓN?"
+      message="Esta acción no se puede deshacer y liberará espacio en tu galería."
+      @confirm="handleConfirmDelete"
+      @cancel="itemToDelete = null"
+    />
     <header class="skin-header">
       <h1 class="title"><span class="kanji">アバターを作成しましょう</span> <br> Crea tu Avatar</h1>
       <p class="subtitle">Genera un avatar único estilo anime en pixel art</p>
@@ -34,7 +49,7 @@ const handleDelete = (url: string) => {
         @close="selectedItem = null"
         @download="skinStore.downloadImage($event)"
         @set-home="skinStore.setActiveHomeAvatar($event)"
-        @delete="handleDelete"
+        @delete="handleDeleteRequest"
       />
     </main>
   </div>
