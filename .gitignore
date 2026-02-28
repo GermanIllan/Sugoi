@@ -38,3 +38,8 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+# Conversion tools
+.venv/*
+convert_gif*.py
+.u2net/
