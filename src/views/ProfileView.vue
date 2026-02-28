@@ -9,6 +9,9 @@ import SkinConfirmModal from '@/components/Skin/SkinConfirmModal.vue';
 import { User as UserIcon, Activity, MessageSquare } from 'lucide-vue-next';
 import type { GalleryItem } from '@/types/skin';
 
+import ProfileTracking from '@/components/Profile/ProfileTracking.vue';
+import ProfileForum from '@/components/Profile/ProfileForum.vue';
+
 const authStore = useAuthStore();
 const skinStore = useSkinStore();
 const { user } = storeToRefs(authStore);
@@ -89,20 +92,8 @@ const handleConfirmDelete = () => {
         </div>
       </section>
 
-      <!-- Section 2: Placeholder for Tracking (Future HU) -->
-      <section class="placeholder-card border-thick shadow-sm">
-        <h3 class="section-title">
-          <Activity :size="20" /> TRACKING DE ACTIVIDAD
-        </h3>
-        <div class="placeholder-content">
-          <p>Próximamente: Visualiza tus estadísticas de generación y actividad en el foro.</p>
-          <div class="dummy-bar-container">
-            <div class="dummy-bar border-thin" style="width: 70%"></div>
-            <div class="dummy-bar border-thin" style="width: 40%"></div>
-            <div class="dummy-bar border-thin" style="width: 90%"></div>
-          </div>
-        </div>
-      </section>
+      <!-- Section 2: Tracking (Component) -->
+      <ProfileTracking />
 
       <!-- Section 3: Gallery (Dynamic) -->
       <section class="gallery-section">
@@ -113,19 +104,8 @@ const handleConfirmDelete = () => {
         <SkinGallery @select-item="selectedItem = $event" />
       </section>
 
-      <!-- Section 4: Placeholder for Forum (Future HU) -->
-      <section class="placeholder-card border-thick shadow-sm">
-        <h3 class="section-title">
-          <MessageSquare :size="20" /> MIS APORTACIONES EN EL FORO
-        </h3>
-        <div class="placeholder-content">
-          <p>Sección visual: Tus temas y respuestas aparecerán aquí para acceso rápido.</p>
-          <ul class="dummy-list">
-            <li class="dummy-item border-thin">¿Cuál es vuestro anime favorito de esta temporada?</li>
-            <li class="dummy-item border-thin">Duda con el registro de nuevos usuarios</li>
-          </ul>
-        </div>
-      </section>
+      <!-- Section 4: Forum (Component) -->
+      <ProfileForum />
     </main>
   </div>
 </template>
@@ -262,13 +242,6 @@ const handleConfirmDelete = () => {
   margin: 0;
 }
 
-/* Placeholder Cards */
-.placeholder-card {
-  background-color: rgba(255, 255, 255, 0.6);
-  padding: var(--spacing-xl);
-  border-style: dashed;
-}
-
 .section-title {
   font-family: var(--font-heading);
   font-weight: var(--font-weight-black);
@@ -278,38 +251,6 @@ const handleConfirmDelete = () => {
   align-items: center;
   gap: var(--spacing-sm);
   color: var(--color-black-carbon);
-}
-
-.placeholder-content p {
-  font-style: italic;
-  opacity: 0.7;
-  margin-bottom: var(--spacing-md);
-}
-
-.dummy-bar-container {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.dummy-bar {
-  height: 12px;
-  background-color: var(--color-accent-gris-azulado);
-}
-
-.dummy-list {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.dummy-item {
-  padding: 8px 12px;
-  font-size: 0.85rem;
-  background-color: var(--color-white-snow);
-  opacity: 0.6;
 }
 
 /* Gallery Section */
