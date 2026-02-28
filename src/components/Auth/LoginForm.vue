@@ -11,6 +11,8 @@ const loginData = reactive({
   password: ''
 });
 
+const emit = defineEmits(['success']);
+
 const formErrors = ref<string[]>([]);
 
 const validateForm = () => {
@@ -33,7 +35,7 @@ const handleSubmit = async () => {
       email: loginData.email,
       password: loginData.password
     });
-    router.push('/');
+    emit('success');
   } catch (err) {
     // Error handled by store
   }

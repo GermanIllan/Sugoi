@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
 import LoginForm from '@/components/Auth/LoginForm.vue';
 import RegisterForm from '@/components/Auth/RegisterForm.vue';
@@ -9,6 +9,8 @@ const route = useRoute();
 const authStore = useAuthStore();
 
 const isLoginMode = ref(true);
+const showLoader = ref(false);
+const router = useRouter();
 
 // Set mode based on route
 onMounted(() => {
@@ -21,10 +23,25 @@ const toggleMode = () => {
   isLoginMode.value = !isLoginMode.value;
   authStore.error = null;
 };
+
+const handleLoginSuccess = () => {
+  showLoader.value = true;
+  setTimeout(() => {
+    router.push('/');
+  }, 2000);
+};
 </script>
 
 <template>
-  <div class="auth-view container">
+  <div class="auth-view container" :class="{ 'view-blurred': showLoader }">
+    <!-- Loader Overlay -->
+    <div v-if="showLoader" class="loader-overlay">
+      <div class="loader-content">
+        <img src="@/assets/images/gif/runcat_nobg.svg" alt="Loading..." class="loader-cat" />
+        <p class="loader-text text-bold">INICIANDO SESIÓN...</p>
+      </div>
+    </div>
+
     <div class="auth-card-container">
       <div class="auth-card card shadow-lg">
         <!-- Decoration side -->
@@ -40,7 +57,7 @@ const toggleMode = () => {
             {{ isLoginMode ? 'BIENVENIDO' : 'ÚNETE AHORA' }}
           </h1>
           
-          <LoginForm v-if="isLoginMode" />
+          <LoginForm v-if="isLoginMode" @success="handleLoginSuccess" />
           <RegisterForm v-else />
 
           <div class="auth-switch">
@@ -192,6 +209,50 @@ const toggleMode = () => {
 
 .auth-switch button:hover {
   text-decoration: underline;
+}
+
+/* Loader Styles */
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  background: var(--color-white-snow);
+  padding: var(--spacing-xl);
+  border: 4px solid var(--color-black-carbon);
+  box-shadow: 10px 10px 0px var(--color-black-carbon);
+}
+
+.loader-cat {
+  width: 200px;
+  height: auto;
+}
+
+.loader-text {
+  font-family: var(--font-heading);
+  letter-spacing: 2px;
+  color: var(--color-black-carbon);
+}
+
+.view-blurred > .auth-card-container {
+  filter: blur(4px);
+  transition: filter 0.3s ease;
 }
 
 @media (max-width: 768px) {
