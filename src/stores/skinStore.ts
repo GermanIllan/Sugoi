@@ -10,13 +10,17 @@ export const useSkinStore = defineStore('skin', () => {
     const { user, isAuthenticated } = storeToRefs(authStore);
 
     // State
-    const avatarRecordId = ref<string | null>(null);
+    const avatarRecordId = ref<string | number | null>(null);
     const lastImageUrl = ref<string | null>(null);
-    const isLoading = ref<boolean>(false);
+    const isLoadingGallery = ref<boolean>(false);
+    const isGenerating = ref<boolean>(false);
     const error = ref<string | null>(null);
     const generationTimestamps = ref<number[]>([]);
     const galleryItems = ref<GalleryItem[]>([]);
     const activeHomeAvatarUrl = ref<string | null>(null);
+
+    // Computed for backward compatibility or simple usage
+    const isLoading = computed(() => isLoadingGallery.value || isGenerating.value);
 
     const TIME_LIMIT_COUNT = 8;
     const GLOBAL_LIMIT_COUNT = 8;
@@ -31,9 +35,10 @@ export const useSkinStore = defineStore('skin', () => {
             return;
         }
 
-        isLoading.value = true;
+        isLoadingGallery.value = true;
         try {
             const data = await avatarService.getByUserId(user.value.id);
+            // console.log(user.value.id);
             if (data) {
                 avatarRecordId.value = data.id || null;
                 generationTimestamps.value = data.timestamps || [];
@@ -56,7 +61,7 @@ export const useSkinStore = defineStore('skin', () => {
             error.value = 'Error al cargar tu galería desde el servidor.';
             clearState();
         } finally {
-            isLoading.value = false;
+            isLoadingGallery.value = false;
         }
     };
 
@@ -146,7 +151,7 @@ export const useSkinStore = defineStore('skin', () => {
             return;
         }
 
-        isLoading.value = true;
+        isGenerating.value = true;
         error.value = null;
 
         try {
@@ -171,7 +176,7 @@ export const useSkinStore = defineStore('skin', () => {
             error.value = err instanceof Error ? err.message : 'An error occurred during generation';
             console.error('SkinStore.generateSkin Error:', err);
         } finally {
-            isLoading.value = false;
+            isGenerating.value = false;
         }
     };
 
@@ -222,6 +227,8 @@ export const useSkinStore = defineStore('skin', () => {
     return {
         lastImageUrl,
         isLoading,
+        isLoadingGallery,
+        isGenerating,
         error,
         generationTimestamps,
         galleryItems,
@@ -230,6 +237,7 @@ export const useSkinStore = defineStore('skin', () => {
         checkLimit,
         setActiveHomeAvatar,
         downloadImage,
-        deleteImage
+        deleteImage,
+        loadFromServer
     };
 });

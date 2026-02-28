@@ -37,7 +37,7 @@ class AuthService {
             // Create new user
             const response = await localApiClient.post<any>('/users', {
                 ...payload,
-                id: Date.now().toString()
+                id: Date.now()
             });
 
             const { password, ...userWithoutPassword } = response.data;

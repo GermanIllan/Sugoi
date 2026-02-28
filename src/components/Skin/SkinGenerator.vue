@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia';
 
 const skinStore = useSkinStore();
 const authStore = useAuthStore();
-const { lastImageUrl, isLoading, error } = storeToRefs(skinStore);
+const { lastImageUrl, isGenerating, error } = storeToRefs(skinStore);
 const { isAuthenticated } = storeToRefs(authStore);
 
 const secondsElapsed = ref(0);
@@ -26,7 +26,7 @@ const stopTimer = () => {
   }
 };
 
-watch(isLoading, (loading) => {
+watch(isGenerating, (loading) => {
   if (loading) {
     startTimer();
   } else {
@@ -46,7 +46,7 @@ const remainingChars = computed(() => maxLength - prompt.value.length);
 const limitInfo = computed(() => skinStore.checkLimit());
 const canGenerate = computed(() => 
   prompt.value.trim().length > 0 && 
-  !isLoading.value && 
+  !isGenerating.value && 
   limitInfo.value.can
 );
 
@@ -103,7 +103,7 @@ const handleSetHome = () => {
         :disabled="!canGenerate"
         @click="handleGenerate"
       >
-        {{ isLoading ? 'Generando...' : 'Generar Avatar' }}
+        {{ isGenerating ? 'Generando...' : 'Generar Avatar' }}
       </button>
       
       <p v-if="error" class="error-message badge-rosa">
@@ -115,7 +115,7 @@ const handleSetHome = () => {
     </div>
 
     <div class="preview-section border-thick shadow-md">
-      <div v-if="isLoading" class="skeleton-container">
+      <div v-if="isGenerating" class="skeleton-container">
         <div class="skeleton-image">
           <div class="timer-overlay">
             <span class="timer-value">{{ secondsElapsed }}s</span>

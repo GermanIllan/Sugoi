@@ -2,8 +2,8 @@ import localApiClient from './localApiClient';
 import type { GalleryItem } from '@/types/skin';
 
 export interface AvatarRecord {
-    id?: string;
-    userId: string;
+    id?: string | number;
+    userId: string | number;
     timestamps: number[];
     lastGeneratedUrl: string | null;
     galleryUrls: GalleryItem[];
@@ -14,7 +14,7 @@ export const avatarService = {
     /**
      * Gets the avatar record for a specific user
      */
-    async getByUserId(userId: string): Promise<AvatarRecord | null> {
+    async getByUserId(userId: string | number): Promise<AvatarRecord | null> {
         try {
             const response = await localApiClient.get<AvatarRecord[]>(`/avatars?userId=${userId}`);
             return response.data[0] ?? null;

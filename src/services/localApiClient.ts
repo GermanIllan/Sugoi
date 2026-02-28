@@ -13,7 +13,7 @@ export interface ApiError {
  * Centralized Axios instance for local JSON Server.
  */
 const localApiClient: AxiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_LOCAL_API_URL || 'http://localhost:3001',
+    baseURL: import.meta.env.VITE_LOCAL_API_URL || 'http://localhost:5174',
     headers: {
         'Content-Type': 'application/json',
     },

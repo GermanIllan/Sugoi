@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useSkinStore } from '@/stores/skinStore';
 import SkinGenerator from '@/components/Skin/SkinGenerator.vue';
 import SkinGallery from '@/components/Skin/SkinGallery.vue';
@@ -10,6 +10,10 @@ import type { GalleryItem } from '@/types/skin';
 const skinStore = useSkinStore();
 const selectedItem = ref<GalleryItem | null>(null);
 const itemToDelete = ref<string | null>(null);
+
+onMounted(async () => {
+  await skinStore.loadFromServer();
+});
 
 const handleDeleteRequest = (url: string) => {
   itemToDelete.value = url;
