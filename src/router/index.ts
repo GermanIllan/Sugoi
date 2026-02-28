@@ -68,6 +68,18 @@ const router = createRouter({
       name: 'sign-up',
       component: () => import('../views/AuthView.vue'),
       meta: { guestOnly: true }
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('../views/ProfileView.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/tracking',
+      name: 'tracking',
+      component: HomeView,
+      meta: { requiresAuth: true }
     }
   ],
 });

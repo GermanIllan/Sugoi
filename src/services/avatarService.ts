@@ -3,7 +3,7 @@ import type { GalleryItem } from '@/types/skin';
 
 export interface AvatarRecord {
     id?: string | number;
-    userId: string | number;
+    userId: number;
     timestamps: number[];
     lastGeneratedUrl: string | null;
     galleryUrls: GalleryItem[];

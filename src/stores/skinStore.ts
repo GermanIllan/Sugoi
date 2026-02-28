@@ -85,7 +85,7 @@ export const useSkinStore = defineStore('skin', () => {
         if (!user.value) return;
 
         const record: AvatarRecord = {
-            userId: user.value.id,
+            userId: Number(user.value.id),
             timestamps: generationTimestamps.value,
             lastGeneratedUrl: lastImageUrl.value,
             galleryUrls: galleryItems.value,

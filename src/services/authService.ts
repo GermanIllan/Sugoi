@@ -16,6 +16,7 @@ class AuthService {
 
             // Return user without password
             const { password, ...userWithoutPassword } = user;
+            userWithoutPassword.id = Number(userWithoutPassword.id);
             return userWithoutPassword as User;
         } catch (error: any) {
             console.error('AuthService.login Error:', error);
@@ -41,6 +42,7 @@ class AuthService {
             });
 
             const { password, ...userWithoutPassword } = response.data;
+            userWithoutPassword.id = Number(userWithoutPassword.id);
             return userWithoutPassword as User;
         } catch (error: any) {
             console.error('AuthService.register Error:', error);

@@ -2,11 +2,15 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
+import { useSkinStore } from '@/stores/skinStore';
 import { storeToRefs } from 'pinia';
+import { User, Activity, LogOut } from 'lucide-vue-next';
 import loadingGif from '@/assets/images/gif/loading.webp';
 
 const authStore = useAuthStore();
+const skinStore = useSkinStore();
 const { user, isAuthenticated } = storeToRefs(authStore);
+const { activeHomeAvatarUrl } = storeToRefs(skinStore);
 const router = useRouter();
 
 const isUserDropdownOpen = ref(false);
@@ -119,8 +123,8 @@ function isActive(path: string): boolean {
         <!-- Authenticated: User Dropdown -->
         <div v-else class="user-dropdown-wrapper" ref="dropdownContainer">
           <button class="auth-btn user-btn" @click="toggleUserDropdown" :class="{ 'active': isUserDropdownOpen }">
-            <div class="user-avatar-placeholder border-thin">
-              <img v-if="user?.avatarUrl" :src="user.avatarUrl" :alt="user.username" class="user-avatar-img" />
+            <div class="user-avatar-placeholder border-thin shadow-sm">
+              <img v-if="activeHomeAvatarUrl" :src="activeHomeAvatarUrl" :alt="user?.username" class="user-avatar-img" />
               <template v-else>
                 {{ user?.username.charAt(0).toUpperCase() }}
               </template>
@@ -132,10 +136,32 @@ function isActive(path: string): boolean {
               <span class="user-name">{{ user?.username }}</span>
               <span class="user-email">{{ user?.email }}</span>
             </div>
+            <div class="dropdown-divider border-bottom-thick"></div>
+            
+            <router-link class="dropdown-item" to="/profile" @click="isUserDropdownOpen = false">
+              <span class="kanji-item">プロフィール</span>
+              <div class="dropdown-item-content">
+                <User :size="14" />
+                <span>Perfil</span>
+              </div>
+            </router-link>
+
+            <router-link class="dropdown-item" to="/tracking" @click="isUserDropdownOpen = false">
+              <span class="kanji-item">トラッキング</span>
+              <div class="dropdown-item-content">
+                <Activity :size="14" />
+                <span>Tracking</span>
+              </div>
+            </router-link>
+
             <div class="dropdown-divider"></div>
-            <button class="dropdown-item" @click="handleLogout">
+            
+            <button class="dropdown-item logout-btn" @click="handleLogout">
               <span class="kanji-item">ログアウト</span>
-              Cerrar Sesión
+              <div class="dropdown-item-content">
+                <LogOut :size="14" />
+                <span>Cerrar Sesión</span>
+              </div>
             </button>
           </div>
         </div>
@@ -156,7 +182,7 @@ function isActive(path: string): boolean {
         <li v-if="isAuthenticated" class="mobile-user-info-item">
           <div class="mobile-user-box border-thin shadow-sm">
             <div class="user-avatar-placeholder border-thin">
-              <img v-if="user?.avatarUrl" :src="user.avatarUrl" :alt="user.username" class="user-avatar-img" />
+              <img v-if="activeHomeAvatarUrl" :src="activeHomeAvatarUrl" :alt="user?.username" class="user-avatar-img" />
               <template v-else>
                 {{ user?.username.charAt(0).toUpperCase() }}
               </template>
@@ -166,6 +192,19 @@ function isActive(path: string): boolean {
               <span class="user-email">{{ user?.email }}</span>
             </div>
           </div>
+        </li>
+
+        <li v-if="isAuthenticated">
+          <router-link to="/profile" class="mobile-nav-item" @click="isMobileMenuOpen = false">
+            <span class="kanji-item">プロフィール</span>
+            PERFIL
+          </router-link>
+        </li>
+        <li v-if="isAuthenticated">
+          <router-link to="/tracking" class="mobile-nav-item" @click="isMobileMenuOpen = false">
+            <span class="kanji-item">トラッキング</span>
+            TRACKING
+          </router-link>
         </li>
 
         <li v-for="item in menuItems" :key="item.label">
@@ -485,25 +524,42 @@ function isActive(path: string): boolean {
 .dropdown-item {
   background: none;
   border: none;
-  padding: var(--spacing-sm) 0;
+  padding: 8px 12px;
   text-align: left;
   font-family: var(--font-heading);
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-black);
   font-size: var(--font-size-xs);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   color: var(--color-black-carbon);
-  transition: color 0.1s ease;
+  transition: all 0.1s ease;
+  text-decoration: none;
+  border-radius: 4px;
 }
 
 .dropdown-item:hover {
+  background-color: var(--color-accent-gris-azulado);
   color: var(--color-primary);
+  transform: translateX(4px);
+}
+
+.dropdown-item-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: 2px;
+}
+
+.logout-btn:hover {
+  background-color: var(--color-accent-rosa);
+  color: var(--color-black-carbon);
 }
 
 .kanji-item {
-  font-size: 0.6rem;
-  opacity: 0.6;
+  font-size: 0.55rem;
+  opacity: 0.7;
+  letter-spacing: 1px;
 }
 
 /* Mobile Auth Styles */
