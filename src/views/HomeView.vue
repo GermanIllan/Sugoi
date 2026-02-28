@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useSkinStore } from '@/stores/skinStore'
+import { useAuthStore } from '@/stores/authStore'
 import { storeToRefs } from 'pinia'
 
 const visible = ref(false)
 const skinStore = useSkinStore()
+const authStore = useAuthStore()
 const { activeHomeAvatarUrl } = storeToRefs(skinStore)
+const { isAuthenticated } = storeToRefs(authStore)
 
 onMounted(() => {
   setTimeout(() => {
@@ -107,14 +110,14 @@ const comments = [
         </router-link>
 
 
-        <!-- Merchandising Card -->
-        <router-link to="/create-skin" class="card-link content-card  full-width">
-        <div class="">
+        <!-- Crear Avatar Card -->
+        <router-link :to="isAuthenticated ? '/create-skin' : '/sign-in'" class="card-link content-card full-width">
+          <div class="">
             <div class="card-inner">
-              <span class="card-kanji">アバターを作成</span>
-              <h3 class="card-title">CREAR AVATAR</h3>
+              <span class="card-kanji">{{ isAuthenticated ? 'アバターを作成' : 'ログインして作成' }}</span>
+              <h3 class="card-title">{{ isAuthenticated ? 'CREAR AVATAR' : 'INICIA SESIÓN PARA CREAR' }}</h3>
             </div>
-        </div>
+          </div>
         </router-link>
       </div>
     </section>

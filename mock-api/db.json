@@ -53,5 +53,26 @@
       "password": "admin123"
     }
   ],
-  "avatars": []
+  "avatars": [
+    {
+      "userId": "1",
+      "timestamps": [
+        1772186288537,
+        1772186450287
+      ],
+      "lastGeneratedUrl": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Chico%2023%20a%C3%B1os%2Ccabello%20rizado%2C%20gorra%20con%20una%20letra%20P%2C%20barba%2Csudadera%20roja%2C%20lentes%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=241250&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+      "galleryUrls": [
+        {
+          "url": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Chico%2023%20a%C3%B1os%2Ccabello%20rizado%2C%20gorra%20con%20una%20letra%20P%2C%20barba%2Csudadera%20roja%2C%20lentes%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=241250&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "Chico 23 años,cabello rizado, gorra con una letra P, barba,sudadera roja, lentes, avatar."
+        },
+        {
+          "url": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Chico%20de%2023%20a%C3%B1os%2C%20con%20cabello%20rizado%2C%20barba%2Csudadera%20roja%20y%20con%20lentes%2C%20avatar%2C%20fondo%20y%20transparente?model=gptimage&width=1024&height=1024&seed=436033&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "Chico de 23 años, con cabello rizado, barba,sudadera roja y con lentes, avatar, fondo y transparente"
+        }
+      ],
+      "activeHomeAvatarUrl": null,
+      "id": "55d1"
+    }
+  ]
 }
