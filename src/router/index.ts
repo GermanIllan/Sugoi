@@ -48,8 +48,7 @@ const router = createRouter({
     {
       path: '/create-skin',
       name: 'create-skin',
-      component: () => import('../views/SkinView.vue'),
-      meta: { requiresAuth: true }
+      component: () => import('../views/SkinView.vue')
     },
     {
       path: '/description/:type/:id',

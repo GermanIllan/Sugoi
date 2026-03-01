@@ -74,7 +74,7 @@ const comments = [
             Noticias, reseñas y la comunidad más<br />
             vibrante.
           </p>
-          <button class="hero-button">EXPLORAR AHORA</button>
+          <router-link to="/noticias" class="hero-button">EXPLORAR AHORA</router-link>
         </div>
 
         <!-- Right Image -->
@@ -274,6 +274,7 @@ h1 {
   font-weight: var(--font-weight-bold);
   text-transform: uppercase;
   letter-spacing: 1px;
+  text-decoration: none;
   cursor: pointer;
   box-shadow: 4px 4px 0 var(--color-white-snow);
   transition: all 0.15s ease-out;

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useSkinStore } from '@/stores/skinStore';
+import { useAuthStore } from '@/stores/authStore';
 import SkinGenerator from '@/components/Skin/SkinGenerator.vue';
 import SkinGallery from '@/components/Skin/SkinGallery.vue';
 import SkinDetailsModal from '@/components/Skin/SkinDetailsModal.vue';
@@ -8,6 +9,7 @@ import SkinConfirmModal from '@/components/Skin/SkinConfirmModal.vue';
 import type { GalleryItem } from '@/types/skin';
 
 const skinStore = useSkinStore();
+const authStore = useAuthStore();
 const selectedItem = ref<GalleryItem | null>(null);
 const itemToDelete = ref<string | null>(null);
 
@@ -44,11 +46,19 @@ const handleConfirmDelete = () => {
     </header>
 
     <main class="skin-content">
+      <!-- Guest Notice Banner -->
+      <div v-if="!authStore.isAuthenticated" class="auth-notice-banner card shadow-sm">
+        <p>
+          DEBES <router-link to="/sign-in" class="auth-link">INICIAR SESIÓN</router-link> PARA GENERAR Y GUARDAR TUS AVATARES.
+        </p>
+      </div>
+
       <SkinGenerator />
       
-      <SkinGallery @select-item="selectedItem = $event" />
+      <SkinGallery v-if="authStore.isAuthenticated" @select-item="selectedItem = $event" />
 
       <SkinDetailsModal
+        v-if="authStore.isAuthenticated"
         :item="selectedItem"
         @close="selectedItem = null"
         @download="skinStore.downloadImage($event)"
@@ -118,5 +128,26 @@ const handleConfirmDelete = () => {
 
 .kanji.orange {
   color: #FF6B00;
+}
+
+/* Auth Banner Styles (Shared with Forum) */
+.auth-notice-banner {
+  padding: var(--spacing-lg);
+  text-align: center;
+  background-color: var(--color-white-snow);
+  border: var(--border-thick);
+  font-family: var(--font-heading);
+  letter-spacing: 1px;
+  margin-bottom: var(--spacing-md);
+}
+
+.auth-link {
+  color: var(--color-primary);
+  text-decoration: underline;
+  font-weight: var(--font-weight-black);
+}
+
+.auth-link:hover {
+  filter: brightness(0.9);
 }
 </style>

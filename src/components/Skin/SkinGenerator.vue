@@ -40,7 +40,7 @@ onUnmounted(() => {
 
 const prompt = ref('');
 const showFeedback = ref(false);
-const maxLength = 100;
+const maxLength = 300;
 
 const remainingChars = computed(() => maxLength - prompt.value.length);
 const limitInfo = computed(() => skinStore.checkLimit());
@@ -74,17 +74,7 @@ const handleSetHome = () => {
 
 <template>
   <div class="card creation-card">
-    <div v-if="!isAuthenticated" class="auth-required">
-      <div class="kanji-large-bg">生成</div>
-      <h2 class="auth-required-title">INICIA SESIÓN PARA CREAR</h2>
-      <p class="auth-required-text">Necesitas estar registrado para generar y guardar tus propios avatares estilo anime.</p>
-      <router-link to="/sign-in" class="button-primary login-redirect-btn">
-        <span class="kanji-btn">ログイン</span>
-        ACCEDER AHORA
-      </router-link>
-    </div>
-
-    <div v-else class="input-section">
+    <div class="input-section">
       <label for="avatar-prompt" class="input-label">Describe tu avatar</label>
       <div class="input-wrapper">
         <textarea
@@ -92,15 +82,16 @@ const handleSetHome = () => {
           v-model="prompt"
           :maxlength="maxLength"
           class="prompt-input"
-          placeholder="Ex: blue eyes, samurai armor, neon city background..."
+          :placeholder="isAuthenticated ? 'Ex: blue eyes, samurai armor, neon city background...' : 'Debes iniciar sesión para escribir aquí...'"
+          :disabled="!isAuthenticated"
         ></textarea>
-        <span :class="['char-counter', { 'text-primary': remainingChars === 0 }]">
+        <span v-if="isAuthenticated" :class="['char-counter', { 'text-primary': remainingChars === 0 }]">
           {{ remainingChars }} characters left
         </span>
       </div>
       <button
         class="button-primary generate-button"
-        :disabled="!canGenerate"
+        :disabled="!canGenerate || !isAuthenticated"
         @click="handleGenerate"
       >
         {{ isGenerating ? 'Generando...' : 'Generar Avatar' }}
@@ -109,7 +100,7 @@ const handleSetHome = () => {
       <p v-if="error" class="error-message badge-rosa">
         {{ error }}
       </p>
-      <p v-if="!limitInfo.can" class="limit-message badge-crema">
+      <p v-if="isAuthenticated && !limitInfo.can" class="limit-message badge-crema">
         Limite de generación alcanzado. Disponible en {{ limitInfo.daysLeft }} días.
       </p>
     </div>
@@ -359,57 +350,6 @@ const handleSetHome = () => {
   font-size: var(--font-size-md);
   color: var(--color-black-carbon);
   letter-spacing: 2px;
-}
-
-/* Auth Required Styling */
-.auth-required {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: var(--spacing-xxl);
-  background-color: var(--color-white-snow);
-  border: var(--border-thick);
-  position: relative;
-  overflow: hidden;
-  min-height: 250px;
-}
-
-.kanji-large-bg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 10rem;
-  color: var(--color-primary);
-  opacity: 0.1;
-  pointer-events: none;
-  font-weight: var(--font-weight-black);
-}
-
-.auth-required-title {
-  font-size: var(--font-size-lg);
-  margin-bottom: var(--spacing-md);
-  z-index: 1;
-}
-
-.auth-required-text {
-  margin-bottom: var(--spacing-xl);
-  font-weight: var(--font-weight-medium);
-  z-index: 1;
-  max-width: 300px;
-}
-
-.login-redirect-btn {
-  z-index: 1;
-  padding: var(--spacing-md) var(--spacing-xxl);
-}
-
-.kanji-btn {
-  display: block;
-  font-size: 0.7rem;
-  opacity: 0.8;
 }
 
 /* Responsividad */
