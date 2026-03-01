@@ -26,16 +26,46 @@ const stopTimer = () => {
   }
 };
 
+const loadingMessages = [
+  'GENERANDO...',
+  'YAMETE KUDASAI!...',
+  'DATTEBAYO!..',
+  'BAKA! CARGANDO...',
+  'INVOCANDO PIXELES...',
+  'SUGOI! CASI LISTO...'
+];
+const currentMessage = ref(loadingMessages[0]);
+let messageInterval: number | null = null;
+
+const startMessageRotation = () => {
+  currentMessage.value = loadingMessages[0];
+  messageInterval = window.setInterval(() => {
+    const currentIndex = loadingMessages.indexOf(currentMessage.value as string);
+    const nextIndex = (currentIndex + 1) % loadingMessages.length;
+    currentMessage.value = loadingMessages[nextIndex];
+  }, 3700);
+};
+
+const stopMessageRotation = () => {
+  if (messageInterval) {
+    clearInterval(messageInterval);
+    messageInterval = null;
+  }
+};
+
 watch(isGenerating, (loading) => {
   if (loading) {
     startTimer();
+    startMessageRotation();
   } else {
     stopTimer();
+    stopMessageRotation();
   }
 });
 
 onUnmounted(() => {
   stopTimer();
+  stopMessageRotation();
 });
 
 const prompt = ref('');
@@ -110,7 +140,7 @@ const handleSetHome = () => {
         <div class="skeleton-image">
           <div class="timer-overlay">
             <span class="timer-value">{{ secondsElapsed }}s</span>
-            <span class="timer-label">GENERANDO...</span>
+            <span class="timer-label">{{ currentMessage }}</span>
           </div>
         </div>
         <div class="skeleton-text"></div>

@@ -72,20 +72,21 @@
       "timestamps": [
         1772186288537,
         1772186450287,
-        1772298889159
+        1772298889159,
+        1772404681556
       ],
-      "lastGeneratedUrl": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Genera%20un%20perro%20salchicha%20color%20negro%2C%20con%20un%20gorro%20de%20navidad.?model=gptimage&width=1024&height=1024&seed=757784&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+      "lastGeneratedUrl": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Ninja%20con%20dos%20Katanas%2C%20ropa%20de%20kimetsu%20no%20yaiba%2C%20y%20vanda%20de%20Naruto%2C%20pelo%20de%20Goku%2C%20zapatos%20nike.?model=gptimage&width=1024&height=1024&seed=130814&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
       "galleryUrls": [
+        {
+          "url": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Ninja%20con%20dos%20Katanas%2C%20ropa%20de%20kimetsu%20no%20yaiba%2C%20y%20vanda%20de%20Naruto%2C%20pelo%20de%20Goku%2C%20zapatos%20nike.?model=gptimage&width=1024&height=1024&seed=130814&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "Ninja con dos Katanas, ropa de kimetsu no yaiba, y vanda de Naruto, pelo de Goku, zapatos nike."
+        },
         {
           "url": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Genera%20un%20perro%20salchicha%20color%20negro%2C%20con%20un%20gorro%20de%20navidad.?model=gptimage&width=1024&height=1024&seed=757784&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
           "prompt": "Genera un perro salchicha color negro, con un gorro de navidad."
-        },
-        {
-          "url": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Chico%2023%20a%C3%B1os%2Ccabello%20rizado%2C%20gorra%20con%20una%20letra%20P%2C%20barba%2Csudadera%20roja%2C%20lentes%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=241250&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
-          "prompt": "Chico 23 años,cabello rizado, gorra con una letra P, barba,sudadera roja, lentes, avatar."
         }
       ],
-      "activeHomeAvatarUrl": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Chico%2023%20a%C3%B1os%2Ccabello%20rizado%2C%20gorra%20con%20una%20letra%20P%2C%20barba%2Csudadera%20roja%2C%20lentes%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=241250&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+      "activeHomeAvatarUrl": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Ninja%20con%20dos%20Katanas%2C%20ropa%20de%20kimetsu%20no%20yaiba%2C%20y%20vanda%20de%20Naruto%2C%20pelo%20de%20Goku%2C%20zapatos%20nike.?model=gptimage&width=1024&height=1024&seed=130814&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
       "id": "55d1"
     },
     {
