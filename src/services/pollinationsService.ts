@@ -12,7 +12,7 @@ class PollinationsService {
      */
     generateImageUrl(prompt: string, seed: number = 0): string {
         // Requirements: Always include "ANIME" prefix
-        const fullPrompt = `ANIME,for 8k,high quality,pixel art, ${prompt.trim()}`;
+        const fullPrompt = `version anime,high quality,en pixel art, ${prompt.trim()}`;
         const encodedPrompt = encodeURIComponent(fullPrompt);
 
         // Model configuration as per HU-SKIN-002

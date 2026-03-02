@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import { useForumStore } from '@/stores/forum'
+import { useAuthStore } from '@/stores/authStore'
 import TopicCard from '@/components/Forum/TopicCard.vue'
 import CreateTopicForm from '@/components/Forum/CreateTopicForm.vue'
 
 const forumStore = useForumStore()
+const authStore = useAuthStore()
 const showCreateForm = ref(false)
 const searchQuery = ref('')
 
@@ -43,6 +45,7 @@ const handleTopicCreated = () => {
           />
         </div>
         <button 
+          v-if="authStore.isAuthenticated"
           @click="showCreateForm = !showCreateForm" 
           class="button-primary"
         >
@@ -50,6 +53,13 @@ const handleTopicCreated = () => {
         </button>
       </div>
     </header>
+
+    <!-- Guest Notice Banner -->
+    <div v-if="!authStore.isAuthenticated" class="auth-notice-banner card shadow-sm">
+      <p>
+        DEBES <router-link to="/auth" class="auth-link">INICIAR SESIÓN</router-link> PARA PUBLICAR UN TEMA.
+      </p>
+    </div>
 
     <div v-if="showCreateForm" class="create-section card">
       <CreateTopicForm @created="handleTopicCreated" />
@@ -188,5 +198,25 @@ const handleTopicCreated = () => {
   border: var(--border-thick);
   background: var(--color-white-snow);
   box-shadow: var(--shadow-offset-md);
+}
+
+.auth-notice-banner {
+  margin-bottom: var(--spacing-xxl);
+  padding: var(--spacing-lg);
+  text-align: center;
+  background-color: var(--color-white-snow);
+  border: var(--border-thick);
+  font-family: var(--font-heading);
+  letter-spacing: 1px;
+}
+
+.auth-link {
+  color: var(--color-primary);
+  text-decoration: underline;
+  font-weight: var(--font-weight-black);
+}
+
+.auth-link:hover {
+  filter: brightness(0.9);
 }
 </style>

@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref, computed, watch, onUnmounted } from 'vue';
 import { useSkinStore } from '@/stores/skinStore';
+import { useAuthStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
 
 const skinStore = useSkinStore();
-const { lastImageUrl, isLoading, error } = storeToRefs(skinStore);
+const authStore = useAuthStore();
+const { lastImageUrl, isGenerating, error } = storeToRefs(skinStore);
+const { isAuthenticated } = storeToRefs(authStore);
 
 const secondsElapsed = ref(0);
 let timerInterval: number | null = null;
@@ -23,27 +26,57 @@ const stopTimer = () => {
   }
 };
 
-watch(isLoading, (loading) => {
+const loadingMessages = [
+  'GENERANDO...',
+  'YAMETE KUDASAI!...',
+  'DATTEBAYO!..',
+  'BAKA! CARGANDO...',
+  'INVOCANDO PIXELES...',
+  'SUGOI! CASI LISTO...'
+];
+const currentMessage = ref(loadingMessages[0]);
+let messageInterval: number | null = null;
+
+const startMessageRotation = () => {
+  currentMessage.value = loadingMessages[0];
+  messageInterval = window.setInterval(() => {
+    const currentIndex = loadingMessages.indexOf(currentMessage.value as string);
+    const nextIndex = (currentIndex + 1) % loadingMessages.length;
+    currentMessage.value = loadingMessages[nextIndex];
+  }, 3700);
+};
+
+const stopMessageRotation = () => {
+  if (messageInterval) {
+    clearInterval(messageInterval);
+    messageInterval = null;
+  }
+};
+
+watch(isGenerating, (loading) => {
   if (loading) {
     startTimer();
+    startMessageRotation();
   } else {
     stopTimer();
+    stopMessageRotation();
   }
 });
 
 onUnmounted(() => {
   stopTimer();
+  stopMessageRotation();
 });
 
 const prompt = ref('');
 const showFeedback = ref(false);
-const maxLength = 100;
+const maxLength = 300;
 
 const remainingChars = computed(() => maxLength - prompt.value.length);
 const limitInfo = computed(() => skinStore.checkLimit());
 const canGenerate = computed(() => 
   prompt.value.trim().length > 0 && 
-  !isLoading.value && 
+  !isGenerating.value && 
   limitInfo.value.can
 );
 
@@ -79,34 +112,35 @@ const handleSetHome = () => {
           v-model="prompt"
           :maxlength="maxLength"
           class="prompt-input"
-          placeholder="Ex: blue eyes, samurai armor, neon city background..."
+          :placeholder="isAuthenticated ? 'Ex: blue eyes, samurai armor, neon city background...' : 'Debes iniciar sesión para escribir aquí...'"
+          :disabled="!isAuthenticated"
         ></textarea>
-        <span :class="['char-counter', { 'text-primary': remainingChars === 0 }]">
+        <span v-if="isAuthenticated" :class="['char-counter', { 'text-primary': remainingChars === 0 }]">
           {{ remainingChars }} characters left
         </span>
       </div>
       <button
         class="button-primary generate-button"
-        :disabled="!canGenerate"
+        :disabled="!canGenerate || !isAuthenticated"
         @click="handleGenerate"
       >
-        {{ isLoading ? 'Generando...' : 'Generar Avatar' }}
+        {{ isGenerating ? 'Generando...' : 'Generar Avatar' }}
       </button>
       
       <p v-if="error" class="error-message badge-rosa">
         {{ error }}
       </p>
-      <p v-if="!limitInfo.can" class="limit-message badge-crema">
+      <p v-if="isAuthenticated && !limitInfo.can" class="limit-message badge-crema">
         Limite de generación alcanzado. Disponible en {{ limitInfo.daysLeft }} días.
       </p>
     </div>
 
     <div class="preview-section border-thick shadow-md">
-      <div v-if="isLoading" class="skeleton-container">
+      <div v-if="isGenerating" class="skeleton-container">
         <div class="skeleton-image">
           <div class="timer-overlay">
             <span class="timer-value">{{ secondsElapsed }}s</span>
-            <span class="timer-label">GENERANDO...</span>
+            <span class="timer-label">{{ currentMessage }}</span>
           </div>
         </div>
         <div class="skeleton-text"></div>
