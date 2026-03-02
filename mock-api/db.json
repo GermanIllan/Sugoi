@@ -36,7 +36,13 @@
       "createdAt": "2026-03-01T22:27:42.559Z"
     },
     {
-<<<<<<<<< Temporary merge branch 1
+      "id": "lopzqpvac",
+      "title": "Preguntas Varias",
+      "author": "Ginoko",
+      "content": "¿Por que se llama CARLOS si solo es uno?\n",
+      "createdAt": "2026-03-02T10:46:30.837Z"
+    },
+    {
       "id": "tb3r9lyro",
       "title": "JOI",
       "author": "Sugoi",
@@ -49,13 +55,6 @@
       "author": "Sugoi",
       "content": "Un anime muy bueno y cómico.\n",
       "createdAt": "2026-03-02T10:29:01.035Z"
-=========
-      "id": "lopzqpvac",
-      "title": "Preguntas Varias",
-      "author": "Ginoko",
-      "content": "¿Por que se llama CARLOS si solo es uno?\n",
-      "createdAt": "2026-03-02T10:46:30.837Z"
->>>>>>>>> Temporary merge branch 2
     }
   ],
   "replies": [
