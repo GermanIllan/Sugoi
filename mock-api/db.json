@@ -60,7 +60,7 @@
       "password": "admin123"
     },
     {
-      "id": 1772294351797,
+      "id": "1772294351797",
       "username": "Kevin",
       "email": "kevingerardoruiz.2001@gmail.com",
       "password": "kevin123"
@@ -95,10 +95,16 @@
         1772400372554,
         1772400813478,
         1772400991136,
-        1772401298409
+        1772401298409,
+        1772439013144,
+        1772439084548
       ],
-      "lastGeneratedUrl": null,
+      "lastGeneratedUrl": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Chico%20de%2025%20y%20pelo%20muy%20corto%2C%20corte%20de%20pelo%20militar%2C%20piel%20bastante%20morena%2C%20ojos%20semi%20abiertos%2C%20barbilla%20de%20chivo%2C%20pendientes%20peque%C3%B1os%20diamante%2C%20aud%C3%ADfonos%20blancos%20peque%C3%B1os%20bluetooth%2C%20chaqueta%20de%20invierno%20north%20face%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=19132&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
       "galleryUrls": [
+        {
+          "url": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Chico%20de%2025%20y%20pelo%20muy%20corto%2C%20corte%20de%20pelo%20militar%2C%20piel%20bastante%20morena%2C%20ojos%20semi%20abiertos%2C%20barbilla%20de%20chivo%2C%20pendientes%20peque%C3%B1os%20diamante%2C%20aud%C3%ADfonos%20blancos%20peque%C3%B1os%20bluetooth%2C%20chaqueta%20de%20invierno%20north%20face%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=19132&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "Chico de 25 y pelo muy corto, corte de pelo militar, piel bastante morena, ojos semi abiertos, barbilla de chivo, pendientes pequeños diamante, audífonos blancos pequeños bluetooth, chaqueta de invierno north face, avatar."
+        },
         {
           "url": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Hombre%20de%2050%20a%C3%B1os%2C%20poca%20barba%2C%20cabello%20poco%20rizado%20largo%20y%20pocas%20canas%20con%20cola%2C%20gorra%20negra%2C%20chaleco%20de%20invierno%20y%20camisa%20manga%20larga%20negra%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=745480&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
           "prompt": "Hombre de 50 años, poca barba, cabello poco rizado largo y pocas canas con cola, gorra negra, chaleco de invierno y camisa manga larga negra, avatar."
@@ -106,10 +112,6 @@
         {
           "url": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Chico%20de%2025%2C%20Calvo%20y%20poca%20barba%2C%20piel%20bastante%20morena%2C%20pircing%20Double%20Flare%20Tunnel%2C%20sudadera%20negra%2C%20audifonos%20blancos%20peque%C3%B1os%20de%20cuerda%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=521627&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
           "prompt": "Chico de 25, Calvo y poca barba, piel bastante morena, pircing Double Flare Tunnel, sudadera negra, audifonos blancos pequeños de cuerda, avatar."
-        },
-        {
-          "url": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Chico%20de%2023%20y%20poco%20pelo%2C%20piel%20morena%2C%20un%20ojo%20poco%20mas%20grande%20y%20ojos%20entre%20cerrados%2C%20aud%C3%ADfonos%20blancos%20peque%C3%B1os%20bluetooth%2C%20chaleco%20de%20invierno%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=246698&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
-          "prompt": "Chico de 25 y poco pelo, piel morena, un ojo poco mas grande y ojos entre cerrados, audífonos blancos pequeños bluetooth, chaleco de invierno, avatar."
         },
         {
           "url": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Chico%20de%2025%20a%C3%B1os%20y%20lentes%20dorados%2C%20cabello%20rizado%2C%20gorra%20negra%20con%20letra%20P%2C%20sudadera%20roja%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=459891&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
