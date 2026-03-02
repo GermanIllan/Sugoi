@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAnimeStore } from '@/stores/animeStore';
 import { useMangaStore } from '@/stores/mangaStore';
+import { useAuthStore } from '@/stores/authStore';
+import { useTrackingStore } from '@/stores/trackingStore';
 import { storeToRefs } from 'pinia';
+import TrackingButton from '@/components/Filter/TrackingButton.vue';
+import type { TrackingRecord } from '@/types/tracking';
 
 const props = defineProps<{
     type: string;
@@ -13,22 +17,59 @@ const props = defineProps<{
 const router = useRouter();
 const animeStore = useAnimeStore();
 const mangaStore = useMangaStore();
+const authStore = useAuthStore();
+const trackingStore = useTrackingStore();
 
 const { animeDetail, isDetailLoading } = storeToRefs(animeStore);
 const { mangaDetail, isDetailLoading: isMangaLoading } = storeToRefs(mangaStore);
+const { user, isAuthenticated } = storeToRefs(authStore);
 
 const isLoading = computed(() => props.type === 'anime' ? isDetailLoading.value : isMangaLoading.value);
 const item = computed(() => props.type === 'anime' ? animeDetail.value : mangaDetail.value);
 
+const isTracked = computed(() => trackingStore.isTracked(parseInt(props.id), props.type as 'anime' | 'manga'));
+
 onMounted(async () => {
     window.scrollTo(0, 0);
     const numericId = parseInt(props.id);
+    
+    // Load item details
     if (props.type === 'anime') {
         await animeStore.fetchAnimeById(numericId);
     } else {
         await mangaStore.fetchMangaById(numericId);
     }
+
+    // Load user tracking if authenticated
+    if (isAuthenticated.value && user.value) {
+        await trackingStore.loadUserTracking(Number(user.value.id));
+    }
 });
+
+const handleTrackingToggle = async () => {
+    if (!isAuthenticated.value || !user.value || !item.value) return;
+
+    const malId = parseInt(props.id);
+    const category = props.type as 'anime' | 'manga';
+    const numericUserId = Number(user.value.id);
+
+    if (isTracked.value) {
+        await trackingStore.removeFromTracking(numericUserId, malId, category);
+    } else {
+        const record: TrackingRecord = {
+            userId: numericUserId,
+            malId: malId,
+            category: category,
+            title: item.value.title,
+            imageUrl: item.value.images.webp?.image_url || item.value.images.jpg.image_url,
+            score: item.value.score,
+            type: item.value.type,
+            status: item.value.status,
+            addedAt: new Date().toISOString()
+        };
+        await trackingStore.addToTracking(record);
+    }
+};
 
 const goBack = () => {
     router.push({ name: 'filter' });
@@ -54,6 +95,13 @@ const goBack = () => {
                         <img :src="item.images.webp?.large_image_url" :alt="item.title">
                         <div class="score-badge" v-if="item.score">★ {{ item.score }}</div>
                     </div>
+
+                    <TrackingButton 
+                        :isTracked="isTracked"
+                        :isAuthenticated="isAuthenticated"
+                        :isLoading="trackingStore.isLoading"
+                        @toggle="handleTrackingToggle"
+                    />
                 </aside>
 
                 <!-- Right Column: Full Details -->
@@ -115,13 +163,13 @@ const goBack = () => {
     padding: var(--spacing-xxl) var(--spacing-lg);
     background-image: 
         linear-gradient(rgba(246, 247, 247, 0.95), rgba(255, 255, 255, 0.95)),
-        url('/lineas4.jpg');
+        url('/assets/images/image/lineas4.jpg');
     background-attachment: fixed;
     background-size: cover;
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 

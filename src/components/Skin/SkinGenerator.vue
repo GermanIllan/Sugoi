@@ -155,8 +155,8 @@ const handleSetHome = () => {
             Descargar
           </button>
           <button class="action-button home-btn" @click="handleSetHome">
-             <span class="kanji-small">ホームに設定</span>
-            {{ showFeedback ? '¡ACTUALIZADO!' : 'USAR EN HOME' }}
+             <span class="kanji-small">アバターを使用する</span>
+            {{ showFeedback ? '¡ACTUALIZADO!' : 'USAR AVATAR' }}
           </button>
         </div>
       </div>
