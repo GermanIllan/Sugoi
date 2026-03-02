@@ -34,6 +34,20 @@
       "author": "Kevin",
       "content": "Personalmente no me ha gustado mucho, le doy un 6/10.",
       "createdAt": "2026-03-01T22:27:42.559Z"
+    },
+    {
+      "id": "tb3r9lyro",
+      "title": "JOI",
+      "author": "Sugoi",
+      "content": "MUY BUENOS ANIMES ",
+      "createdAt": "2026-03-02T09:35:49.884Z"
+    },
+    {
+      "id": "im1atp9al",
+      "title": "DAN DAN DAN ",
+      "author": "Sugoi",
+      "content": "Un anime muy bueno y cómico.\n",
+      "createdAt": "2026-03-02T10:29:01.035Z"
     }
   ],
   "replies": [
@@ -50,6 +64,13 @@
       "author": "GamerZ",
       "content": "Frieren es increíble, pero Jujutsu Kaisen está a otro nivel.",
       "createdAt": "2023-11-21T16:00:00Z"
+    },
+    {
+      "id": "d9t5cqcet",
+      "topicId": "im1atp9al",
+      "author": "COCO LIZO",
+      "content": "ES VERDAD\n",
+      "createdAt": "2026-03-02T10:31:51.432Z"
     }
   ],
   "users": [
@@ -73,10 +94,16 @@
         1772186288537,
         1772186450287,
         1772298889159,
-        1772404681556
+        1772404681556,
+        1772445730116,
+        1772445815107
       ],
-      "lastGeneratedUrl": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Ninja%20con%20dos%20Katanas%2C%20ropa%20de%20kimetsu%20no%20yaiba%2C%20y%20vanda%20de%20Naruto%2C%20pelo%20de%20Goku%2C%20zapatos%20nike.?model=gptimage&width=1024&height=1024&seed=130814&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+      "lastGeneratedUrl": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Un%20retrato%20de%20primer%20plano%20de%20pixel%20art%20de%20un%20hombre%20joven%20%20de%2025%20%20piel%20morena%20con%20cabello%20corto%20y%20rapado%20y%20una%20barba%20de%20chivo%20sutil%2C%20con%20una%20expresi%C3%B3n%20seria%20y%20aburrida%20y%20un%20solo%20auricular%20inal%C3%A1mbrico%20blanco%20en%20el%20o%C3%ADdo.%20Viste%20una%20chaqueta%20acolchada%20negra%20con%20el%20texto%20'THE%20NORTF%20FACE'%20en%20el%20pecho.?model=gptimage&width=1024&height=1024&seed=600797&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
       "galleryUrls": [
+        {
+          "url": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Un%20retrato%20de%20primer%20plano%20de%20pixel%20art%20de%20un%20hombre%20joven%20%20de%2025%20%20piel%20morena%20con%20cabello%20corto%20y%20rapado%20y%20una%20barba%20de%20chivo%20sutil%2C%20con%20una%20expresi%C3%B3n%20seria%20y%20aburrida%20y%20un%20solo%20auricular%20inal%C3%A1mbrico%20blanco%20en%20el%20o%C3%ADdo.%20Viste%20una%20chaqueta%20acolchada%20negra%20con%20el%20texto%20'THE%20NORTF%20FACE'%20en%20el%20pecho.?model=gptimage&width=1024&height=1024&seed=600797&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "Un retrato de primer plano de pixel art de un hombre joven  de 25  piel morena con cabello corto y rapado y una barba de chivo sutil, con una expresión seria y aburrida y un solo auricular inalámbrico blanco en el oído. Viste una chaqueta acolchada negra con el texto 'THE NORTF FACE' en el pecho. \n"
+        },
         {
           "url": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Ninja%20con%20dos%20Katanas%2C%20ropa%20de%20kimetsu%20no%20yaiba%2C%20y%20vanda%20de%20Naruto%2C%20pelo%20de%20Goku%2C%20zapatos%20nike.?model=gptimage&width=1024&height=1024&seed=130814&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
           "prompt": "Ninja con dos Katanas, ropa de kimetsu no yaiba, y vanda de Naruto, pelo de Goku, zapatos nike."
@@ -86,7 +113,7 @@
           "prompt": "Genera un perro salchicha color negro, con un gorro de navidad."
         }
       ],
-      "activeHomeAvatarUrl": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Ninja%20con%20dos%20Katanas%2C%20ropa%20de%20kimetsu%20no%20yaiba%2C%20y%20vanda%20de%20Naruto%2C%20pelo%20de%20Goku%2C%20zapatos%20nike.?model=gptimage&width=1024&height=1024&seed=130814&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+      "activeHomeAvatarUrl": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Un%20retrato%20de%20primer%20plano%20de%20pixel%20art%20de%20un%20hombre%20joven%20%20de%2025%20%20piel%20morena%20con%20cabello%20corto%20y%20rapado%20y%20una%20barba%20de%20chivo%20sutil%2C%20con%20una%20expresi%C3%B3n%20seria%20y%20aburrida%20y%20un%20solo%20auricular%20inal%C3%A1mbrico%20blanco%20en%20el%20o%C3%ADdo.%20Viste%20una%20chaqueta%20acolchada%20negra%20con%20el%20texto%20'THE%20NORTF%20FACE'%20en%20el%20pecho.?model=gptimage&width=1024&height=1024&seed=600797&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
       "id": "55d1"
     },
     {
