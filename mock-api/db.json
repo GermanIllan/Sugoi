@@ -36,13 +36,7 @@
       "createdAt": "2026-03-01T22:27:42.559Z"
     },
     {
-      "id": "lopzqpvac",
-      "title": "Preguntas Varias",
-      "author": "Ginoko",
-      "content": "¿Por que se llama CARLOS si solo es uno?\n",
-      "createdAt": "2026-03-02T10:46:30.837Z"
-    },
-    {
+<<<<<<<<< Temporary merge branch 1
       "id": "tb3r9lyro",
       "title": "JOI",
       "author": "Sugoi",
@@ -55,6 +49,13 @@
       "author": "Sugoi",
       "content": "Un anime muy bueno y cómico.\n",
       "createdAt": "2026-03-02T10:29:01.035Z"
+=========
+      "id": "lopzqpvac",
+      "title": "Preguntas Varias",
+      "author": "Ginoko",
+      "content": "¿Por que se llama CARLOS si solo es uno?\n",
+      "createdAt": "2026-03-02T10:46:30.837Z"
+>>>>>>>>> Temporary merge branch 2
     }
   ],
   "replies": [
@@ -149,10 +150,15 @@
         1772400991136,
         1772401298409,
         1772439013144,
-        1772439084548
+        1772439084548,
+        1772448640740
       ],
-      "lastGeneratedUrl": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Chico%20de%2025%20y%20pelo%20muy%20corto%2C%20corte%20de%20pelo%20militar%2C%20piel%20bastante%20morena%2C%20ojos%20semi%20abiertos%2C%20barbilla%20de%20chivo%2C%20pendientes%20peque%C3%B1os%20diamante%2C%20aud%C3%ADfonos%20blancos%20peque%C3%B1os%20bluetooth%2C%20chaqueta%20de%20invierno%20north%20face%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=19132&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+      "lastGeneratedUrl": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Chico%20de%2025%20a%C3%B1os%20y%20lentes%20dorados%2C%20cabello%20corto%20rizado%2C%20gorra%20negra%20con%20letra%20P%2C%20sudadera%20negra%2C%20barba%20corta%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=809134&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
       "galleryUrls": [
+        {
+          "url": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Chico%20de%2025%20a%C3%B1os%20y%20lentes%20dorados%2C%20cabello%20corto%20rizado%2C%20gorra%20negra%20con%20letra%20P%2C%20sudadera%20negra%2C%20barba%20corta%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=809134&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "Chico de 25 años y lentes dorados, cabello corto rizado, gorra negra con letra P, sudadera negra, barba corta, avatar."
+        },
         {
           "url": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Chico%20de%2025%20y%20pelo%20muy%20corto%2C%20corte%20de%20pelo%20militar%2C%20piel%20bastante%20morena%2C%20ojos%20semi%20abiertos%2C%20barbilla%20de%20chivo%2C%20pendientes%20peque%C3%B1os%20diamante%2C%20aud%C3%ADfonos%20blancos%20peque%C3%B1os%20bluetooth%2C%20chaqueta%20de%20invierno%20north%20face%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=19132&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
           "prompt": "Chico de 25 y pelo muy corto, corte de pelo militar, piel bastante morena, ojos semi abiertos, barbilla de chivo, pendientes pequeños diamante, audífonos blancos pequeños bluetooth, chaqueta de invierno north face, avatar."
@@ -164,13 +170,9 @@
         {
           "url": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Chico%20de%2025%2C%20Calvo%20y%20poca%20barba%2C%20piel%20bastante%20morena%2C%20pircing%20Double%20Flare%20Tunnel%2C%20sudadera%20negra%2C%20audifonos%20blancos%20peque%C3%B1os%20de%20cuerda%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=521627&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
           "prompt": "Chico de 25, Calvo y poca barba, piel bastante morena, pircing Double Flare Tunnel, sudadera negra, audifonos blancos pequeños de cuerda, avatar."
-        },
-        {
-          "url": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Chico%20de%2025%20a%C3%B1os%20y%20lentes%20dorados%2C%20cabello%20rizado%2C%20gorra%20negra%20con%20letra%20P%2C%20sudadera%20roja%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=459891&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
-          "prompt": "Chico de 25 años y lentes dorados, cabello rizado, gorra negra con letra P, sudadera roja, avatar."
         }
       ],
-      "activeHomeAvatarUrl": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Chico%20de%2025%20a%C3%B1os%20y%20lentes%20dorados%2C%20cabello%20rizado%2C%20gorra%20negra%20con%20letra%20P%2C%20sudadera%20roja%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=459891&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+      "activeHomeAvatarUrl": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Chico%20de%2025%20a%C3%B1os%20y%20lentes%20dorados%2C%20cabello%20corto%20rizado%2C%20gorra%20negra%20con%20letra%20P%2C%20sudadera%20negra%2C%20barba%20corta%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=809134&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
       "id": "a81c"
     },
     {
@@ -249,5 +251,20 @@
       "activeHomeAvatarUrl": null
     }
   ],
-  "tracking": []
+  "tracking": [
+    {
+      "id": "0a0c",
+      "userId": 1772294351797,
+      "malId": 57,
+      "category": "anime",
+      "title": "Beck",
+      "imageUrl": "https://cdn.myanimelist.net/images/anime/11/11636.webp",
+      "score": 8.29,
+      "type": "TV",
+      "status": "Finished Airing",
+      "addedAt": "2026-03-02T11:26:27.078Z",
+      "watchStatus": "watched",
+      "personalScore": 7
+    }
+  ]
 }

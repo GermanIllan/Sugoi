@@ -18,6 +18,7 @@ export interface Reply {
 
 export interface CommunityComment {
   id: string
+  title: string
   author: string
   content: string
 }
@@ -106,16 +107,17 @@ export const useForumStore = defineStore('forum', {
 
     async fetchLatestComments(limit = 3): Promise<CommunityComment[]> {
       try {
-        const response = await fetch('http://localhost:5174/replies')
-        const data = (await response.json()) as Reply[]
+        const response = await fetch('http://localhost:5174/topics')
+        const data = (await response.json()) as Topic[]
         return data
           .slice()
           .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
           .slice(0, limit)
-          .map((reply) => ({
-          id: reply.id,
-          author: reply.author,
-          content: reply.content,
+          .map((topic) => ({
+            id: topic.id,
+            title: topic.title,
+            author: topic.author,
+            content: topic.content,
           }))
       } catch (error) {
         console.error('Error fetching latest comments:', error)

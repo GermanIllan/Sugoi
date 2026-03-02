@@ -36,6 +36,7 @@ interface RatingItem {
 interface CommentItem {
   id: string
   initials: string
+  title: string
   name: string
   text: string
 }
@@ -134,18 +135,21 @@ const comments = ref<CommentItem[]>([
   {
     id: 'fallback-1',
     initials: 'TY',
+    title: '¡Increíble comunidad!',
     name: 'Takeshi Yamamoto',
     text: 'SUGOI es increíble. Encuentro todas las noticias de anime que necesito y la comunidad es muy activa.',
   },
   {
     id: 'fallback-2',
     initials: 'SN',
+    title: 'Mi web favorita',
     name: 'Sakura Nakamura',
     text: 'La mejor web de anime en español. Las calificaciones son muy precisas y no puedo dejar de visitar.',
   },
   {
     id: 'fallback-3',
     initials: 'CO',
+    title: 'Grandes recomendaciones',
     name: 'Carlos Otaku',
     text: 'Los videojuegos recomendados siempre son los mejores. Gracias a SUGOI descubrí Persona 5.',
   },
@@ -166,11 +170,12 @@ const syncCommentsFromForum = async (): Promise<void> => {
   const latestComments = await forumStore.fetchLatestComments(3)
   if (latestComments.length === 0) return
 
-  const liveComments = latestComments.map((comment) => ({
-    id: comment.id,
-    initials: getInitials(comment.author),
-    name: comment.author,
-    text: comment.content,
+  const liveComments = latestComments.map((topic) => ({
+    id: topic.id,
+    initials: getInitials(topic.author),
+    title: topic.title,
+    name: topic.author,
+    text: topic.content,
   }))
 
   comments.value = [...liveComments, ...comments.value].slice(0, 3)
@@ -283,7 +288,7 @@ const syncCommentsFromForum = async (): Promise<void> => {
         <article v-for="item in comments" :key="item.id" class="comment-item">
           <div class="comment-avatar">{{ item.initials }}</div>
           <div class="comment-content">
-            <h3 class="comment-name">{{ item.name }}</h3>
+            <h3 class="comment-name">{{ item.title }}</h3>
             <p class="comment-text">{{ item.text }}</p>
           </div>
         </article>

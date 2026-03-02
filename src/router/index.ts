@@ -77,7 +77,7 @@ const router = createRouter({
     {
       path: '/tracking',
       name: 'tracking',
-      component: HomeView,
+      component: () => import('../views/TrackingView.vue'),
       meta: { requiresAuth: true }
     }
   ],
