@@ -213,7 +213,9 @@
       "score": 8.29,
       "type": "TV",
       "status": "Finished Airing",
-      "addedAt": "2026-03-02T11:26:27.078Z"
+      "addedAt": "2026-03-02T11:26:27.078Z",
+      "watchStatus": "watched",
+      "personalScore": 7
     }
   ]
 }

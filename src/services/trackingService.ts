@@ -29,6 +29,14 @@ export const trackingService = {
     },
 
     /**
+     * Update a tracking record partialy.
+     */
+    async update(id: number, data: Partial<TrackingRecord>): Promise<TrackingRecord> {
+        const response = await localApiClient.patch<TrackingRecord>(`/tracking/${id}`, data);
+        return response.data;
+    },
+
+    /**
      * Check if an item is already tracked by a user.
      */
     async findRecord(userId: number, malId: number, category: 'anime' | 'manga'): Promise<TrackingRecord | null> {

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { trackingService } from '@/services/trackingService';
 import type { TrackingRecord } from '@/types/tracking';
 
@@ -7,6 +7,20 @@ export const useTrackingStore = defineStore('tracking', () => {
     const userTracking = ref<TrackingRecord[]>([]);
     const isLoading = ref(false);
     const error = ref<string | null>(null);
+
+    // Getters
+    const stats = computed(() => {
+        const totalAnime = userTracking.value.filter(i => i.category === 'anime').length;
+        const totalManga = userTracking.value.filter(i => i.category === 'manga').length;
+        const watched = userTracking.value.filter(i => i.watchStatus === 'watched').length;
+        const planToWatch = userTracking.value.filter(i => i.watchStatus === 'plan_to_watch').length;
+
+        const topRated = [...userTracking.value]
+            .filter(i => i.personalScore !== null)
+            .sort((a, b) => (b.personalScore || 0) - (a.personalScore || 0))[0] || null;
+
+        return { totalAnime, totalManga, watched, planToWatch, topRated };
+    });
 
     /**
      * Load all tracking items for the current user.
@@ -34,6 +48,25 @@ export const useTrackingStore = defineStore('tracking', () => {
             userTracking.value.push(newRecord);
         } catch (err: any) {
             error.value = err.message || 'Error al añadir seguimiento';
+            throw err;
+        } finally {
+            isLoading.value = false;
+        }
+    };
+
+    /**
+     * Update an existing tracking record.
+     */
+    const updateTracking = async (id: number, data: Partial<TrackingRecord>) => {
+        isLoading.value = true;
+        try {
+            const updated = await trackingService.update(id, data);
+            const index = userTracking.value.findIndex(i => i.id === id);
+            if (index !== -1) {
+                userTracking.value[index] = updated;
+            }
+        } catch (err: any) {
+            error.value = err.message || 'Error al actualizar seguimiento';
             throw err;
         } finally {
             isLoading.value = false;
@@ -70,8 +103,10 @@ export const useTrackingStore = defineStore('tracking', () => {
         userTracking,
         isLoading,
         error,
+        stats,
         loadUserTracking,
         addToTracking,
+        updateTracking,
         removeFromTracking,
         isTracked
     };

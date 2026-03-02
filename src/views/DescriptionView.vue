@@ -63,8 +63,11 @@ const handleTrackingToggle = async () => {
             title: item.value.title,
             imageUrl: item.value.images.webp?.image_url || item.value.images.jpg.image_url,
             score: item.value.score,
+            personalScore: null,
             type: item.value.type,
             status: item.value.status,
+            watchStatus: 'plan_to_watch',
+            notes: '',
             addedAt: new Date().toISOString()
         };
         await trackingStore.addToTracking(record);
