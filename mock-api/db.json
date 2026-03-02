@@ -83,6 +83,12 @@
       "username": "Ginoko",
       "email": "admin2@sugoi.com",
       "password": "admin123"
+    },
+    {
+      "id": 1772450729851,
+      "username": "ertygfds",
+      "email": "su@sugoi.com",
+      "password": "123456"
     }
   ],
   "avatars": [
@@ -199,6 +205,21 @@
       ],
       "activeHomeAvatarUrl": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20creame%20una%20foto%20de%20perfil%20persona%2C%20calvo%20mulato%20con%20sudadera%20%20de%20color%20negro%20con%20dilataciones%20en%20las%20orejas%20barba%20poblado%20un%20corte%20en%20la%20ceja%20derecha%20%2C%20%20piercing%20septum%20y%20auriculares%20peque%C3%B1os%20con%20cable%20de%20color%20blanco%2C%20gafas%20con%20montura%20de%20transparente%20ojos%20peque%C3%B1os?model=gptimage&width=1024&height=1024&seed=246232&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
       "id": "0adc"
+    },
+    {
+      "id": "6463",
+      "userId": 1772450729851,
+      "timestamps": [
+        1772450816441
+      ],
+      "lastGeneratedUrl": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20creame%20una%20foto%20de%20perfil%20pero%20de%20alguin%20que%20tenga%20una%20bolsa%20en%20la%20cabeza%20y%20que%20en%20la%20bolsa%20haya%20una%20interrogacion%20gigantes%20escrita?model=gptimage&width=1024&height=1024&seed=774723&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+      "galleryUrls": [
+        {
+          "url": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20creame%20una%20foto%20de%20perfil%20pero%20de%20alguin%20que%20tenga%20una%20bolsa%20en%20la%20cabeza%20y%20que%20en%20la%20bolsa%20haya%20una%20interrogacion%20gigantes%20escrita?model=gptimage&width=1024&height=1024&seed=774723&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "creame una foto de perfil pero de alguin que tenga una bolsa en la cabeza y que en la bolsa haya una interrogacion gigantes escrita\n"
+        }
+      ],
+      "activeHomeAvatarUrl": null
     }
   ],
   "tracking": []

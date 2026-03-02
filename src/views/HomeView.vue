@@ -6,7 +6,7 @@ import { useAuthStore } from '@/stores/authStore'
 import { useAnimeStore } from '@/stores/animeStore'
 import { useMangaStore } from '@/stores/mangaStore'
 import { storeToRefs } from 'pinia'
-import fallbackAvatar from '@/assets/images/image/unnamed.png'
+import fallbackAvatar from '@/assets/images/image/sugoi-avatar.png'
 import type { Anime } from '@/types/anime'
 import type { Manga } from '@/types/manga'
 

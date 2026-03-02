@@ -57,7 +57,7 @@ const handleTopicCreated = () => {
     <!-- Guest Notice Banner -->
     <div v-if="!authStore.isAuthenticated" class="auth-notice-banner card shadow-sm">
       <p>
-        DEBES <router-link to="/auth" class="auth-link">INICIAR SESIÓN</router-link> PARA PUBLICAR UN TEMA.
+        DEBES <router-link to="/sign-in" class="auth-link">INICIAR SESIÓN</router-link> PARA PUBLICAR UN TEMA.
       </p>
     </div>
 
