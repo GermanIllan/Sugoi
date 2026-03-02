@@ -36,7 +36,10 @@ export const useForumStore = defineStore('forum', {
       this.loading = true
       try {
         const response = await fetch('http://localhost:5174/topics')
-        this.topics = await response.json()
+        const data = await response.json()
+        this.topics = data.sort((a: Topic, b: Topic) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )
       } catch (error) {
         console.error('Error fetching topics:', error)
       } finally {
@@ -79,7 +82,7 @@ export const useForumStore = defineStore('forum', {
           body: JSON.stringify(newTopic),
         })
         const data = await response.json()
-        this.topics.push(data)
+        this.topics.unshift(data)
         return data
       } catch (error) {
         console.error('Error creating topic:', error)

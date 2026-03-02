@@ -55,6 +55,13 @@
       "author": "MakimaFan",
       "content": "¿Alguien ha leido el ultimo arco del manga? Esta increible.",
       "createdAt": "2026-03-02T09:00:00.000Z"
+    },
+    {
+      "id": "38cm2jw0p",
+      "title": "Anime One Piece",
+      "author": "Kevin",
+      "content": "El anime One piece es como muy sobre valorado no? ",
+      "createdAt": "2026-03-02T12:30:19.793Z"
     }
   ],
   "replies": [
@@ -106,7 +113,7 @@
       "password": "admin123"
     },
     {
-      "id": 1772450729851,
+      "id": "1772450729851",
       "username": "ertygfds",
       "email": "su@sugoi.com",
       "password": "123456"
@@ -262,8 +269,23 @@
       "type": "TV",
       "status": "Finished Airing",
       "addedAt": "2026-03-02T11:26:27.078Z",
-      "watchStatus": "watched",
-      "personalScore": 7
+      "watchStatus": "plan_to_watch",
+      "personalScore": null
+    },
+    {
+      "id": "90ed",
+      "userId": 1772294351797,
+      "malId": 1,
+      "category": "anime",
+      "title": "Cowboy Bebop",
+      "imageUrl": "https://cdn.myanimelist.net/images/anime/4/19644.webp",
+      "score": 8.75,
+      "personalScore": null,
+      "type": "TV",
+      "status": "Finished Airing",
+      "watchStatus": "plan_to_watch",
+      "notes": "",
+      "addedAt": "2026-03-02T12:31:29.825Z"
     }
   ]
 }

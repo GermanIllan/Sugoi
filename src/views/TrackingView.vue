@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useTrackingStore } from '@/stores/trackingStore';
 import { useAuthStore } from '@/stores/authStore';
+import { useScrollToTopOnUpdate } from '@/composables/useScroll';
 import TrackingDashboard from '@/components/Tracking/TrackingDashboard.vue';
 import TrackingFilters from '@/components/Tracking/TrackingFilters.vue';
 import TrackingGrid from '@/components/Tracking/TrackingGrid.vue';
@@ -13,6 +14,10 @@ const authStore = useAuthStore();
 // Filter states
 const activeCategory = ref<'all' | 'anime' | 'manga'>('all');
 const activeStatus = ref<'all' | WatchStatus>('all');
+
+// Auto-scroll on filter changes
+useScrollToTopOnUpdate(activeCategory);
+useScrollToTopOnUpdate(activeStatus);
 const sortOrder = ref<'newest' | 'score' | 'title'>('newest');
 
 onMounted(async () => {

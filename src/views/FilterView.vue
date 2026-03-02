@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia';
 import { useAnimeStore } from '@/stores/animeStore';
 import { useMangaStore } from '@/stores/mangaStore';
 import { useSearchStore } from '@/stores/searchStore';
+import { useScrollToTopOnUpdate } from '@/composables/useScroll';
 
 // Components
 import FilterCategoryCard from '@/components/Filter/FilterCategoryCard.vue';
@@ -28,6 +29,9 @@ const {
     orderBy,
     sort
 } = storeToRefs(searchStore);
+
+// Global Auto-scroll on page change
+useScrollToTopOnUpdate(currentPage);
 
 const isClosing = ref(false);
 let searchTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -172,7 +176,6 @@ const filterDuplicates = () => {
 
 const changePage = (page: number) => {
     handleSearch(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const goToDetail = (payload: { type: string, id: number }) => {

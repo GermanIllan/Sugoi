@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
 import { useSkinStore } from '@/stores/skinStore';
+import { useTrackingStore } from '@/stores/trackingStore';
+import { useForumStore } from '@/stores/forum';
 import { storeToRefs } from 'pinia';
 import SkinGallery from '@/components/Skin/SkinGallery.vue';
 import SkinDetailsModal from '@/components/Skin/SkinDetailsModal.vue';
@@ -14,6 +16,9 @@ import ProfileForum from '@/components/Profile/ProfileForum.vue';
 
 const authStore = useAuthStore();
 const skinStore = useSkinStore();
+const trackingStore = useTrackingStore();
+const forumStore = useForumStore();
+
 const { user } = storeToRefs(authStore);
 const { activeHomeAvatarUrl } = storeToRefs(skinStore);
 
@@ -22,6 +27,15 @@ const itemToDelete = ref<string | null>(null);
 
 onMounted(async () => {
   await skinStore.loadFromServer();
+  if (authStore.user) {
+    await trackingStore.loadUserTracking(Number(authStore.user.id));
+    await forumStore.fetchTopics();
+  }
+});
+
+const userTopics = computed(() => {
+  if (!user.value) return [];
+  return forumStore.topics.filter(t => t.author === user.value?.username);
 });
 
 const handleDeleteRequest = (url: string) => {
@@ -93,7 +107,7 @@ const handleConfirmDelete = () => {
       </section>
 
       <!-- Section 2: Tracking (Component) -->
-      <ProfileTracking />
+      <ProfileTracking :stats="trackingStore.stats" />
 
       <!-- Section 3: Gallery (Dynamic) -->
       <section class="gallery-section">
@@ -105,7 +119,7 @@ const handleConfirmDelete = () => {
       </section>
 
       <!-- Section 4: Forum (Component) -->
-      <ProfileForum />
+      <ProfileForum :topics="userTopics" />
     </main>
   </div>
 </template>
