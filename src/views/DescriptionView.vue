@@ -166,7 +166,7 @@ const goBack = () => {
     padding: var(--spacing-xxl) var(--spacing-lg);
     background-image: 
         linear-gradient(rgba(246, 247, 247, 0.95), rgba(255, 255, 255, 0.95)),
-        url('/assets/images/image/lineas4.jpg');
+        url('@/assets/images/image/lineas4.jpg');
     background-attachment: fixed;
     background-size: cover;
 }
