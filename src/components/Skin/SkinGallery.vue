@@ -1,11 +1,26 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useSkinStore } from '@/stores/skinStore';
 import { storeToRefs } from 'pinia';
 import SkinGalleryItem from './SkinGalleryItem.vue';
+import SkinConfirmModal from './SkinConfirmModal.vue';
 import type { GalleryItem } from '@/types/skin';
 
 const skinStore = useSkinStore();
 const { galleryItems, activeHomeAvatarUrl } = storeToRefs(skinStore);
+
+const itemToDelete = ref<string | null>(null);
+
+const confirmDelete = (url: string) => {
+  itemToDelete.value = url;
+};
+
+const handleConfirmDelete = () => {
+  if (itemToDelete.value) {
+    skinStore.deleteImage(itemToDelete.value);
+    itemToDelete.value = null;
+  }
+};
 
 defineEmits<{
   (e: 'selectItem', item: GalleryItem): void;
@@ -14,6 +29,15 @@ defineEmits<{
 
 <template>
   <section class="gallery-section">
+    <!-- Confirmation Modal -->
+    <SkinConfirmModal
+      :show="!!itemToDelete"
+      title="¿ELIMINAR IMAGEN?"
+      message="Esta creación se borrará permanentemente de tu galería."
+      @confirm="handleConfirmDelete"
+      @cancel="itemToDelete = null"
+    />
+
     <div class="gallery-header">
       <h2 class="gallery-title">
         <span class="gallery-kanji">ギャラリー</span>
@@ -41,6 +65,7 @@ defineEmits<{
           @select="$emit('selectItem', $event)"
           @download="skinStore.downloadImage($event)"
           @set-home="skinStore.setActiveHomeAvatar($event)"
+          @delete="confirmDelete"
         />
       </div>
     </div>

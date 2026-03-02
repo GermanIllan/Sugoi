@@ -69,7 +69,7 @@ import { Youtube, Twitter, Instagram } from 'lucide-vue-next';
     <!-- Barra Inferior -->
     <div class="footer-bottom">
       <div class="container bottom-content">
-        <p class="copyright">© 2024 SUGOI — TODOS LOS DERECHOS RESERVADOS</p>
+        <p class="copyright">© {{ new Date().getFullYear() }} SUGOI — TODOS LOS DERECHOS RESERVADOS</p>
         <div class="legal-links">
           <a href="#">POLÍTICA DE PRIVACIDAD</a>
           <a href="#">TÉRMINOS DE SERVICIO</a>
