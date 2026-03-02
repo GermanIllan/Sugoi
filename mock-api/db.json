@@ -64,6 +64,18 @@
       "username": "Kevin",
       "email": "kevingerardoruiz.2001@gmail.com",
       "password": "kevin123"
+    },
+    {
+      "id": "1772440060890",
+      "username": "Ginoko",
+      "email": "ginomaranha@gmail.com",
+      "password": "sugoi123"
+    },
+    {
+      "id": "1772440265337",
+      "username": "Ginoko",
+      "email": "admin2@sugoi.com",
+      "password": "admin123"
     }
   ],
   "avatars": [
@@ -120,6 +132,66 @@
       ],
       "activeHomeAvatarUrl": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Chico%20de%2025%20a%C3%B1os%20y%20lentes%20dorados%2C%20cabello%20rizado%2C%20gorra%20negra%20con%20letra%20P%2C%20sudadera%20roja%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=459891&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
       "id": "a81c"
+    },
+    {
+      "id": "d419",
+      "userId": 1772440265337,
+      "timestamps": [
+        1772440899967,
+        1772440982503,
+        1772441301332,
+        1772441378787,
+        1772441437410,
+        1772441499860,
+        1772441572015,
+        1772441668719
+      ],
+      "lastGeneratedUrl": null,
+      "galleryUrls": [
+        {
+          "url": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20creame%20una%20foto%20de%20perfil%20persona%2C%20calvo%20mulato%20con%20sudadera%20%20de%20color%20negro%20con%20dilataciones%20en%20las%20orejas%20barba%20poblado%20un%20corte%20en%20la%20ceja%2C%20%20piercing%20septum%20y%20auriculares%20peque%C3%B1os%20con%20cable%20de%20color%20blanco%2C%20gafas%20con%20montura%20de%20cristal%20ojos%20peque%C3%B1os?model=gptimage&width=1024&height=1024&seed=863817&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "creame una foto de perfil persona, calvo mulato con sudadera  de color negro con dilataciones en las orejas barba poblado un corte en la ceja,  piercing septum y auriculares pequeños con cable de color blanco, gafas con montura de cristal ojos pequeños\n\n\n\n"
+        },
+        {
+          "url": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20creame%20una%20foto%20de%20perfil%20de%20un%20calvo%20mulato%20con%20sudadera%20%20de%20color%20negro%20con%20dilataciones%20en%20las%20orejas%20barba%20poblado%20un%20corte%20en%20la%20ceja%2C%20%20piercing%20septum%20y%20auriculares%20peque%C3%B1os%20con%20cable%20de%20color%20blanco%2C%20gafas%20con%20montura%20transparente?model=gptimage&width=1024&height=1024&seed=403877&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "creame una foto de perfil de un calvo mulato con sudadera  de color negro con dilataciones en las orejas barba poblado un corte en la ceja,  piercing septum y auriculares pequeños con cable de color blanco, gafas con montura transparente\n\n\n\n"
+        },
+        {
+          "url": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20creame%20una%20foto%20de%20perfil%20de%20un%20calvo%20mulato%20con%20sudadera%20con%20gorro%20de%20color%20negro%20con%20dilataciones%20en%20las%20orejas%20barba%20poblado%20un%20corte%20en%20la%20ceja%20derecha%20%2C%20%20piercing%20septum%20y%20auriculares%20con%20cable%20de%20color%20blanco?model=gptimage&width=1024&height=1024&seed=268477&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "creame una foto de perfil de un calvo mulato con sudadera con gorro de color negro con dilataciones en las orejas barba poblado un corte en la ceja derecha ,  piercing septum y auriculares con cable de color blanco\n\n"
+        }
+      ],
+      "activeHomeAvatarUrl": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20creame%20una%20foto%20de%20perfil%20de%20un%20calvo%20mulato%20con%20sudadera%20%20de%20color%20negro%20con%20dilataciones%20en%20las%20orejas%20barba%20poblado%20un%20corte%20en%20la%20ceja%2C%20%20piercing%20septum%20y%20auriculares%20peque%C3%B1os%20con%20cable%20de%20color%20blanco%2C%20gafas%20con%20montura%20transparente?model=gptimage&width=1024&height=1024&seed=403877&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d"
+    },
+    {
+      "userId": 1772440265337,
+      "timestamps": [
+        1772441976128,
+        1772442011963,
+        1772442056568,
+        1772442138392,
+        1772442196249,
+        1772442232270,
+        1772442303459,
+        1772442341220
+      ],
+      "lastGeneratedUrl": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20creame%20una%20foto%20de%20perfil%20persona%2C%20calvo%20mulato%20con%20sudadera%20%20de%20color%20negro%20con%20dilataciones%20en%20las%20orejas%20barba%20poblado%20un%20corte%20en%20la%20ceja%20que%20se%20note%20que%20la%20ceja%20esta%20partida%2C%20%20piercing%20septum%20y%20auriculares%20razer%20con%20cable%20y%20micro%20de%20color%20blanco%2C%20gafas%20con%20montura%20de%20transparente%20ojos%20peque%C3%B1os?model=gptimage&width=1024&height=1024&seed=187435&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+      "galleryUrls": [
+        {
+          "url": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20creame%20una%20foto%20de%20perfil%20persona%2C%20calvo%20mulato%20con%20sudadera%20%20de%20color%20negro%20con%20dilataciones%20en%20las%20orejas%20barba%20poblado%20un%20corte%20en%20la%20ceja%20que%20se%20note%20que%20la%20ceja%20esta%20partida%2C%20%20piercing%20septum%20y%20auriculares%20razer%20con%20cable%20y%20micro%20de%20color%20blanco%2C%20gafas%20con%20montura%20de%20transparente%20ojos%20peque%C3%B1os?model=gptimage&width=1024&height=1024&seed=187435&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "creame una foto de perfil persona, calvo mulato con sudadera  de color negro con dilataciones en las orejas barba poblado un corte en la ceja que se note que la ceja esta partida,  piercing septum y auriculares razer con cable y micro de color blanco, gafas con montura de transparente ojos pequeños"
+        },
+        {
+          "url": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20creame%20una%20foto%20de%20perfil%20persona%2C%20calvo%20mulato%20con%20sudadera%20%20de%20color%20negro%20con%20dilataciones%20en%20las%20orejas%20barba%20poblado%20un%20corte%20en%20la%20ceja%20que%20se%20note%20que%20la%20ceja%20esta%20partida%2C%20%20piercing%20septum%20y%20auriculares%20razer%20con%20cable%20y%20micro%20de%20color%20blanco%2C%20gafas%20con%20montura%20de%20transparente%20ojos%20peque%C3%B1os?model=gptimage&width=1024&height=1024&seed=198184&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "creame una foto de perfil persona, calvo mulato con sudadera  de color negro con dilataciones en las orejas barba poblado un corte en la ceja que se note que la ceja esta partida,  piercing septum y auriculares razer con cable y micro de color blanco, gafas con montura de transparente ojos pequeños"
+        },
+        {
+          "url": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20creame%20una%20foto%20de%20perfil%20persona%2C%20calvo%20mulato%20con%20sudadera%20%20de%20color%20negro%20con%20dilataciones%20en%20las%20orejas%20barba%20poblado%20un%20corte%20en%20la%20ceja%20derecha%20%2C%20%20piercing%20septum%20y%20auriculares%20peque%C3%B1os%20con%20cable%20de%20color%20blanco%2C%20gafas%20con%20montura%20de%20transparente%20ojos%20peque%C3%B1os?model=gptimage&width=1024&height=1024&seed=246232&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "creame una foto de perfil persona, calvo mulato con sudadera  de color negro con dilataciones en las orejas barba poblado un corte en la ceja derecha ,  piercing septum y auriculares pequeños con cable de color blanco, gafas con montura de transparente ojos pequeños"
+        }
+      ],
+      "activeHomeAvatarUrl": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20creame%20una%20foto%20de%20perfil%20persona%2C%20calvo%20mulato%20con%20sudadera%20%20de%20color%20negro%20con%20dilataciones%20en%20las%20orejas%20barba%20poblado%20un%20corte%20en%20la%20ceja%20derecha%20%2C%20%20piercing%20septum%20y%20auriculares%20peque%C3%B1os%20con%20cable%20de%20color%20blanco%2C%20gafas%20con%20montura%20de%20transparente%20ojos%20peque%C3%B1os?model=gptimage&width=1024&height=1024&seed=246232&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+      "id": "0adc"
     }
   ],
   "tracking": []
