@@ -45,7 +45,7 @@ describe('Avatar Validation', () => {
 
         // Validate that gallery items were correctly loaded into the store
         expect(skinStore.galleryItems).toHaveLength(2);
-        expect(skinStore.galleryItems[0].url).toBe('https://test-image.com/1.png');
-        expect(skinStore.galleryItems[1].url).toBe('https://test-image.com/2.png');
+        expect(skinStore.galleryItems[0]!.url).toBe('https://test-image.com/1.png');
+        expect(skinStore.galleryItems[1]!.url).toBe('https://test-image.com/2.png');
     });
 });

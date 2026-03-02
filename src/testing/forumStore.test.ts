@@ -6,7 +6,7 @@ describe('ForumStore', () => {
     beforeEach(() => {
         setActivePinia(createPinia());
         // Mock global fetch
-        global.fetch = vi.fn();
+        globalThis.fetch = vi.fn();
     });
 
     it('should add a new topic to the store', async () => {
@@ -19,7 +19,7 @@ describe('ForumStore', () => {
             createdAt: new Date().toISOString()
         };
 
-        (global.fetch as any).mockResolvedValue({
+        (globalThis.fetch as any).mockResolvedValue({
             ok: true,
             json: async () => mockTopic
         });
@@ -32,7 +32,7 @@ describe('ForumStore', () => {
 
         expect(result).toEqual(mockTopic);
         expect(forumStore.topics).toContainEqual(mockTopic);
-        expect(global.fetch).toHaveBeenCalledWith('http://localhost:5174/topics', expect.objectContaining({
+        expect(globalThis.fetch).toHaveBeenCalledWith('http://localhost:5174/topics', expect.objectContaining({
             method: 'POST',
             body: expect.stringContaining('Test Topic')
         }));
@@ -48,7 +48,7 @@ describe('ForumStore', () => {
             createdAt: new Date().toISOString()
         };
 
-        (global.fetch as any).mockResolvedValue({
+        (globalThis.fetch as any).mockResolvedValue({
             ok: true,
             json: async () => mockReply
         });
@@ -60,7 +60,7 @@ describe('ForumStore', () => {
         });
 
         expect(forumStore.replies).toContainEqual(mockReply);
-        expect(global.fetch).toHaveBeenCalledWith('http://localhost:5174/replies', expect.objectContaining({
+        expect(globalThis.fetch).toHaveBeenCalledWith('http://localhost:5174/replies', expect.objectContaining({
             method: 'POST',
             body: expect.stringContaining('Test reply')
         }));
