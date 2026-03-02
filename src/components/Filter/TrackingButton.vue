@@ -94,7 +94,22 @@ const kanjiText = computed(() => {
     flex-direction: column;
     align-items: center;
     overflow: hidden;
-    min-width: 280px;
+    width: 100%;
+    max-width: 320px;
+}
+
+@media (max-width: 480px) {
+    .tracking-btn {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .tracking-btn .kanji {
+        font-size: 1rem;
+    }
+    
+    .tracking-btn .text {
+        font-size: 0.8rem;
+    }
 }
 
 .tracking-btn .kanji {

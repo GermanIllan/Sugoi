@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { Activity, Trophy, TrendingUp } from 'lucide-vue-next';
 import type { TrackingRecord } from '@/types/tracking';
 
@@ -7,12 +8,14 @@ interface Stats {
     totalManga: number;
     watched: number;
     planToWatch: number;
-    topRated: TrackingRecord | null;
+    topRatedItems: TrackingRecord[];
 }
 
-defineProps<{
+const props = defineProps<{
     stats: Stats;
 }>();
+
+const topRated = computed(() => props.stats.topRatedItems[0] || null);
 </script>
 
 <template>
@@ -44,21 +47,27 @@ defineProps<{
         </div>
     </div>
 
-    <!-- Top Highlight in Profile -->
+    <!-- Top Highlights in Profile -->
     <div class="tracking-highlight-area">
-        <div v-if="stats.topRated" class="profile-top-rated border-thick">
-            <div class="highlight-tag border-thin shadow-xs">
-                <Trophy :size="14" /> TU MEJOR PUNTUADO
-            </div>
-            <div class="highlight-content">
-                <div class="highlight-image border-thin">
-                    <img :src="stats.topRated.imageUrl" :alt="stats.topRated.title">
+        <div v-if="stats.topRatedItems.length > 0" class="profile-top-rated-grid">
+            <div 
+                v-for="(item, index) in stats.topRatedItems" 
+                :key="item.id" 
+                class="profile-top-rated border-thick"
+            >
+                <div class="highlight-tag border-thin shadow-xs">
+                    <Trophy :size="12" /> #{{ index + 1 }} MEJOR
                 </div>
-                <div class="highlight-info">
-                    <h4 class="highlight-title">{{ stats.topRated.title }}</h4>
-                    <div class="highlight-score">
-                        <span class="score-num">{{ stats.topRated.personalScore }}</span>
-                        <span class="score-total">/ 10</span>
+                <div class="highlight-content">
+                    <div class="highlight-image border-thin">
+                        <img :src="item.imageUrl" :alt="item.title">
+                    </div>
+                    <div class="highlight-info">
+                        <h4 class="highlight-title">{{ item.title }}</h4>
+                        <div class="highlight-score">
+                            <span class="score-num">{{ item.personalScore }}</span>
+                            <span class="score-total">/ 10</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -147,25 +156,33 @@ defineProps<{
     margin: var(--spacing-sm) 0;
 }
 
+.profile-top-rated-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacing-md);
+}
+
 .profile-top-rated {
     position: relative;
     padding: var(--spacing-md);
     background: #f8f8f8;
+    margin-top: 10px; /* Space for the tag */
 }
 
 .highlight-tag {
     position: absolute;
-    top: -12px;
-    left: var(--spacing-md);
+    top: -10px;
+    left: var(--spacing-sm);
     background: var(--color-black-carbon);
     color: white;
-    padding: 2px 10px;
-    font-size: 0.6rem;
+    padding: 2px 8px;
+    font-size: 0.55rem;
     font-weight: var(--font-weight-black);
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
     letter-spacing: 1px;
+    z-index: 1;
 }
 
 .highlight-content {

@@ -7,7 +7,7 @@ import { useForumStore } from '@/stores/forum';
 import { storeToRefs } from 'pinia';
 import SkinGallery from '@/components/Skin/SkinGallery.vue';
 import SkinDetailsModal from '@/components/Skin/SkinDetailsModal.vue';
-import SkinConfirmModal from '@/components/Skin/SkinConfirmModal.vue';
+import ConfirmModal from '@/components/Common/ConfirmModal.vue';
 import { User as UserIcon, Activity, MessageSquare } from 'lucide-vue-next';
 import type { GalleryItem } from '@/types/skin';
 
@@ -53,11 +53,11 @@ const handleConfirmDelete = () => {
 
 <template>
   <div class="profile-view container">
-    <!-- Modals (Reused from SkinView) -->
-    <SkinConfirmModal
+    <!-- Confirmation Modal -->
+    <ConfirmModal 
       :show="!!itemToDelete"
-      title="¿ELIMINAR ESTA CREACIÓN?"
-      message="Esta acción no se puede deshacer."
+      title="¿ELIMINAR AVATAR?"
+      message="¿Estás seguro de que quieres eliminar este avatar de tu galería? Esta acción no se puede deshacer."
       @confirm="handleConfirmDelete"
       @cancel="itemToDelete = null"
     />
