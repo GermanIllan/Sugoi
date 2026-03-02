@@ -15,11 +15,12 @@ export const useTrackingStore = defineStore('tracking', () => {
         const watched = userTracking.value.filter(i => i.watchStatus === 'watched').length;
         const planToWatch = userTracking.value.filter(i => i.watchStatus === 'plan_to_watch').length;
 
-        const topRated = [...userTracking.value]
+        const topRatedItems = [...userTracking.value]
             .filter(i => i.personalScore !== null)
-            .sort((a, b) => (b.personalScore || 0) - (a.personalScore || 0))[0] || null;
+            .sort((a, b) => (b.personalScore || 0) - (a.personalScore || 0))
+            .slice(0, 3);
 
-        return { totalAnime, totalManga, watched, planToWatch, topRated };
+        return { totalAnime, totalManga, watched, planToWatch, topRatedItems };
     });
 
     /**
@@ -38,19 +39,34 @@ export const useTrackingStore = defineStore('tracking', () => {
         }
     };
 
+    const isPikachuLoading = ref(false);
+
     /**
      * Adds an item to tracking.
      */
     const addToTracking = async (record: TrackingRecord) => {
         isLoading.value = true;
+        isPikachuLoading.value = true; // Show pikachu splash
+        const startTime = Date.now();
+
         try {
             const newRecord = await trackingService.add(record);
             userTracking.value.push(newRecord);
         } catch (err: any) {
             error.value = err.message || 'Error al añadir seguimiento';
+            isPikachuLoading.value = false;
             throw err;
         } finally {
             isLoading.value = false;
+
+            // Ensure pikachu is shown for at least 2 seconds
+            const now = Date.now();
+            const elapsed = now - startTime;
+            const remaining = Math.max(0, 2000 - elapsed);
+
+            setTimeout(() => {
+                isPikachuLoading.value = false;
+            }, remaining);
         }
     };
 
@@ -102,6 +118,7 @@ export const useTrackingStore = defineStore('tracking', () => {
     return {
         userTracking,
         isLoading,
+        isPikachuLoading,
         error,
         stats,
         loadUserTracking,

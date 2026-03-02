@@ -58,10 +58,10 @@ export const useAnimeStore = defineStore('anime', () => {
      * @param query - The search string to look for.
      */
     const fetchAnimeList = async (
-        query: string = '', 
-        genres: string = '', 
-        page: number = 1, 
-        limit: number = 25,
+        query: string = '',
+        genres: string = '',
+        page: number = 1,
+        limit: number = 15,
         orderBy: string = '',
         sort: 'desc' | 'asc' = 'desc'
     ) => {
