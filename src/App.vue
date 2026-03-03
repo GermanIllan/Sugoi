@@ -2,6 +2,10 @@
 import { RouterView } from 'vue-router'
 import NavBar from "./components/Layout/NavBar.vue";
 import Footer from "./components/Layout/Footer.vue";
+import PikachuLoader from "./components/Common/PikachuLoader.vue";
+import { useTrackingStore } from "./stores/trackingStore";
+
+const trackingStore = useTrackingStore();
 </script>
 
 <template>
@@ -11,6 +15,8 @@ import Footer from "./components/Layout/Footer.vue";
       <RouterView />
     </main>
     <Footer />
+    
+    <PikachuLoader :show="trackingStore.isPikachuLoading" />
   </div>
 </template>
 

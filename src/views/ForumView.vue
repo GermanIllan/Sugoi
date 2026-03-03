@@ -2,6 +2,7 @@
 import { onMounted, ref, computed, watch } from 'vue'
 import { useForumStore } from '@/stores/forum'
 import { useAuthStore } from '@/stores/authStore'
+import { useScrollToTopOnUpdate } from '@/composables/useScroll'
 import TopicCard from '@/components/Forum/TopicCard.vue'
 import CreateTopicForm from '@/components/Forum/CreateTopicForm.vue'
 
@@ -12,6 +13,9 @@ const searchQuery = ref('')
 
 const currentPage = ref(1)
 const itemsPerPage = 5
+
+// Auto-scroll on page change
+useScrollToTopOnUpdate(currentPage)
 
 onMounted(async () => {
   await forumStore.fetchTopics()
@@ -36,6 +40,10 @@ const paginatedTopics = computed(() => {
 
 watch(searchQuery, () => {
   currentPage.value = 1
+})
+
+watch(currentPage, () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 })
 
 const handleTopicCreated = () => {

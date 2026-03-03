@@ -349,15 +349,30 @@ const goBack = () => {
 @media (max-width: 768px) {
     .detail-grid {
         grid-template-columns: 1fr;
+        padding: var(--spacing-md);
+        gap: var(--spacing-xl);
     }
     
     .detail-sidebar {
-        max-width: 250px;
+        max-width: 280px;
+        width: 100%;
         margin: 0 auto;
     }
     
     .detail-title {
         font-size: 1.8rem;
+    }
+    
+    .detail-main {
+        text-align: center;
+    }
+    
+    .info-strip {
+        justify-content: center;
+    }
+    
+    .section-title {
+        text-align: left;
     }
 }
 </style>

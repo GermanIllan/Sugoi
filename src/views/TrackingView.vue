@@ -1,18 +1,28 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useTrackingStore } from '@/stores/trackingStore';
 import { useAuthStore } from '@/stores/authStore';
+import { useScrollToTopOnUpdate } from '@/composables/useScroll';
 import TrackingDashboard from '@/components/Tracking/TrackingDashboard.vue';
 import TrackingFilters from '@/components/Tracking/TrackingFilters.vue';
 import TrackingGrid from '@/components/Tracking/TrackingGrid.vue';
+import ConfirmModal from '@/components/Common/ConfirmModal.vue';
 import type { TrackingRecord, WatchStatus } from '@/types/tracking';
 
 const trackingStore = useTrackingStore();
 const authStore = useAuthStore();
 
+// Modal state
+const showRemoveModal = ref(false);
+const itemToRemoveId = ref<number | null>(null);
+
 // Filter states
 const activeCategory = ref<'all' | 'anime' | 'manga'>('all');
 const activeStatus = ref<'all' | WatchStatus>('all');
+
+// Auto-scroll on filter changes
+useScrollToTopOnUpdate(activeCategory);
+useScrollToTopOnUpdate(activeStatus);
 const sortOrder = ref<'newest' | 'score' | 'title'>('newest');
 
 onMounted(async () => {
@@ -51,13 +61,25 @@ const handleUpdate = async (id: number, data: Partial<TrackingRecord>) => {
     await trackingStore.updateTracking(id, data);
 };
 
-const handleRemove = async (id: number) => {
-    if (confirm('¿Estás seguro de que quieres quitar este ítem de tu lista?')) {
-        const item = trackingStore.userTracking.find(i => i.id === id);
+const handleRemove = (id: number) => {
+    itemToRemoveId.value = id;
+    showRemoveModal.value = true;
+};
+
+const confirmRemove = async () => {
+    if (itemToRemoveId.value !== null) {
+        const item = trackingStore.userTracking.find(i => i.id === itemToRemoveId.value);
         if (item && authStore.user) {
             await trackingStore.removeFromTracking(Number(authStore.user.id), item.malId, item.category);
         }
+        showRemoveModal.value = false;
+        itemToRemoveId.value = null;
     }
+};
+
+const cancelRemove = () => {
+    showRemoveModal.value = false;
+    itemToRemoveId.value = null;
 };
 </script>
 
@@ -89,6 +111,17 @@ const handleRemove = async (id: number) => {
                 @remove="handleRemove"
             />
         </div>
+
+        <!-- Confirm Removal Modal -->
+        <ConfirmModal 
+            :show="showRemoveModal"
+            title="¿QUITAR DE LA LISTA?"
+            message="¿Estás seguro de que quieres eliminar este ítem de tu registro personal? Esta acción no se puede deshacer."
+            confirmText="ELIMINAR"
+            cancelText="CANCELAR"
+            @confirm="confirmRemove"
+            @cancel="cancelRemove"
+        />
     </div>
 </template>
 

@@ -6,7 +6,7 @@ interface Stats {
     totalManga: number;
     watched: number;
     planToWatch: number;
-    topRated: TrackingRecord | null;
+    topRatedItems: TrackingRecord[];
 }
 
 defineProps<{
@@ -41,18 +41,22 @@ defineProps<{
         </div>
 
         <!-- Highlight Section -->
-        <div v-if="stats.topRated" class="top-rated-section border-thick shadow-md">
-            <div class="highlight-badge">MEJOR PUNTUADO</div>
-            <div class="top-rated-content">
-                <div class="top-rated-image border-thick">
-                    <img :src="stats.topRated.imageUrl" :alt="stats.topRated.title">
-                </div>
-                <div class="top-rated-info">
-                    <h3 class="top-rated-title">{{ stats.topRated.title }}</h3>
-                    <div class="personal-score">
-                        <span class="score-label">TU NOTA</span>
-                        <div class="score-value border-thin">
-                            {{ stats.topRated.personalScore }} / 10
+        <div v-if="stats.topRatedItems.length > 0" class="top-rated-container">
+            <div class="highlight-badge-global">MEJORES PUNTUADOS</div>
+            <div class="top-rated-grid">
+                <div v-for="item in stats.topRatedItems" :key="item.id" class="top-rated-card border-thick shadow-md">
+                    <div class="top-rated-content">
+                        <div class="top-rated-image border-thick">
+                            <img :src="item.imageUrl" :alt="item.title">
+                        </div>
+                        <div class="top-rated-info">
+                            <h3 class="top-rated-title">{{ item.title }}</h3>
+                            <div class="personal-score">
+                                <span class="score-label">TU NOTA</span>
+                                <div class="score-value border-thin">
+                                    {{ item.personalScore }} / 10
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -128,15 +132,27 @@ defineProps<{
     color: var(--color-accent-blue);
 }
 
-.top-rated-section, .top-rated-empty {
+.top-rated-container {
+    position: relative;
+    margin-top: var(--spacing-xl);
+}
+
+.top-rated-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.top-rated-card {
+    background: var(--color-white-snow);
+    padding: var(--spacing-lg);
+}
+
+.top-rated-empty {
     background: var(--color-white-snow);
     padding: var(--spacing-xl);
     position: relative;
     display: flex;
-    flex-direction: column;
-}
-
-.top-rated-empty {
     border-style: dashed;
     flex-direction: row;
     align-items: center;
@@ -160,27 +176,28 @@ defineProps<{
     font-size: 0.9rem;
 }
 
-.highlight-badge {
+.highlight-badge-global {
     position: absolute;
     top: -15px;
-    left: var(--spacing-xl);
+    left: var(--spacing-md);
     background: var(--color-black-carbon);
     color: white;
     padding: 4px 16px;
     font-weight: var(--font-weight-black);
     font-size: 0.8rem;
     letter-spacing: 2px;
+    z-index: 2;
 }
 
 .top-rated-content {
     display: flex;
-    gap: var(--spacing-xl);
+    gap: var(--spacing-md);
     align-items: center;
 }
 
 .top-rated-image {
-    width: 100px;
-    height: 140px;
+    width: 60px;
+    height: 90px;
     flex-shrink: 0;
     overflow: hidden;
 }
@@ -193,24 +210,28 @@ defineProps<{
 
 .top-rated-info {
     flex-grow: 1;
+    min-width: 0;
 }
 
 .top-rated-title {
     font-family: var(--font-heading);
-    font-size: 2rem;
+    font-size: 1.2rem;
     font-weight: var(--font-weight-black);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-xs);
     text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .personal-score {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-xs);
+    gap: 2px;
 }
 
 .score-label {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     font-weight: bold;
     color: #666;
     letter-spacing: 1px;
@@ -218,11 +239,11 @@ defineProps<{
 
 .score-value {
     display: inline-block;
-    padding: 8px 16px;
+    padding: 4px 10px;
     background: var(--color-primary);
     color: white;
     font-weight: var(--font-weight-black);
-    font-size: 1.2rem;
+    font-size: 0.9rem;
     width: fit-content;
 }
 

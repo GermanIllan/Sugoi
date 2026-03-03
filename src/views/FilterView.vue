@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia';
 import { useAnimeStore } from '@/stores/animeStore';
 import { useMangaStore } from '@/stores/mangaStore';
 import { useSearchStore } from '@/stores/searchStore';
+import { useScrollToTopOnUpdate } from '@/composables/useScroll';
 
 // Components
 import FilterCategoryCard from '@/components/Filter/FilterCategoryCard.vue';
@@ -28,6 +29,9 @@ const {
     orderBy,
     sort
 } = storeToRefs(searchStore);
+
+// Global Auto-scroll on page change
+useScrollToTopOnUpdate(currentPage);
 
 const isClosing = ref(false);
 let searchTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -66,7 +70,7 @@ const closeCategory = () => {
         isClosing.value = false;
         searchQuery.value = '';
         selectedGenre.value = '';
-        orderBy.value = '';
+        orderBy.value = 'start_date';
         sort.value = 'desc';
     }, 500);
 };
@@ -99,7 +103,7 @@ const performSearch = async (page: number = 1) => {
     currentPage.value = typeof page === 'number' ? page : 1;
     const query = searchQuery.value.trim();
     const genre = selectedGenre.value ? selectedGenre.value.toString() : '';
-    const limit = 25; 
+    const limit = 15; 
 
     if (!query && !genre && !orderBy.value) {
         const genres = selectedCategory.value === 'anime' ? animeGenres.value : mangaGenres.value;
@@ -172,7 +176,6 @@ const filterDuplicates = () => {
 
 const changePage = (page: number) => {
     handleSearch(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const goToDetail = (payload: { type: string, id: number }) => {
