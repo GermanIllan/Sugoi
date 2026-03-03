@@ -25,6 +25,7 @@ const trackingStore = useTrackingStore();
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden; /* Prevent horizontal scrollbars from animations */
 }
 
 .container {

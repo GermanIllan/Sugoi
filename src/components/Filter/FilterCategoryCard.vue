@@ -3,6 +3,8 @@
  * Component representing a filter category (Anime/Manga).
  * Handles the selection and expansion logic.
  */
+import paperCat from '@/assets/images/gif/papercat.gif';
+import fishCat from '@/assets/images/gif/fishcat.gif';
 
 interface Props {
     category: 'anime' | 'manga';
@@ -41,6 +43,24 @@ const handleClose = (e: Event) => {
         v-if="!isClosing || isSelected"
         @click="handleCardClick"
     >
+        <!-- Paper Cat walking on the top border -->
+        <img 
+            v-if="category === 'manga' && isSelected" 
+            :src="paperCat" 
+            class="paper-cat-walker" 
+            alt="Paper Cat" 
+            aria-hidden="true" 
+        />
+
+        <!-- Fish Cat for Anime category -->
+        <img 
+            v-if="category === 'anime' && isSelected" 
+            :src="fishCat" 
+            class="fish-cat-anime" 
+            alt="Fish Cat" 
+            aria-hidden="true" 
+        />
+
         <!-- Close button (only visible when selected) -->
         <button 
             v-if="isSelected" 
@@ -230,5 +250,55 @@ const handleClose = (e: Event) => {
     .card-kanji {
         font-size: 3.5rem;
     }
+
+    .paper-cat-walker {
+        width: 50px;
+        top: -52px;
+    }
+
+    .fish-cat-anime {
+        width: 80px;
+        top: -65px;
+    }
+}
+
+.paper-cat-walker {
+    position: absolute;
+    top: -80px; /* Adjusting height relative to the border */
+    left: -100px;
+    width: 100px;
+    height: auto;
+    z-index: 100;
+    pointer-events: none;
+    animation: walk-on-border 74s linear infinite;
+}
+
+.fish-cat-anime {
+    position: absolute;
+    top: -115px; /* Positioned at the level of the top border */
+    right: 40px;
+    width: 180px;
+    rotate: -4deg;
+    height: auto;
+    z-index: 100;
+    pointer-events: none;
+}
+
+@keyframes walk-on-border {
+    /* Total 74s: L->R(20s) + Wait(17s) + R->L(20s) + Wait(17s) */
+    
+    /* 1. Walk Left to Right (across the screen) */
+    0% { left: -20vw; transform: scaleX(1); }
+    27% { left: 120vw; transform: scaleX(1); }
+    
+    /* 2. Wait at Right (Stay outside at 120vw) */
+    27.1%, 49.9% { left: 120vw; transform: scaleX(-1); }
+    
+    /* 3. Walk Right to Left (mirrored) */
+    50% { left: 120vw; transform: scaleX(-1); }
+    77% { left: -20vw; transform: scaleX(-1); }
+    
+    /* 4. Wait at Left (Stay outside at -20vw) */
+    77.1%, 100% { left: -20vw; transform: scaleX(1); }
 }
 </style>

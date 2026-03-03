@@ -6,6 +6,7 @@ import { useNewsStore } from '@/stores/newsStore'
 import { useAuthStore } from '@/stores/authStore'
 import { useScrollToTopOnUpdate } from '@/composables/useScroll'
 import type { NewsCard } from '@/stores/newsStore'
+import baloonCat from '@/assets/images/gif/balooncat.gif'
 
 type NewsFilter = 'latest' | 'weekly' | 'strategy' | 'popular'
 
@@ -414,6 +415,9 @@ watch(
         {{ loadingMore ? 'Cargando...' : 'Cargar más noticias' }}
       </button>
     </div>
+
+    <!-- Floating Balloon Cat -->
+    <img :src="baloonCat" alt="Balloon Cat" class="balloon-cat" aria-hidden="true" />
   </section>
 </template>
 
@@ -961,6 +965,36 @@ watch(
   .manga-side-card,
   .review-card {
     grid-template-columns: 1fr;
+  }
+}
+
+.balloon-cat {
+  position: fixed;
+  z-index: 9999;
+  width: 100px;
+  height: auto;
+  pointer-events: none;
+  animation: diagonal-move 23s linear infinite, float-oscillation 3s ease-in-out infinite alternate;
+  animation-delay: 12s;
+}
+
+@keyframes diagonal-move {
+  0% {
+    right: -150px;
+    top: 50%;
+  }
+  100% {
+    right: 110vw;
+    top: -150px;
+  }
+}
+
+@keyframes float-oscillation {
+  from {
+    margin-top: -20px;
+  }
+  to {
+    margin-top: 20px;
   }
 }
 </style>
