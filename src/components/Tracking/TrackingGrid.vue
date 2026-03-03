@@ -38,7 +38,7 @@ const emit = defineEmits<{
 
 <style scoped>
 .tracking-grid-container {
-    padding-bottom: 300px; /* Space for dropdowns in last row */
+    padding-bottom: 50px; /* Space for dropdowns in last row */
 }
 
 .loading-state, .empty-state {
