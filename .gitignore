@@ -13,6 +13,7 @@ dist
 dist-ssr
 coverage
 *.local
+.env
 
 # Editor directories and files
 .vscode/*
@@ -37,3 +38,8 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+# Conversion tools
+.venv/*
+convert_gif*.py
+.u2net/

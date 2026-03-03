@@ -3,6 +3,7 @@
  * Componente Footer
  * Sigue los principios de Neo-Brutalismo Editorial Japonés.
  */
+import { Youtube, Twitter, Instagram } from 'lucide-vue-next';
 </script>
 
 <template>
@@ -36,10 +37,10 @@
         <div class="footer-links">
           <h4 class="links-title">Navegación</h4>
           <ul class="links-list">
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Calificaciones</a></li>
-            <li><a href="#">Videojuegos</a></li>
-            <li><a href="#">Merchandising</a></li>
+            <li><router-link to="/noticias">Noticias</router-link></li>
+            <li><router-link to="/filtros">Filtros</router-link></li>
+            <li><router-link to="/tracking">Tracking</router-link></li>
+            <li><router-link to="/create-skin">Crear Avatar</router-link></li>
           </ul>
         </div>
 
@@ -47,7 +48,7 @@
         <div class="footer-links">
           <h4 class="links-title">Comunidad</h4>
           <ul class="links-list">
-            <li><a href="#">Foro</a></li>
+            <li><router-link to="/forum">Foro</router-link></li>
             <li><a href="#">Discord</a></li>
             <li><a href="#">Contribuir</a></li>
           </ul>
@@ -57,9 +58,9 @@
         <div class="footer-socials">
           <h4 class="links-title">Síguenos</h4>
           <div class="social-icons">
-            <a href="#" class="social-icon">X</a>
-            <a href="#" class="social-icon">IG</a>
-            <a href="https://www.youtube.com/watch?v=db8FRxYM97Y" class="social-icon">YT</a>
+            <a href="#" class="social-icon"><Twitter /></a>
+            <a href="#" class="social-icon"><Instagram /></a>
+            <a href="https://www.youtube.com/watch?v=db8FRxYM97Y" class="social-icon"><Youtube /></a>
           </div>
         </div>
       </div>
@@ -68,7 +69,7 @@
     <!-- Barra Inferior -->
     <div class="footer-bottom">
       <div class="container bottom-content">
-        <p class="copyright">© 2024 SUGOI — TODOS LOS DERECHOS RESERVADOS</p>
+        <p class="copyright">© {{ new Date().getFullYear() }} SUGOI — TODOS LOS DERECHOS RESERVADOS</p>
         <div class="legal-links">
           <a href="#">POLÍTICA DE PRIVACIDAD</a>
           <a href="#">TÉRMINOS DE SERVICIO</a>
@@ -80,6 +81,8 @@
 
 <style scoped>
 .footer {
+  position: relative;
+  z-index: 20;
   background-color: #000000;
   color: var(--color-white-snow);
   width: 100%;
@@ -198,7 +201,7 @@
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
   letter-spacing: 1px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   transition: color 0.2s ease;
 }
 

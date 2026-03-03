@@ -1,27 +1,27 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useForumStore } from '@/stores/forum'
+import { useAuthStore } from '@/stores/authStore'
 
 const emit = defineEmits(['created'])
 const forumStore = useForumStore()
+const authStore = useAuthStore()
 
 const title = ref('')
-const author = ref('')
 const content = ref('')
 const isSubmitting = ref(false)
 
 const handleSubmit = async () => {
-  if (!title.value || !author.value || !content.value) return
+  if (!title.value || !content.value || !authStore.user) return
 
   isSubmitting.value = true
   try {
     await forumStore.createTopic({
       title: title.value,
-      author: author.value,
+      author: authStore.user.username,
       content: content.value
     })
     title.value = ''
-    author.value = ''
     content.value = ''
     emit('created')
   } finally {
@@ -46,17 +46,7 @@ const handleSubmit = async () => {
       >
     </div>
     
-    <div class="form-group">
-      <label for="author">Tu Apodo</label>
-      <input 
-        id="author" 
-        v-model="author" 
-        type="text" 
-        placeholder="Escribe tu nombre..." 
-        class="form-input"
-        required
-      >
-    </div>
+
 
     <div class="form-group">
       <label for="content">Mensaje</label>

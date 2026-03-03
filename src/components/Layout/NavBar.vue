@@ -1,7 +1,50 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/authStore';
+import { useSkinStore } from '@/stores/skinStore';
+import { storeToRefs } from 'pinia';
+import { User, Activity, LogOut } from 'lucide-vue-next';
 import loadingGif from '@/assets/images/gif/loading.webp';
+
+const authStore = useAuthStore();
+const skinStore = useSkinStore();
+const { user, isAuthenticated } = storeToRefs(authStore);
+const { activeHomeAvatarUrl } = storeToRefs(skinStore);
+const router = useRouter();
+
+const isUserDropdownOpen = ref(false);
+const dropdownContainer = ref<HTMLElement | null>(null);
+
+const toggleUserDropdown = (event: Event) => {
+  event.stopPropagation();
+  isUserDropdownOpen.value = !isUserDropdownOpen.value;
+};
+
+const handleClickOutside = (event: MouseEvent) => {
+  if (dropdownContainer.value && !dropdownContainer.value.contains(event.target as Node)) {
+    isUserDropdownOpen.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
+
+const handleLogout = () => {
+  authStore.logout();
+  isUserDropdownOpen.value = false;
+  router.push('/sign-in');
+};
+
+const handleLogoutMobile = () => {
+  isMobileMenuOpen.value = false;
+  handleLogout();
+};
 
 interface MenuItem {
   label: string;
@@ -12,8 +55,8 @@ const menuItems: MenuItem[] = [
   { label: 'Inicio', link: '/' },
   { label: 'Noticias', link: '/noticias' },
   { label: 'Filtros', link: '/filtros' },
-  { label: 'Foro', link: '/blog' },
-  { label: 'Crear Avatar', link: '/avatar' },
+  { label: 'Foro', link: '/forum' },
+  { label: 'Crear Avatar', link: '/create-skin' },
 ];
 
 const isMobileMenuOpen = ref(false);
@@ -67,6 +110,63 @@ function isActive(path: string): boolean {
         </li>
       </ul>
 
+      <!-- Auth Section (Desktop Only) -->
+      <div class="auth-section desktop-only">
+        <!-- Not Authenticated: Login Icon -->
+        <router-link v-if="!isAuthenticated" to="/sign-in" class="auth-btn" title="Iniciar sesión">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="auth-icon">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </router-link>
+
+        <!-- Authenticated: User Dropdown -->
+        <div v-else class="user-dropdown-wrapper" ref="dropdownContainer">
+          <button class="auth-btn user-btn" @click="toggleUserDropdown" :class="{ 'active': isUserDropdownOpen }">
+            <div class="user-avatar-placeholder border-thin shadow-sm">
+              <img v-if="activeHomeAvatarUrl" :src="activeHomeAvatarUrl" :alt="user?.username" class="user-avatar-img" />
+              <template v-else>
+                {{ user?.username.charAt(0).toUpperCase() }}
+              </template>
+            </div>
+          </button>
+
+          <div v-if="isUserDropdownOpen" class="user-dropdown card shadow-md">
+            <div class="dropdown-header">
+              <span class="user-name">{{ user?.username }}</span>
+              <span class="user-email">{{ user?.email }}</span>
+            </div>
+            <div class="dropdown-divider border-bottom-thick"></div>
+            
+            <router-link class="dropdown-item" to="/profile" @click="isUserDropdownOpen = false">
+              <span class="kanji-item">プロフィール</span>
+              <div class="dropdown-item-content">
+                <User :size="14" />
+                <span>Perfil</span>
+              </div>
+            </router-link>
+
+            <router-link class="dropdown-item" to="/tracking" @click="isUserDropdownOpen = false">
+              <span class="kanji-item">トラッキング</span>
+              <div class="dropdown-item-content">
+                <Activity :size="14" />
+                <span>Tracking</span>
+              </div>
+            </router-link>
+
+            <div class="dropdown-divider"></div>
+            
+            <button class="dropdown-item logout-btn" @click="handleLogout">
+              <span class="kanji-item">ログアウト</span>
+              <div class="dropdown-item-content">
+                <LogOut :size="14" />
+                <span>Cerrar Sesión</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Burger Icon -->
       <button class="burger-menu" @click="toggleMobileMenu" aria-label="Toggle menu">
         <span class="burger-bar" :class="{ 'open': isMobileMenuOpen }"></span>
@@ -78,15 +178,68 @@ function isActive(path: string): boolean {
     <!-- Mobile Menu Overlay -->
     <div class="mobile-menu" :class="{ 'active': isMobileMenuOpen }">
       <ul class="mobile-nav-links">
+        <!-- User Info in Mobile -->
+        <li v-if="isAuthenticated" class="mobile-user-info-item">
+          <div class="mobile-user-box border-thin shadow-sm">
+            <div class="user-avatar-placeholder border-thin">
+              <img v-if="activeHomeAvatarUrl" :src="activeHomeAvatarUrl" :alt="user?.username" class="user-avatar-img" />
+              <template v-else>
+                {{ user?.username.charAt(0).toUpperCase() }}
+              </template>
+            </div>
+            <div class="mobile-user-details">
+              <span class="user-name">{{ user?.username }}</span>
+              <span class="user-email">{{ user?.email }}</span>
+            </div>
+          </div>
+        </li>
+
         <li v-for="item in menuItems" :key="item.label">
           <router-link 
             :to="item.link" 
             class="mobile-nav-item" 
-            :class="{ 'button-primary mobile-btn active-btn': isActive(item.link) }" 
+            :class="{ 'active-mobile': isActive(item.link) }" 
             @click="handleNavigation(item.link)"
           >
             {{ item.label }}
           </router-link>
+        </li>
+
+        <!-- Divider for Auth Section -->
+        <li v-if="isAuthenticated" class="mobile-divider">
+          <span class="divider-kanji">ユーザー</span>
+          <div class="divider-line"></div>
+        </li>
+
+        <li v-if="isAuthenticated">
+          <router-link to="/profile" class="mobile-nav-item auth-item" :class="{ 'active-mobile': isActive('/profile') }" @click="isMobileMenuOpen = false">
+            <span class="kanji-item">プロフィール</span>
+            MI PERFIL
+          </router-link>
+        </li>
+        <li v-if="isAuthenticated">
+          <router-link to="/tracking" class="mobile-nav-item auth-item" :class="{ 'active-mobile': isActive('/tracking') }" @click="isMobileMenuOpen = false">
+            <span class="kanji-item">トラッキング</span>
+            MI TRACKING
+          </router-link>
+        </li>
+
+        <!-- Auth Actions in Mobile -->
+        <li v-if="!isAuthenticated" class="auth-mobile-item">
+          <router-link 
+            to="/sign-in" 
+            class="mobile-nav-item" 
+            @click="handleNavigation('/sign-in')"
+          >
+            <span class="kanji-item">ログイン</span>
+            ACCEDER
+          </router-link>
+        </li>
+        <li v-else class="auth-mobile-item">
+          <button class="mobile-nav-item logout-mobile" @click="handleLogoutMobile">
+            <span class="kanji-item">ログアウト</span>
+            CERRAR SESIÓN
+          </button>
         </li>
       </ul>
     </div>
@@ -168,16 +321,18 @@ function isActive(path: string): boolean {
 /* Base styles are bare, active state adds button styles */
 .active-btn.small-btn {
     background-color: var(--color-primary);
-    box-shadow: 2px 2px 0 var(--color-white-snow); /* Contrast shadow on black header */
-    border-color: var(--color-black-carbon);
+    color: var(--color-black-carbon) !important;
+    box-shadow: 4px 4px 0 var(--color-white-snow);
+    border: 2px solid var(--color-black-carbon);
+    transform: translateY(-2px);
 }
 .active-btn.small-btn:hover {
-    box-shadow: 4px 4px 0 var(--color-white-snow);
-    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-white-snow);
+    transform: translate(-2px, -4px);
 }
 .active-btn.small-btn:active {
     box-shadow: 1px 1px 0 var(--color-white-snow);
-    transform: translate(1px, 1px);
+    transform: translate(1px, 0px);
 }
 
 
@@ -259,29 +414,223 @@ function isActive(path: string): boolean {
   color: var(--color-white-snow);
   text-decoration: none;
   font-family: var(--font-heading);
-  font-size: var(--font-size-xl);
+  font-size: 1.25rem; /* Reduced for better mobile fit */
+  font-weight: var(--font-weight-black);
   text-transform: uppercase;
-  padding: var(--spacing-lg) 0; /* Vertical padding */
+  padding: var(--spacing-md) 0;
   border: none;
   background: none;
-  transition: transform 0.2s ease, color 0.2s ease;
+  transition: all 0.2s ease;
+  letter-spacing: 2px;
+}
+
+.mobile-nav-item.auth-item {
+  color: var(--color-accent-gris-azulado);
+  font-size: 1.1rem;
 }
 
 .mobile-nav-item:hover {
-  transform: translateY(3px);
-  
+  color: var(--color-primary);
+  padding-left: 10px;
 }
 
-/* Apply active styles */
-.active-btn.mobile-btn {
-    background-color: transparent;
-    color: var(--color-white-snow);
-    border: none; 
-    border-top: 4px solid var(--color-primary);
-    border-bottom: 4px solid var(--color-primary);
-    width: 100%;
+/* Active Mobile State - Neo Brutalist style */
+.active-mobile {
+  color: var(--color-primary) !important;
+  background-color: var(--color-white-snow);
+  color: var(--color-black-carbon) !important;
+  transform: skewX(-5deg);
+  box-shadow: 8px 8px 0 var(--color-primary);
+  margin: 5px 20px;
+  width: auto !important;
+  padding: 10px !important;
 }
 
+.mobile-divider {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.divider-kanji {
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  font-weight: var(--font-weight-black);
+}
+
+.divider-line {
+  flex-grow: 1;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-primary) 5px,
+    transparent 5px,
+    transparent 10px
+  );
+}
+
+
+/* Auth Section Styles */
+.auth-section {
+  display: flex;
+  align-items: center;
+  margin-left: var(--spacing-md);
+}
+
+.auth-btn {
+  background: none;
+  border: none;
+  color: var(--color-white-snow);
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.auth-btn:hover {
+  color: var(--color-primary);
+  transform: scale(1.1);
+}
+
+.user-btn {
+  padding: 0;
+}
+
+.user-avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  background-color: var(--color-primary);
+  color: var(--color-white-snow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-black);
+  font-size: var(--font-size-md);
+  border: 2px solid var(--color-white-snow);
+  overflow: hidden;
+}
+
+.user-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-dropdown-wrapper {
+  position: relative;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: var(--spacing-md);
+  min-width: 200px;
+  z-index: 1002;
+  padding: var(--spacing-md) !important;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.dropdown-header {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: var(--spacing-sm);
+}
+
+.user-name {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-black);
+  text-transform: uppercase;
+  font-size: var(--font-size-sm);
+  color: var(--color-black-carbon);
+}
+
+.user-email {
+  font-size: 10px;
+  color: #666;
+}
+
+.dropdown-divider {
+  height: 2px;
+  background-color: var(--color-black-carbon);
+  margin: var(--spacing-xs) 0;
+}
+
+.dropdown-item {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  text-align: left;
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-black);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  color: var(--color-black-carbon);
+  transition: all 0.1s ease;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.dropdown-item:hover {
+  background-color: var(--color-accent-gris-azulado);
+  color: var(--color-primary);
+  transform: translateX(4px);
+}
+
+.dropdown-item-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: 2px;
+}
+
+.logout-btn:hover {
+  background-color: var(--color-accent-rosa);
+  color: var(--color-black-carbon);
+}
+
+.kanji-item {
+  font-size: 0.55rem;
+  opacity: 0.7;
+  letter-spacing: 1px;
+}
+
+/* Mobile Auth Styles */
+.mobile-user-info-item {
+  padding: var(--spacing-md);
+  list-style: none;
+}
+
+.mobile-user-box {
+  background-color: var(--color-white-snow);
+  padding: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.mobile-user-details {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.logout-mobile {
+  color: var(--color-primary) !important;
+}
+
+.auth-mobile-item {
+  list-style: none;
+}
 
 /* Responsive Breakpoints */
 @media (max-width: 768px) {
@@ -295,6 +644,10 @@ function isActive(path: string): boolean {
   
   .navbar-container {
       padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .desktop-only {
+    display: none !important;
   }
 }
 </style>
