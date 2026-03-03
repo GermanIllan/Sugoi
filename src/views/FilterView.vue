@@ -553,7 +553,7 @@ const goToDetail = (type, id) => {
     padding: var(--spacing-xxl) var(--spacing-lg);
     background-image: 
         linear-gradient(rgba(246, 247, 247, 0.9), rgba(255, 255, 255, 0.9)),
-        url('/lineas4.jpg');
+        url('@/assets/images/image/lineas4.jpg');
     background-attachment: fixed;
     background-size: cover;
     background-position: center;

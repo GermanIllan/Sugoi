@@ -1,45 +1,119 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useSkinStore } from '@/stores/skinStore'
 import { useAuthStore } from '@/stores/authStore'
+import { useAnimeStore } from '@/stores/animeStore'
+import { useMangaStore } from '@/stores/mangaStore'
 import { storeToRefs } from 'pinia'
+import fallbackAvatar from '@/assets/images/image/sugoi-avatar.png'
+import type { Anime } from '@/types/anime'
+import type { Manga } from '@/types/manga'
 
 const visible = ref(false)
+const router = useRouter()
 const skinStore = useSkinStore()
 const authStore = useAuthStore()
 const { activeHomeAvatarUrl } = storeToRefs(skinStore)
 const { isAuthenticated } = storeToRefs(authStore)
+const animeStore = useAnimeStore()
+const mangaStore = useMangaStore()
+const { animeRanking } = storeToRefs(animeStore)
+const { mangaRanking } = storeToRefs(mangaStore)
 
-onMounted(() => {
-  setTimeout(() => {
-    visible.value = true
-  }, 100)
-})
+interface RatingItem {
+  title: string
+  genres: string
+  score: string
+  color: string
+  imageUrl: string | null
+  detailType: 'anime' | 'manga' | null
+  detailId: number | null
+}
 
-const ratings = [
+interface CommentItem {
+  initials: string
+  name: string
+  text: string
+}
+
+const defaultRatings: RatingItem[] = [
   {
     title: 'Attack on Titan: Final Season',
     genres: 'ACCIÓN • DRAMA • FANTASÍA',
     score: '9.8',
     color: 'var(--color-accent-rosa)',
+    imageUrl: null,
+    detailType: null,
+    detailId: null,
   },
   {
     title: 'Demon Slayer: Kimetsu no Yaiba',
     genres: 'ACCIÓN • SUPERNATURAL • HISTÓRICO',
     score: '9.5',
     color: '#D8E4F2',
+    imageUrl: null,
+    detailType: null,
+    detailId: null,
   },
   {
     title: 'Jujutsu Kaisen',
     genres: 'ACCIÓN • SOBRENATURAL • MISTERIO',
     score: '9.2',
     color: '#EFEFEF',
+    imageUrl: null,
+    detailType: null,
+    detailId: null,
   },
 ]
 
+const ratings = ref<RatingItem[]>([...defaultRatings])
 
+const ratingColors: string[] = ['var(--color-accent-rosa)', '#D8E4F2', '#EFEFEF']
 
-const comments = [
+const formatGenres = (genres: Array<{ name: string }>): string => {
+  const label = genres.slice(0, 3).map((genre) => genre.name.toUpperCase()).join(' • ')
+  return label || 'SIN GÉNERO'
+}
+
+const toRatingItem = (item: Anime | Manga, index: number, detailType: 'anime' | 'manga'): RatingItem => ({
+  title: item.title,
+  genres: formatGenres(item.genres),
+  score: item.score !== null ? item.score.toFixed(1) : 'N/A',
+  color: ratingColors[index % ratingColors.length] ?? '#EFEFEF',
+  imageUrl: item.images.jpg.large_image_url || item.images.jpg.image_url || null,
+  detailType,
+  detailId: item.mal_id,
+})
+
+const syncRatingsFromApi = (): void => {
+  const merged = [
+    ...animeRanking.value.slice(0, 6).map((item) => ({ item, type: 'anime' as const })),
+    ...mangaRanking.value.slice(0, 6).map((item) => ({ item, type: 'manga' as const })),
+  ]
+    .filter(({ item }) => item.score !== null)
+    .sort((a, b) => (b.item.score ?? 0) - (a.item.score ?? 0))
+    .slice(0, 3)
+
+  if (merged.length === 0) return
+
+  ratings.value = merged.map(({ item, type }, index) => toRatingItem(item, index, type))
+}
+
+const goToRatingDetail = (rating: RatingItem): void => {
+  if (!rating.detailType || !rating.detailId) return
+  router.push({ name: 'description', params: { type: rating.detailType, id: String(rating.detailId) } })
+}
+
+onMounted(async () => {
+  setTimeout(() => {
+    visible.value = true
+  }, 100)
+  await Promise.all([animeStore.fetchAnimeRanking(), mangaStore.fetchMangaRanking()])
+  syncRatingsFromApi()
+})
+
+const comments: CommentItem[] = [
   {
     initials: 'TY',
     name: 'Takeshi Yamamoto',
@@ -80,7 +154,7 @@ const comments = [
         <!-- Right Image -->
         <div class="hero-image">
           <div class="hero-image-container">
-            <img :src="activeHomeAvatarUrl || 'src/assets/images/gif/eatingramen.gif'" alt="Anime Character" />
+            <img :src="activeHomeAvatarUrl || fallbackAvatar" alt="Anime Character" />
           </div>
         </div>
       </div>
@@ -90,22 +164,18 @@ const comments = [
     <section class="content-cards">
       <div class="cards-container">
         <!-- Calificaciones Card -->
-        <router-link to="/noticias" class="card-link content-card">
-        <div class="">
-            <div class="card-inner">
-              <span class="card-kanji">ニュース</span>
-              <h3 class="card-title">NOTICIAS</h3>
-            </div>
-        </div>
+        <router-link to="/noticias" class="card-link content-card" aria-label="Ir a noticias">
+          <div class="card-inner">
+            <span class="card-kanji">ニュース</span>
+            <h3 class="card-title">NOTICIAS</h3>
+          </div>
         </router-link>
 
         <!-- Filtros Card -->
-        <router-link to="/filtros" class="card-link content-card">
-        <div class="">
-            <div class="card-inner">
-              <span class="card-kanji orange">フィルター</span>
-              <h3 class="card-title">FILTROS</h3>
-            </div>
+        <router-link to="/filtros" class="card-link content-card" aria-label="Ir a filtros">
+          <div class="card-inner">
+            <span class="card-kanji orange">フィルター</span>
+            <h3 class="card-title">FILTROS</h3>
           </div>
         </router-link>
 
@@ -125,12 +195,26 @@ const comments = [
     <section class="ratings-section">
       <div class="section-header">
         <h2 class="section-kanji">評価</h2>
-        <p class="section-subtitle">CALIFICACIONES DE LA COMUNIDAD</p>
+        <p class="section-subtitle">CALIFICACIONES DE LA COMUNIDADES</p>
       </div>
 
       <div class="ratings-list">
-        <article v-for="item in ratings" :key="item.title" class="rating-item">
-          <div class="rating-cover" :style="{ backgroundColor: item.color }"></div>
+        <article
+          v-for="item in ratings"
+          :key="`${item.title}-${item.detailType}-${item.detailId}`"
+          class="rating-item"
+          :class="{ 'is-clickable': !!item.detailType && !!item.detailId }"
+          :tabindex="item.detailType && item.detailId ? 0 : -1"
+          @click="goToRatingDetail(item)"
+          @keydown.enter="goToRatingDetail(item)"
+        >
+          <div
+            class="rating-cover"
+            :style="{
+              backgroundColor: item.color,
+              backgroundImage: item.imageUrl ? `url(${item.imageUrl})` : 'none',
+            }"
+          ></div>
           <div class="rating-content">
             <h3 class="rating-title">{{ item.title }}</h3>
             <p class="rating-genres">{{ item.genres }}</p>
@@ -161,13 +245,14 @@ const comments = [
       </div>
     </section>
 
+    <section class="home-footer-cta">
+      <RouterLink to="/forum" class="community-link">IR A LA COMUNIDAD</RouterLink>
+    </section>
+
   </main>
 </template>
 
 <style scoped>
-h1 {
-  color: rgb(139, 153, 182);
-}
 .card-link{
   text-decoration: none;
 }
@@ -264,6 +349,9 @@ h1 {
 }
 
 .hero-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--color-black-carbon);
   color: var(--color-white-snow);
   border: var(--border-thick);
@@ -278,6 +366,7 @@ h1 {
   cursor: pointer;
   box-shadow: 4px 4px 0 var(--color-white-snow);
   transition: all 0.15s ease-out;
+  text-decoration: none;
 }
 
 .hero-button:hover {
@@ -316,6 +405,12 @@ h1 {
 .content-cards {
   padding: 56px var(--spacing-lg) 24px;
   background-color: transparent;
+}
+
+.home-footer-cta {
+  display: flex;
+  justify-content: center;
+  padding: 16px var(--spacing-lg) 56px;
 }
 
 .cards-container {
@@ -467,6 +562,26 @@ h1 {
   font-weight: var(--font-weight-black);
 }
 
+.community-link {
+  display: inline-block;
+  margin-top: var(--spacing-md);
+  padding: 8px 14px;
+  border: var(--border-thin);
+  background: var(--color-white-snow);
+  color: var(--color-black-carbon);
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-decoration: none;
+  box-shadow: var(--shadow-offset-sm);
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+.community-link:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 7px 7px 0 var(--color-black-carbon);
+}
+
 .ratings-list {
   display: flex;
   flex-direction: column;
@@ -487,6 +602,10 @@ h1 {
   transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
 }
 
+.rating-item.is-clickable {
+  cursor: pointer;
+}
+
 .rating-item:hover {
   transform: translate(-3px, -3px);
   box-shadow: 7px 7px 0 var(--color-black-carbon);
@@ -496,6 +615,9 @@ h1 {
   width: 60px;
   height: 60px;
   border: var(--border-thin);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .rating-title {
