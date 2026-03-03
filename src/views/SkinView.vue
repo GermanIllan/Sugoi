@@ -1,89 +1,102 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useSkinStore } from '@/stores/skinStore';
-import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/authStore';
+import SkinGenerator from '@/components/Skin/SkinGenerator.vue';
+import SkinGallery from '@/components/Skin/SkinGallery.vue';
+import SkinDetailsModal from '@/components/Skin/SkinDetailsModal.vue';
+import ConfirmModal from '@/components/Common/ConfirmModal.vue';
+import type { GalleryItem } from '@/types/skin';
 
 const skinStore = useSkinStore();
-const { lastImageUrl, isLoading, error } = storeToRefs(skinStore);
+const authStore = useAuthStore();
+const selectedItem = ref<GalleryItem | null>(null);
+const itemToDelete = ref<string | null>(null);
 
-const prompt = ref('');
-const maxLength = 100;
+onMounted(async () => {
+  await skinStore.loadFromServer();
+});
 
-const remainingChars = computed(() => maxLength - prompt.value.length);
-const limitInfo = computed(() => skinStore.checkLimit());
-const canGenerate = computed(() => 
-  prompt.value.trim().length > 0 && 
-  !isLoading.value && 
-  limitInfo.value.can
-);
+const handleDeleteRequest = (url: string) => {
+  itemToDelete.value = url;
+};
 
-const handleGenerate = async () => {
-  if (!canGenerate.value) return;
-  await skinStore.generateSkin(prompt.value);
+const handleConfirmDelete = () => {
+  if (itemToDelete.value) {
+    skinStore.deleteImage(itemToDelete.value);
+    itemToDelete.value = null;
+    selectedItem.value = null;
+  }
 };
 </script>
 
 <template>
   <div class="skin-view container">
+      <!-- Confirmation Modal -->
+      <ConfirmModal 
+        :show="!!itemToDelete"
+        title="¿ELIMINAR ESTA CREACIÓN?"
+        message="Esta acción no se puede deshacer de forma manual."
+        confirmText="SÍ, ELIMINAR"
+        @confirm="handleConfirmDelete"
+        @cancel="itemToDelete = null"
+      />
     <header class="skin-header">
-      <h1 class="title">Create Your Skin</h1>
-      <p class="subtitle">Generate a unique anime-style avatar with AI</p>
+      <h1 class="title"><span class="kanji">アバターを作成しましょう</span> <br> Crea tu Avatar</h1>
+      <p class="subtitle">Genera un avatar único estilo anime en pixel art</p>
     </header>
 
     <main class="skin-content">
-      <div class="card creation-card">
-        <div class="input-section">
-          <label for="avatar-prompt" class="input-label">Describe your avatar</label>
-          <div class="input-wrapper">
-            <textarea
-              id="avatar-prompt"
-              v-model="prompt"
-              :maxlength="maxLength"
-              class="prompt-input"
-              placeholder="Ex: blue eyes, samurai armor, neon city background..."
-            ></textarea>
-            <span :class="['char-counter', { 'text-primary': remainingChars === 0 }]">
-              {{ remainingChars }} characters left
-            </span>
-          </div>
-          <button
-            class="button-primary generate-button"
-            :disabled="!canGenerate"
-            @click="handleGenerate"
-          >
-            {{ isLoading ? 'Generating...' : 'Generate Avatar' }}
-          </button>
-          
-          <p v-if="error" class="error-message badge-rosa">
-            {{ error }}
-          </p>
-          <p v-if="!limitInfo.can" class="limit-message badge-crema">
-            Generation limit reached. Available in {{ limitInfo.daysLeft }} days.
-          </p>
-        </div>
-
-        <div class="preview-section border-thick shadow-md">
-          <div v-if="isLoading" class="skeleton-container">
-            <div class="skeleton-image"></div>
-            <div class="skeleton-text"></div>
-          </div>
-          <div v-else-if="lastImageUrl" class="image-container">
-            <img :src="lastImageUrl" alt="Generated Avatar" class="generated-image" />
-          </div>
-          <div v-else class="placeholder-container">
-            <p class="placeholder-text">Your avatar will appear here</p>
-          </div>
-        </div>
+      <!-- Guest Notice Banner -->
+      <div v-if="!authStore.isAuthenticated" class="auth-notice-banner card shadow-sm">
+        <p>
+          DEBES <router-link to="/sign-in" class="auth-link">INICIAR SESIÓN</router-link> PARA GENERAR Y GUARDAR TUS AVATARES.
+        </p>
       </div>
+
+      <SkinGenerator />
+      
+      <SkinGallery v-if="authStore.isAuthenticated" @select-item="selectedItem = $event" />
+
+      <SkinDetailsModal
+        v-if="authStore.isAuthenticated"
+        :item="selectedItem"
+        @close="selectedItem = null"
+        @download="skinStore.downloadImage($event)"
+        @set-home="skinStore.setActiveHomeAvatar($event)"
+        @delete="handleDeleteRequest"
+      />
     </main>
   </div>
 </template>
 
 <style scoped>
 .container {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
   max-width: 1000px;
   margin: 0 auto;
   padding: var(--spacing-xxl) var(--spacing-md);
+}
+
+.container::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(246, 247, 247, 0.85), rgba(255, 255, 255, 0.85)),
+    url('@/assets/images/image/lineas5.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.container > * {
+  position: relative;
+  z-index: 1;
 }
 
 .skin-header {
@@ -102,140 +115,40 @@ const handleGenerate = async () => {
   color: var(--color-black-carbon);
 }
 
-.creation-card {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.skin-content {
+  display: flex;
+  flex-direction: column;
   gap: var(--spacing-xxl);
-  align-items: start;
 }
 
-.input-section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-lg);
-}
-
-.input-label {
-  font-family: var(--font-heading);
+.kanji {
+  font-size: 2.6rem;
   font-weight: var(--font-weight-black);
-  text-transform: uppercase;
-  font-size: var(--font-size-md);
+  color: var(--color-primary);
 }
 
-.input-wrapper {
-  position: relative;
-  width: 100%;
+.kanji.orange {
+  color: #FF6B00;
 }
 
-.prompt-input {
-  width: 100%;
-  height: 150px;
-  padding: var(--spacing-md);
-  border: var(--border-thick);
-  font-family: var(--font-body);
-  font-size: var(--font-size-md);
-  resize: none;
-  background-color: var(--color-white-snow);
-}
-
-.prompt-input:focus {
-  outline: none;
-  border-color: var(--color-primary);
-}
-
-.char-counter {
-  display: block;
-  text-align: right;
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
-  margin-top: var(--spacing-xs);
-}
-
-.generate-button {
-  width: 100%;
-  font-size: var(--font-size-lg);
-}
-
-.generate-button:disabled {
-  background-color: var(--color-accent-gris-azulado);
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-.preview-section {
-  aspect-ratio: 1 / 1;
-  background-color: #eee;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
-}
-
-.placeholder-container {
-  text-align: center;
+/* Auth Banner Styles (Shared with Forum) */
+.auth-notice-banner {
   padding: var(--spacing-lg);
-}
-
-.placeholder-text {
-  font-weight: var(--font-weight-bold);
-  text-transform: uppercase;
-  color: #888;
-}
-
-.image-container {
-  width: 100%;
-  height: 100%;
-}
-
-.generated-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.error-message, .limit-message {
-  font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-sm);
-  margin-top: var(--spacing-sm);
   text-align: center;
+  background-color: var(--color-white-snow);
+  border: var(--border-thick);
+  font-family: var(--font-heading);
+  letter-spacing: 1px;
+  margin-bottom: var(--spacing-md);
 }
 
-/* Skeleton Loader */
-.skeleton-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background-color: #ddd;
+.auth-link {
+  color: var(--color-primary);
+  text-decoration: underline;
+  font-weight: var(--font-weight-black);
 }
 
-.skeleton-image {
-  flex: 1;
-  background: linear-gradient(90deg, #ccc 25%, #bbb 50%, #ccc 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
-}
-
-.skeleton-text {
-  height: 20px;
-  margin: var(--spacing-md);
-  background: linear-gradient(90deg, #ccc 25%, #bbb 50%, #ccc 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
-}
-
-@keyframes loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* Responsividad */
-@media (max-width: 768px) {
-  .creation-card {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-xl);
-  }
+.auth-link:hover {
+  filter: brightness(0.9);
 }
 </style>

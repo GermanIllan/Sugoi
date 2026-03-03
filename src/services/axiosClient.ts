@@ -41,22 +41,24 @@ apiClient.interceptors.response.use(
         return response;
     },
     (error: AxiosError) => {
+        const status = error.response?.status;
+        let message = 'Ha ocurrido un error inesperado';
+
+        if (status === 429) {
+            message = 'Límite de peticiones excedido (Jikan API). Por favor, intenta de nuevo en unos segundos.';
+        } else if (status && status >= 500) {
+            message = 'El servidor de MyAnimeList está experimentando problemas. Por favor, intenta más tarde.';
+        } else if (error.request) {
+            message = 'No se ha podido conectar con el servidor. Revisa tu conexión a internet.';
+        } else {
+            message = (error.response?.data as any)?.message || error.message;
+        }
+
         const apiError: ApiError = {
-            message: 'An unexpected error occurred',
-            status: error.response?.status,
+            message,
+            status,
             data: error.response?.data,
         };
-
-        if (error.response) {
-            // Server responded with a status code outside the 2xx range
-            apiError.message = (error.response.data as any)?.message || `Server Error: ${error.response.status}`;
-        } else if (error.request) {
-            // Request was made but no response was received
-            apiError.message = 'No response received from server. Please check your connection.';
-        } else {
-            // Something happened in setting up the request
-            apiError.message = error.message;
-        }
 
         return Promise.reject(apiError);
     }

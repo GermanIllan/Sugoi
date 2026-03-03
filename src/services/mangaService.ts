@@ -4,6 +4,36 @@ import type { GenreResponse } from '@/types/genre';
 import type { NewsResponse } from '@/types/news';
 import type { RecommendationResponse } from '@/types/recommendation';
 
+export interface MangaReviewItem {
+    mal_id: number;
+    url: string;
+    date: string;
+    review: string;
+    score: number;
+    is_spoiler: boolean;
+    reactions: {
+        overall: number;
+    };
+    user: {
+        username: string;
+        url: string;
+    };
+    entry: {
+        mal_id: number;
+        url: string;
+        title: string;
+        images: {
+            jpg: {
+                image_url: string;
+            };
+        };
+    };
+}
+
+export interface MangaReviewResponse {
+    data: MangaReviewItem[];
+}
+
 /**
  * Service to handle API requests related to Mangas.
  */
@@ -16,7 +46,6 @@ class MangaService {
             const response = await apiClient.get<MangaSearchResponse>('/manga', { params });
             return response.data;
         } catch (error) {
-            console.error('MangaService.getMangaList Error:', error);
             throw error;
         }
     }
@@ -29,7 +58,6 @@ class MangaService {
             const response = await apiClient.get<MangaSingleResponse>(`/manga/${id}`);
             return response.data;
         } catch (error) {
-            console.error(`MangaService.getMangaById (${id}) Error:`, error);
             throw error;
         }
     }
@@ -42,7 +70,6 @@ class MangaService {
             const response = await apiClient.get<MangaSearchResponse>('/top/manga', { params: { page } });
             return response.data;
         } catch (error) {
-            console.error('MangaService.getMangaRanking Error:', error);
             throw error;
         }
     }
@@ -55,7 +82,6 @@ class MangaService {
             const response = await apiClient.get<GenreResponse>('/genres/manga');
             return response.data;
         } catch (error) {
-            console.error('MangaService.getMangaGenres Error:', error);
             throw error;
         }
     }
@@ -69,7 +95,6 @@ class MangaService {
             const response = await apiClient.get<NewsResponse>(`/manga/${id}/news`);
             return response.data;
         } catch (error) {
-            console.error(`MangaService.getMangaNews (${id}) Error:`, error);
             throw error;
         }
     }
@@ -82,7 +107,18 @@ class MangaService {
             const response = await apiClient.get<RecommendationResponse>('/recommendations/manga');
             return response.data;
         } catch (error) {
-            console.error('MangaService.getMangaRecommendations Error:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Fetch latest manga reviews.
+     */
+    async getMangaReviews(page: number = 1): Promise<MangaReviewResponse> {
+        try {
+            const response = await apiClient.get<MangaReviewResponse>('/reviews/manga', { params: { page } });
+            return response.data;
+        } catch (error) {
             throw error;
         }
     }

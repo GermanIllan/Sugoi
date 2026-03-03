@@ -4,6 +4,66 @@ import type { GenreResponse } from '@/types/genre';
 import type { NewsResponse } from '@/types/news';
 import type { RecommendationResponse } from '@/types/recommendation';
 
+export interface PromoItem {
+    mal_id: number;
+    url: string;
+    title: string;
+    episode: string | null;
+    entry: {
+        mal_id: number;
+        url: string;
+        title: string;
+        images: {
+            jpg: {
+                image_url: string;
+            };
+        };
+    };
+    trailer: {
+        url: string | null;
+        embed_url: string | null;
+        images: {
+            image_url: string | null;
+            large_image_url: string | null;
+            maximum_image_url: string | null;
+        };
+    };
+}
+
+export interface PromoResponse {
+    data: PromoItem[];
+}
+
+export interface AnimeReviewItem {
+    mal_id: number;
+    url: string;
+    date: string;
+    review: string;
+    score: number;
+    is_spoiler: boolean;
+    reactions: {
+        overall: number;
+    };
+    user: {
+        username: string;
+        url: string;
+    };
+    entry: {
+        mal_id: number;
+        url: string;
+        title: string;
+        images: {
+            jpg: {
+                image_url: string;
+            };
+        };
+    };
+}
+
+export interface AnimeReviewResponse {
+    data: AnimeReviewItem[];
+}
+
 /**
  * Service to handle API requests related to Animes.
  */
@@ -18,7 +78,6 @@ class AnimeService {
             const response = await apiClient.get<AnimeSearchResponse>('/anime', { params });
             return response.data;
         } catch (error) {
-            console.error('AnimeService.getAnimeList Error:', error);
             throw error; // Re-throw to be handled by the caller (like Pinia store)
         }
     }
@@ -33,7 +92,6 @@ class AnimeService {
             const response = await apiClient.get<AnimeSingleResponse>(`/anime/${id}`);
             return response.data;
         } catch (error) {
-            console.error(`AnimeService.getAnimeById (${id}) Error:`, error);
             throw error;
         }
     }
@@ -48,7 +106,6 @@ class AnimeService {
             const response = await apiClient.get<AnimeSearchResponse>('/top/anime', { params: { page } });
             return response.data;
         } catch (error) {
-            console.error('AnimeService.getAnimeRanking Error:', error);
             throw error;
         }
     }
@@ -62,7 +119,6 @@ class AnimeService {
             const response = await apiClient.get<GenreResponse>('/genres/anime');
             return response.data;
         } catch (error) {
-            console.error('AnimeService.getAnimeGenres Error:', error);
             throw error;
         }
     }
@@ -76,7 +132,6 @@ class AnimeService {
             const response = await apiClient.get<NewsResponse>(`/anime/${id}/news`);
             return response.data;
         } catch (error) {
-            console.error(`AnimeService.getAnimeNews (${id}) Error:`, error);
             throw error;
         }
     }
@@ -89,7 +144,6 @@ class AnimeService {
             const response = await apiClient.get<RecommendationResponse>('/recommendations/anime');
             return response.data;
         } catch (error) {
-            console.error('AnimeService.getAnimeRecommendations Error:', error);
             throw error;
         }
     }
@@ -103,7 +157,54 @@ class AnimeService {
             const response = await apiClient.get<AnimeSearchResponse>('/seasons/upcoming', { params: { page } });
             return response.data;
         } catch (error) {
-            console.error('AnimeService.getUpcomingSeason Error:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Fetch current anime schedule list.
+     */
+    async getSchedules(page: number = 1): Promise<AnimeSearchResponse> {
+        try {
+            const response = await apiClient.get<AnimeSearchResponse>('/schedules', { params: { page } });
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    /**
+     * Fetch latest anime promos.
+     */
+    async getWatchPromos(): Promise<PromoResponse> {
+        try {
+            const response = await apiClient.get<PromoResponse>('/watch/promos');
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    /**
+     * Fetch popular anime promos.
+     */
+    async getPopularWatchPromos(): Promise<PromoResponse> {
+        try {
+            const response = await apiClient.get<PromoResponse>('/watch/promos/popular');
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    /**
+     * Fetch latest anime reviews.
+     */
+    async getAnimeReviews(page: number = 1): Promise<AnimeReviewResponse> {
+        try {
+            const response = await apiClient.get<AnimeReviewResponse>('/reviews/anime', { params: { page } });
+            return response.data;
+        } catch (error) {
             throw error;
         }
     }
