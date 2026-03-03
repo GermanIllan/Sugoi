@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
 import { useForumStore } from '@/stores/forum'
 import { useAuthStore } from '@/stores/authStore'
 import TopicCard from '@/components/Forum/TopicCard.vue'
@@ -9,6 +9,9 @@ const forumStore = useForumStore()
 const authStore = useAuthStore()
 const showCreateForm = ref(false)
 const searchQuery = ref('')
+
+const currentPage = ref(1)
+const itemsPerPage = 5
 
 onMounted(async () => {
   await forumStore.fetchTopics()
@@ -21,6 +24,18 @@ const filteredTopics = computed(() => {
   return forumStore.topics.filter(topic => 
     topic.title.toLowerCase().includes(query)
   )
+})
+
+const totalPages = computed(() => Math.ceil(filteredTopics.value.length / itemsPerPage))
+
+const paginatedTopics = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return filteredTopics.value.slice(start, end)
+})
+
+watch(searchQuery, () => {
+  currentPage.value = 1
 })
 
 const handleTopicCreated = () => {
@@ -71,13 +86,25 @@ const handleTopicCreated = () => {
       </div>
       <template v-else>
         <TopicCard 
-          v-for="topic in filteredTopics" 
+          v-for="topic in paginatedTopics" 
           :key="topic.id" 
           :topic="topic" 
         />
         <div v-if="filteredTopics.length === 0" class="empty-state card">
           {{ searchQuery ? 'No se encontraron temas que coincidan con tu búsqueda.' : 'No hay temas aún. ¡Sé el primero en crear uno!' }}
         </div>
+
+        <!-- Pagination -->
+        <nav v-if="totalPages > 1" class="pagination">
+          <button 
+            v-for="page in totalPages" 
+            :key="page"
+            :class="['page-button', { active: currentPage === page }]"
+            @click="currentPage = page"
+          >
+            {{ page }}
+          </button>
+        </nav>
       </template>
     </main>
   </div>
@@ -218,5 +245,49 @@ const handleTopicCreated = () => {
 
 .auth-link:hover {
   filter: brightness(0.9);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-xxl);
+  margin-bottom: var(--spacing-lg);
+}
+
+.page-button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-white-snow);
+  border: var(--border-thick);
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-md);
+  cursor: pointer;
+  box-shadow: var(--shadow-offset-sm);
+  transition: all 0.1s ease;
+  color: var(--color-black-carbon);
+}
+
+.page-button:hover:not(.active) {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-offset-md);
+  border-color: var(--color-primary);
+}
+
+.page-button:active:not(.active) {
+  transform: translate(0, 0);
+  box-shadow: 2px 2px 0 var(--color-black-carbon);
+}
+
+.page-button.active {
+  background-color: var(--color-primary);
+  color: var(--color-white-snow);
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-offset-md);
 }
 </style>
