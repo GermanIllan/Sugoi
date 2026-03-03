@@ -39,14 +39,14 @@ export const useTrackingStore = defineStore('tracking', () => {
         }
     };
 
-    const isPikachuLoading = ref(false);
+    const isProgramanding2Loading = ref(false);
 
     /**
      * Adds an item to tracking.
      */
     const addToTracking = async (record: TrackingRecord) => {
         isLoading.value = true;
-        isPikachuLoading.value = true; // Show pikachu splash
+        isProgramanding2Loading.value = true; // Show Programanding2 splash
         const startTime = Date.now();
 
         try {
@@ -54,18 +54,18 @@ export const useTrackingStore = defineStore('tracking', () => {
             userTracking.value.push(newRecord);
         } catch (err: any) {
             error.value = err.message || 'Error al añadir seguimiento';
-            isPikachuLoading.value = false;
+            isProgramanding2Loading.value = false;
             throw err;
         } finally {
             isLoading.value = false;
 
-            // Ensure pikachu is shown for at least 2 seconds
+            // Ensure Programanding2 is shown for at least 2 seconds
             const now = Date.now();
             const elapsed = now - startTime;
             const remaining = Math.max(0, 2000 - elapsed);
 
             setTimeout(() => {
-                isPikachuLoading.value = false;
+                isProgramanding2Loading.value = false;
             }, remaining);
         }
     };
@@ -118,7 +118,7 @@ export const useTrackingStore = defineStore('tracking', () => {
     return {
         userTracking,
         isLoading,
-        isPikachuLoading,
+        isProgramanding2Loading,
         error,
         stats,
         loadUserTracking,

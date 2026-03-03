@@ -46,7 +46,7 @@ describe('TrackingStore', () => {
         // Add to tracking
         const addPromise = trackingStore.addToTracking(mockAnime);
 
-        // Fast-forward the 2 second Pikachu loader timeout used in the store
+        // Fast-forward the 2 second Programanding2 loader timeout used in the store
         vi.runAllTimers();
 
         await addPromise;

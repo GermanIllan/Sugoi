@@ -69,6 +69,13 @@
       "author": "Kevin",
       "content": "El anime One piece es como muy sobre valorado no? ",
       "createdAt": "2026-03-02T12:30:19.793Z"
+    },
+    {
+      "id": "jy6edvl2y",
+      "title": "PREGUNTAS VARIAS",
+      "author": "Ginoko",
+      "content": "¿Porque \"separado\" se escribe todo junto y \"todo junto\" separado?\n",
+      "createdAt": "2026-03-03T08:42:07.271Z"
     }
   ],
   "replies": [
@@ -271,7 +278,6 @@
       "status": "Finished Airing",
       "addedAt": "2026-03-02T11:26:27.078Z",
       "watchStatus": "watched",
-<<<<<<< Updated upstream
       "personalScore": 9
     },
     {
@@ -318,8 +324,6 @@
       "watchStatus": "watched",
       "notes": "Es la mejor pelicula de Lejos",
       "addedAt": "2026-03-02T18:41:53.964Z"
-=======
-      "personalScore": 7
     },
     {
       "id": "32cd",
@@ -350,10 +354,21 @@
       "watchStatus": "watching",
       "notes": "",
       "addedAt": "2026-03-02T12:37:14.039Z"
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+    },
+    {
+      "id": "2d92",
+      "userId": 1772440265337,
+      "malId": 58934,
+      "category": "anime",
+      "title": "Mashle: Sanma Taisou Shinkakusha Saishuu Shiken-hen",
+      "imageUrl": "https://myanimelist.net/images/anime/1085/154496.webp",
+      "score": null,
+      "personalScore": null,
+      "type": "TV",
+      "status": "Not yet aired",
+      "watchStatus": "plan_to_watch",
+      "notes": "",
+      "addedAt": "2026-03-03T08:54:48.211Z"
     }
   ]
 }
