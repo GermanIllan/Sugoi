@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useNewsStore } from '@/stores/newsStore'
+import { useAuthStore } from '@/stores/authStore'
 import type { NewsSource } from '@/stores/newsStore'
 import type { NewsCard } from '@/stores/newsStore'
 
 const route = useRoute()
+const router = useRouter()
 const newsStore = useNewsStore()
+const authStore = useAuthStore()
+const saveActionError = ref<string | null>(null)
 const {
   detailLoading: loading,
   detailError: error,
@@ -75,7 +79,36 @@ const getDetailRoute = (item: NewsCard) => ({
   },
 })
 
+const requestAuthForNewsAction = async (): Promise<boolean> => {
+  if (authStore.isAuthenticated && authStore.user) return true
+  saveActionError.value = 'Inicia sesión para guardar o marcar noticias.'
+  await router.push({ name: 'sign-in' })
+  return false
+}
+
+const isSaved = (item: NewsCard): boolean => newsStore.isNewsSaved(item)
+
+const isSeen = (item: NewsCard): boolean => newsStore.isNewsSeen(item)
+
+const toggleSave = async (item: NewsCard): Promise<void> => {
+  saveActionError.value = null
+  const canProceed = await requestAuthForNewsAction()
+  if (!canProceed || !authStore.user) return
+  newsStore.toggleSaveNews(item, Number(authStore.user.id))
+}
+
+const toggleSeen = async (item: NewsCard): Promise<void> => {
+  saveActionError.value = null
+  const canProceed = await requestAuthForNewsAction()
+  if (!canProceed || !authStore.user) return
+  const targetStatus = isSeen(item) ? 'pending' : 'seen'
+  newsStore.setSavedNewsStatus(item, Number(authStore.user.id), targetStatus)
+}
+
 onMounted(async () => {
+  if (authStore.user) {
+    newsStore.loadSavedNews(Number(authStore.user.id))
+  }
   await loadDetail()
 })
 
@@ -83,6 +116,14 @@ watch(
   () => [route.params.source, route.params.parentId, route.params.newsId],
   async () => {
     await loadDetail()
+  }
+)
+
+watch(
+  () => authStore.user?.id,
+  (userId) => {
+    if (!userId) return
+    newsStore.loadSavedNews(Number(userId))
   }
 )
 </script>
@@ -95,6 +136,7 @@ watch(
 
     <div v-if="loading" class="card status-block">Cargando detalle...</div>
     <div v-else-if="error" class="card status-block">{{ error }}</div>
+    <div v-if="saveActionError" class="card status-block">{{ saveActionError }}</div>
 
     <template v-else-if="selectedNews">
       <article class="card detail-main">
@@ -116,6 +158,20 @@ watch(
 
         <div class="detail-actions">
           <RouterLink :to="{ name: 'news' }" class="button-secondary">Volver al listado</RouterLink>
+          <button
+            class="button-secondary action-btn"
+            :class="{ 'action-btn-active': isSaved(selectedNews) }"
+            @click="toggleSave(selectedNews)"
+          >
+            {{ isSaved(selectedNews) ? 'Guardada' : 'Guardar' }}
+          </button>
+          <button
+            class="button-secondary action-btn"
+            :class="{ 'action-btn-active': isSeen(selectedNews) }"
+            @click="toggleSeen(selectedNews)"
+          >
+            {{ isSeen(selectedNews) ? 'Visto' : 'Marcar visto' }}
+          </button>
           <RouterLink v-if="firstRelated" :to="getDetailRoute(firstRelated)" class="button-primary">
             Siguiente noticia
           </RouterLink>
@@ -236,6 +292,15 @@ watch(
   text-decoration: none;
   color: var(--color-black-carbon);
   background: var(--color-white-snow);
+}
+
+.action-btn {
+  cursor: pointer;
+}
+
+.action-btn-active {
+  background: var(--color-primary);
+  color: var(--color-white-snow);
 }
 
 .related-block h2 {

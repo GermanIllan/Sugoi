@@ -86,6 +86,16 @@ const router = createRouter({
       name: 'tracking',
       component: () => import('../views/TrackingView.vue'),
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/privacidad',
+      name: 'privacy-policy',
+      component: () => import('../views/PrivacyPolicyView.vue')
+    },
+    {
+      path: '/terminos',
+      name: 'terms-of-service',
+      component: () => import('../views/TermsOfServiceView.vue')
     }
   ],
 });

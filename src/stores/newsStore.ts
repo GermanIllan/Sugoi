@@ -6,6 +6,7 @@ import type { PromoItem } from '@/services/animeService'
 import type { AnimeReviewItem } from '@/services/animeService'
 import type { MangaReviewItem } from '@/services/mangaService'
 import type { News } from '@/types/news'
+import type { SavedNewsItem, SavedNewsStatus } from '@/types/news'
 import type { Anime } from '@/types/anime'
 import type { ApiError } from '@/services/axiosClient'
 
@@ -38,6 +39,8 @@ interface LoadNewsDetailParams {
 }
 
 export const useNewsStore = defineStore('news', () => {
+  const SAVED_NEWS_STORAGE_PREFIX = 'sugoi_saved_news'
+
   const allAnimeNews = ref<NewsCard[]>([])
   const allMangaNews = ref<NewsCard[]>([])
   const selectedAnimeNews = ref<NewsCard | null>(null)
@@ -67,6 +70,123 @@ export const useNewsStore = defineStore('news', () => {
   const detailParentTitle = ref<string>('')
   const detailParentImage = ref<string>('')
   const detailParentSynopsis = ref<string>('')
+
+  const savedNews = ref<SavedNewsItem[]>([])
+  const savedNewsError = ref<string | null>(null)
+
+  const getSavedNewsStorageKey = (userId: number): string => `${SAVED_NEWS_STORAGE_PREFIX}_${userId}`
+
+  const buildNewsKey = (item: NewsCard): string => `${item.source}-${item.parentId}-${item.mal_id}`
+
+  const persistSavedNews = (userId: number): void => {
+    localStorage.setItem(getSavedNewsStorageKey(userId), JSON.stringify(savedNews.value))
+  }
+
+  const loadSavedNews = (userId: number): void => {
+    savedNewsError.value = null
+    try {
+      const raw = localStorage.getItem(getSavedNewsStorageKey(userId))
+      if (!raw) {
+        savedNews.value = []
+        return
+      }
+
+      const parsed = JSON.parse(raw) as SavedNewsItem[]
+      savedNews.value = Array.isArray(parsed) ? parsed : []
+    } catch (err: unknown) {
+      console.error('Error loading saved news', err)
+      savedNewsError.value = 'No fue posible cargar tus noticias guardadas.'
+      savedNews.value = []
+    }
+  }
+
+  const mapToSavedNewsItem = (item: NewsCard, userId: number, status: SavedNewsStatus = 'pending'): SavedNewsItem => ({
+    userId,
+    newsKey: buildNewsKey(item),
+    source: item.source,
+    parentId: item.parentId,
+    mal_id: item.mal_id,
+    title: item.title,
+    date: item.date,
+    author_name: item.author_name,
+    excerpt: item.excerpt,
+    coverImageUrl: item.coverImageUrl,
+    url: item.url,
+    status,
+    savedAt: new Date().toISOString(),
+  })
+
+  const isNewsSaved = (item: NewsCard): boolean => {
+    const newsKey = buildNewsKey(item)
+    return savedNews.value.some((savedItem) => savedItem.newsKey === newsKey && savedItem.status === 'pending')
+  }
+
+  const isNewsSeen = (item: NewsCard): boolean => {
+    const newsKey = buildNewsKey(item)
+    return savedNews.value.some((savedItem) => savedItem.newsKey === newsKey && savedItem.status === 'seen')
+  }
+
+  const toggleSaveNews = (item: NewsCard, userId: number): void => {
+    const newsKey = buildNewsKey(item)
+    const index = savedNews.value.findIndex((savedItem) => savedItem.newsKey === newsKey)
+
+    if (index >= 0) {
+      const existing = savedNews.value[index]
+      if (!existing) return
+
+      if (existing.status === 'pending') {
+        savedNews.value.splice(index, 1)
+      } else {
+        savedNews.value[index] = {
+          ...existing,
+          status: 'pending',
+        }
+      }
+
+      persistSavedNews(userId)
+      return
+    }
+
+    savedNews.value.unshift(mapToSavedNewsItem(item, userId, 'pending'))
+    persistSavedNews(userId)
+  }
+
+  const setSavedNewsStatus = (item: NewsCard, userId: number, status: SavedNewsStatus): void => {
+    const newsKey = buildNewsKey(item)
+    const index = savedNews.value.findIndex((savedItem) => savedItem.newsKey === newsKey)
+
+    if (index >= 0) {
+      const existing = savedNews.value[index]
+      if (!existing) return
+      savedNews.value[index] = {
+        ...existing,
+        status,
+      }
+      persistSavedNews(userId)
+      return
+    }
+
+    savedNews.value.unshift(mapToSavedNewsItem(item, userId, status))
+    persistSavedNews(userId)
+  }
+
+  const setSavedNewsStatusByKey = (newsKey: string, status: SavedNewsStatus, userId: number): void => {
+    const index = savedNews.value.findIndex((savedItem) => savedItem.newsKey === newsKey)
+    if (index < 0) return
+
+    const existing = savedNews.value[index]
+    if (!existing) return
+    savedNews.value[index] = {
+      ...existing,
+      status,
+    }
+    persistSavedNews(userId)
+  }
+
+  const removeSavedNewsByKey = (newsKey: string, userId: number): void => {
+    savedNews.value = savedNews.value.filter((item) => item.newsKey !== newsKey)
+    persistSavedNews(userId)
+  }
 
   const mapNewsToCards = (
     items: News[],
@@ -400,6 +520,16 @@ export const useNewsStore = defineStore('news', () => {
     detailParentTitle,
     detailParentImage,
     detailParentSynopsis,
+    savedNews,
+    savedNewsError,
+    loadSavedNews,
+    buildNewsKey,
+    isNewsSaved,
+    isNewsSeen,
+    toggleSaveNews,
+    setSavedNewsStatus,
+    setSavedNewsStatusByKey,
+    removeSavedNewsByKey,
     loadNewsFeed,
     loadMoreNewsFeed,
     selectAnimeNews,

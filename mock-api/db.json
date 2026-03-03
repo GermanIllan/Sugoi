@@ -36,13 +36,6 @@
       "createdAt": "2026-03-01T22:27:42.559Z"
     },
     {
-      "id": "lopzqpvac",
-      "title": "Preguntas Varias",
-      "author": "Ginoko",
-      "content": "¿Por que se llama CARLOS si solo es uno?\n",
-      "createdAt": "2026-03-02T10:46:30.837Z"
-    },
-    {
       "id": "tb3r9lyro",
       "title": "JOI",
       "author": "Sugoi",
@@ -69,13 +62,6 @@
       "author": "Kevin",
       "content": "El anime One piece es como muy sobre valorado no? ",
       "createdAt": "2026-03-02T12:30:19.793Z"
-    },
-    {
-      "id": "jy6edvl2y",
-      "title": "PREGUNTAS VARIAS",
-      "author": "Ginoko",
-      "content": "¿Porque \"separado\" se escribe todo junto y \"todo junto\" separado?\n",
-      "createdAt": "2026-03-03T08:42:07.271Z"
     }
   ],
   "replies": [
@@ -113,6 +99,12 @@
       "username": "Kevin",
       "email": "kevingerardoruiz.2001@gmail.com",
       "password": "kevin123"
+    },
+    {
+      "id": "1772440060890",
+      "username": "Ginoko",
+      "email": "ginomaranha@gmail.com",
+      "password": "sugoi123"
     },
     {
       "id": "1772440265337",
@@ -182,8 +174,8 @@
           "prompt": "Hombre de 50 años, poca barba, cabello poco rizado largo y pocas canas con cola, gorra negra, chaleco de invierno y camisa manga larga negra, avatar."
         },
         {
-          "url": "https://gen.pollinations.ai/image/ANIME%2Cfor%208k%2Chigh%20quality%2Cpixel%20art%2C%20Chico%20de%2025%2C%20Calvo%20y%20poca%20barba%2C%20piel%20bastante%20morena%2C%20pircing%20Double%20Flare%20Tunnel%2C%20sudadera%20negra%2C%20audifonos%20blancos%20peque%C3%B1os%20de%20cuerda%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=521627&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
-          "prompt": "Chico de 25, Calvo y poca barba, piel bastante morena, pircing Double Flare Tunnel, sudadera negra, audifonos blancos pequeños de cuerda, avatar."
+          "url": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20creame%20una%20foto%20de%20perfil%20de%20un%20calvo%20mulato%20con%20sudadera%20%20de%20color%20negro%20con%20dilataciones%20en%20las%20orejas%20barba%20poblado%20un%20corte%20en%20la%20ceja%2C%20%20piercing%20septum%20y%20auriculares%20peque%C3%B1os%20con%20cable%20de%20color%20blanco%2C%20gafas%20con%20montura%20transparente?model=gptimage&width=1024&height=1024&seed=403877&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
+          "prompt": "creame una foto de perfil de un calvo mulato con sudadera  de color negro con dilataciones en las orejas barba poblado un corte en la ceja,  piercing septum y auriculares pequeños con cable de color blanco, gafas con montura transparente\n\n\n\n"
         }
       ],
       "activeHomeAvatarUrl": "https://gen.pollinations.ai/image/version%20anime%2Chigh%20quality%2Cen%20pixel%20art%2C%20Chico%20de%2025%20a%C3%B1os%20y%20lentes%20dorados%2C%20cabello%20corto%20rizado%2C%20gorra%20negra%20con%20letra%20P%2C%20sudadera%20negra%2C%20barba%20corta%2C%20avatar.?model=gptimage&width=1024&height=1024&seed=809134&enhance=true&key=sk_U4uLdVFJBrH3Caq6TvrXWrsC75XP2c0d",
@@ -326,49 +318,19 @@
       "addedAt": "2026-03-02T18:41:53.964Z"
     },
     {
-      "id": "32cd",
-      "userId": 1772440265337,
-      "malId": 48,
+      "id": "4005",
+      "userId": 1772294351797,
+      "malId": 59571,
       "category": "anime",
-      "title": ".hack//Sign",
-      "imageUrl": "https://cdn.myanimelist.net/images/anime/1443/94665.webp",
-      "score": 6.94,
-      "personalScore": 7,
-      "type": "TV",
-      "status": "Finished Airing",
-      "watchStatus": "plan_to_watch",
-      "notes": "",
-      "addedAt": "2026-03-02T12:32:14.255Z"
-    },
-    {
-      "id": "d7a8",
-      "userId": 1772440265337,
-      "malId": 299,
-      "category": "anime",
-      "title": ".hack//Liminality",
-      "imageUrl": "https://myanimelist.net/images/anime/7/23079.webp",
-      "score": 6.58,
-      "personalScore": 9,
-      "type": "OVA",
-      "status": "Finished Airing",
-      "watchStatus": "watching",
-      "notes": "",
-      "addedAt": "2026-03-02T12:37:14.039Z"
-    },
-    {
-      "id": "2d92",
-      "userId": 1772440265337,
-      "malId": 58934,
-      "category": "anime",
-      "title": "Mashle: Sanma Taisou Shinkakusha Saishuu Shiken-hen",
-      "imageUrl": "https://myanimelist.net/images/anime/1085/154496.webp",
-      "score": null,
+      "title": "Shingeki no Kyojin Movie: Kanketsu-hen - The Last Attack",
+      "imageUrl": "https://myanimelist.net/images/anime/1379/145452.webp",
+      "score": 8.83,
       "personalScore": null,
-      "type": "TV",
-      "status": "Not yet aired",
+      "type": "Movie",
+      "status": "Finished Airing",
       "watchStatus": "plan_to_watch",
       "notes": "",
-      "addedAt": "2026-03-03T08:54:48.211Z"
+      "addedAt": "2026-03-03T08:47:48.506Z"
     }
   ]
 }

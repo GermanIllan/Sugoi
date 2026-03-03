@@ -24,3 +24,21 @@ export interface News {
 export interface NewsResponse {
     data: News[];
 }
+
+export type SavedNewsStatus = 'pending' | 'seen';
+
+export interface SavedNewsItem {
+    userId: number;
+    newsKey: string;
+    source: 'anime' | 'manga';
+    parentId: number;
+    mal_id: number;
+    title: string;
+    date: string;
+    author_name: string;
+    excerpt: string;
+    coverImageUrl: string;
+    url: string;
+    status: SavedNewsStatus;
+    savedAt: string;
+}
