@@ -2,8 +2,10 @@
 import { onMounted, ref, computed, watch } from 'vue'
 import { useForumStore } from '@/stores/forum'
 import { useAuthStore } from '@/stores/authStore'
+import { useScrollToTopOnUpdate } from '@/composables/useScroll'
 import TopicCard from '@/components/Forum/TopicCard.vue'
 import CreateTopicForm from '@/components/Forum/CreateTopicForm.vue'
+import eatingRiceGif from '@/assets/images/gif/eatingrice.gif'
 
 const forumStore = useForumStore()
 const authStore = useAuthStore()
@@ -12,6 +14,9 @@ const searchQuery = ref('')
 
 const currentPage = ref(1)
 const itemsPerPage = 5
+
+// Auto-scroll on page change
+useScrollToTopOnUpdate(currentPage)
 
 onMounted(async () => {
   await forumStore.fetchTopics()
@@ -38,6 +43,10 @@ watch(searchQuery, () => {
   currentPage.value = 1
 })
 
+watch(currentPage, () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+})
+
 const handleTopicCreated = () => {
   showCreateForm.value = false
 }
@@ -52,6 +61,7 @@ const handleTopicCreated = () => {
       </div>
       <div class="header-actions">
         <div class="search-wrapper">
+          <img :src="eatingRiceGif" class="forum-rice-gif" alt="Eating Rice" />
           <input 
             v-model="searchQuery" 
             type="text" 
@@ -72,7 +82,7 @@ const handleTopicCreated = () => {
     <!-- Guest Notice Banner -->
     <div v-if="!authStore.isAuthenticated" class="auth-notice-banner card shadow-sm">
       <p>
-        DEBES <router-link to="/auth" class="auth-link">INICIAR SESIÓN</router-link> PARA PUBLICAR UN TEMA.
+        DEBES <router-link to="/sign-in" class="auth-link">INICIAR SESIÓN</router-link> PARA PUBLICAR UN TEMA.
       </p>
     </div>
 
@@ -140,6 +150,7 @@ const handleTopicCreated = () => {
 }
 
 .forum-header {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -147,6 +158,12 @@ const handleTopicCreated = () => {
   border-bottom: var(--border-thick);
   padding-bottom: var(--spacing-lg);
   gap: var(--spacing-lg);
+  z-index: 1;
+}
+
+.header-content {
+  position: relative;
+  z-index: 10; /* Ensure text is above the GIF */
 }
 
 @media (max-width: 768px) {
@@ -171,11 +188,43 @@ const handleTopicCreated = () => {
 }
 
 .search-wrapper {
+  position: relative;
   flex: 1;
   min-width: 200px;
+  z-index: 1; /* Stacking context for the gif */
+}
+
+.forum-rice-gif {
+  position: absolute;
+  top: -65px; /* Above the input box */
+  right: 0;
+  width: 100px;
+  height: auto;
+  pointer-events: none;
+  z-index: -1; /* Behind the search input */
+}
+
+@media (max-width: 768px) {
+  .forum-rice-gif {
+    top: -55px; /* Stay glued to the box */
+    width: 100px; /* Constant size */
+    opacity: 1;
+    z-index: -1; 
+  }
+}
+
+@media (max-width: 600px) {
+  .forum-rice-gif {
+    top: -60px;
+    right: 20px;
+    opacity: 1;
+    z-index: -1;
+  }
 }
 
 .search-input {
+  position: relative;
+  z-index: 2; /* In front of the gif */
   width: 100%;
   padding: 10px 15px;
   font-family: var(--font-body);

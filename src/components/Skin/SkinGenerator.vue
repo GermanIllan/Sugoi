@@ -3,6 +3,7 @@ import { ref, computed, watch, onUnmounted } from 'vue';
 import { useSkinStore } from '@/stores/skinStore';
 import { useAuthStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
+import avatarcatGif from '@/assets/images/gif/avatarcat.gif';
 
 const skinStore = useSkinStore();
 const authStore = useAuthStore();
@@ -155,8 +156,8 @@ const handleSetHome = () => {
             Descargar
           </button>
           <button class="action-button home-btn" @click="handleSetHome">
-             <span class="kanji-small">ホームに設定</span>
-            {{ showFeedback ? '¡ACTUALIZADO!' : 'USAR EN HOME' }}
+             <span class="kanji-small">アバターを使用する</span>
+            {{ showFeedback ? '¡ACTUALIZADO!' : 'USAR AVATAR' }}
           </button>
         </div>
       </div>
@@ -164,15 +165,24 @@ const handleSetHome = () => {
         <p class="placeholder-text">Tu avatar aparecerá aquí</p>
       </div>
     </div>
+    <!-- Cat GIF glued to the bottom-right of the outer card -->
+    <img :src="avatarcatGif" class="generator-cat-gif" alt="Avatar Cat" />
   </div>
 </template>
 
 <style scoped>
 .creation-card {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-xxl);
   align-items: start;
+  z-index: 1; /* Create stacking context for entire card */
+}
+
+.input-section, .preview-section {
+  position: relative;
+  z-index: 3; /* Content above the GIF */
 }
 
 .input-section {
@@ -235,13 +245,44 @@ const handleSetHome = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  /* overflow: hidden; */ 
   position: relative;
+  z-index: 1; /* Create stacking context */
 }
 
 .placeholder-container {
+  position: relative;
+  z-index: 2; /* Text above the GIF */
   text-align: center;
   padding: var(--spacing-lg);
+}
+
+.image-container-wrapper {
+  position: relative;
+  z-index: 2; /* Content above the GIF */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.generator-cat-gif {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 150px;
+  height: auto;
+  pointer-events: none;
+  z-index: 5; /* Between background and content */
+}
+
+@media (max-width: 768px) {
+  .generator-cat-gif {
+    bottom: -20px; /* SAME position relative to card */
+    right: -10px; /* Slightly adjusted to stay within screen if card is full width */
+    width: 120px; 
+    z-index: 2; /* Still behind content (which is 3) but above card background */
+  }
 }
 
 .placeholder-text {

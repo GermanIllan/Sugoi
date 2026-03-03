@@ -9,6 +9,13 @@ import NewsDetailView from '../views/NewsDetailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { top: 0, behavior: 'smooth' };
+    }
+  },
   routes: [
     {
       path: "/",
@@ -77,7 +84,7 @@ const router = createRouter({
     {
       path: '/tracking',
       name: 'tracking',
-      component: HomeView,
+      component: () => import('../views/TrackingView.vue'),
       meta: { requiresAuth: true }
     }
   ],

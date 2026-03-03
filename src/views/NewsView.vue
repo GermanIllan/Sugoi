@@ -1,13 +1,22 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
 import { useNewsStore } from '@/stores/newsStore'
+import { useAuthStore } from '@/stores/authStore'
+import { useScrollToTopOnUpdate } from '@/composables/useScroll'
 import type { NewsCard } from '@/stores/newsStore'
 
 type NewsFilter = 'latest' | 'weekly' | 'strategy' | 'popular'
 
 const activeFilter = ref<NewsFilter>('latest')
+const saveActionError = ref<string | null>(null)
+
+// Auto-scroll on filter change
+useScrollToTopOnUpdate(activeFilter)
 const searchQuery = ref<string>('')
+const router = useRouter()
+const authStore = useAuthStore()
 const newsStore = useNewsStore()
 const {
   allAnimeNews,
@@ -17,6 +26,7 @@ const {
   loading,
   loadingMore,
   error,
+  savedNews,
 } = storeToRefs(newsStore)
 
 const toTimestamp = (dateString: string): number => new Date(dateString).getTime()
@@ -106,6 +116,7 @@ const mangaSideCards = computed<NewsCard[]>(() => filteredMangaNews.value.slice(
 const hasVisibleNews = computed<boolean>(
   () => filteredAnimeNews.value.length > 0 || filteredMangaNews.value.length > 0
 )
+const isAuthenticated = computed<boolean>(() => authStore.isAuthenticated)
 
 const detailAnime = computed<NewsCard | null>(() => selectedAnimeNews.value ?? featuredAnime.value)
 const detailManga = computed<NewsCard | null>(() => selectedMangaNews.value ?? mangaMain.value)
@@ -145,17 +156,44 @@ const loadNews = async (): Promise<void> => {
   await newsStore.loadNewsFeed()
 }
 
+const requestAuthForNewsAction = async (): Promise<boolean> => {
+  if (isAuthenticated.value && authStore.user) return true
+  saveActionError.value = 'Inicia sesión para guardar o marcar noticias.'
+  await router.push({ name: 'sign-in' })
+  return false
+}
+
+const isSaved = (item: NewsCard): boolean => newsStore.isNewsSaved(item)
+
+const toggleSave = async (item: NewsCard): Promise<void> => {
+  saveActionError.value = null
+  const canProceed = await requestAuthForNewsAction()
+  if (!canProceed || !authStore.user) return
+  newsStore.toggleSaveNews(item, Number(authStore.user.id))
+}
+
 const loadMoreNews = async (): Promise<void> => {
   await newsStore.loadMoreNewsFeed()
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth',
-  })
 }
 
 onMounted(async () => {
+  if (authStore.user) {
+    newsStore.loadSavedNews(Number(authStore.user.id))
+  }
   await loadNews()
 })
+
+watch(
+  () => authStore.user?.id,
+  (userId) => {
+    if (!userId) {
+      savedNews.value = []
+      return
+    }
+
+    newsStore.loadSavedNews(Number(userId))
+  }
+)
 </script>
 
 <template>
@@ -195,11 +233,12 @@ onMounted(async () => {
       </form>
     </div>
 
-    <div class="section-separator" aria-hidden="true"></div>
+    <div class="section-gap" aria-hidden="true"></div>
 
     <div v-if="loading" class="card status-block">Sincronizando noticias...</div>
     <div v-else-if="error" class="card status-block">{{ error }}</div>
     <div v-else-if="!hasVisibleNews" class="card status-block">NO HAY NOTICIAS POR EL MOMENTO</div>
+    <div v-if="saveActionError" class="card status-block">{{ saveActionError }}</div>
 
     <section class="section-block" v-if="!loading && weeklyTrending.length > 0">
       <div class="section-heading">
@@ -217,19 +256,28 @@ onMounted(async () => {
           <p class="news-author">Autor: {{ item.author_name || 'Staff' }}</p>
           <div class="news-bottom">
             <span class="news-date">{{ item.comments }} comentarios</span>
-            <RouterLink
-              :to="getNewsDetailRoute(item)"
-              class="button-primary small-link"
-              @click="item.source === 'anime' ? selectAnimeNews(item) : selectMangaNews(item)"
-            >
-              Leer más
-            </RouterLink>
+            <div class="news-actions">
+              <button
+                class="news-action-btn"
+                :class="{ 'is-active': isSaved(item) }"
+                @click.stop="toggleSave(item)"
+              >
+                {{ isSaved(item) ? 'Guardada' : 'Guardar' }}
+              </button>
+              <RouterLink
+                :to="getNewsDetailRoute(item)"
+                class="button-primary small-link"
+                @click="item.source === 'anime' ? selectAnimeNews(item) : selectMangaNews(item)"
+              >
+                Leer más
+              </RouterLink>
+            </div>
           </div>
         </article>
       </div>
     </section>
 
-    <div class="section-separator" aria-hidden="true"></div>
+    <div class="section-gap" aria-hidden="true"></div>
 
     <section class="section-block" v-if="!loading && animeCardsForGrid.length > 0">
       <div class="section-heading">
@@ -251,9 +299,18 @@ onMounted(async () => {
 
             <div class="news-bottom">
               <span class="news-date">{{ formatDateTime(item.date) }}</span>
-              <RouterLink :to="getNewsDetailRoute(item)" class="button-primary small-link" @click.stop>
-                Leer más
-              </RouterLink>
+              <div class="news-actions">
+                <button
+                  class="news-action-btn"
+                  :class="{ 'is-active': isSaved(item) }"
+                  @click.stop="toggleSave(item)"
+                >
+                  {{ isSaved(item) ? 'Guardada' : 'Guardar' }}
+                </button>
+                <RouterLink :to="getNewsDetailRoute(item)" class="button-primary small-link" @click.stop>
+                  Leer más
+                </RouterLink>
+              </div>
             </div>
           </article>
         </div>
@@ -265,12 +322,21 @@ onMounted(async () => {
           <p>{{ truncate(detailAnime.excerpt, 220) }}</p>
           <p class="news-author">Autor: {{ detailAnime.author_name || 'Staff MAL' }}</p>
           <span class="detail-meta">{{ formatDateTime(detailAnime.date) }} · {{ detailAnime.comments }} comentarios</span>
+          <div class="news-actions">
+            <button
+              class="news-action-btn"
+              :class="{ 'is-active': isSaved(detailAnime) }"
+              @click.stop="toggleSave(detailAnime)"
+            >
+              {{ isSaved(detailAnime) ? 'Guardada' : 'Guardar' }}
+            </button>
+          </div>
           <RouterLink :to="getNewsDetailRoute(detailAnime)" class="button-primary">Leer más</RouterLink>
         </aside>
       </div>
     </section>
 
-    <div class="section-separator" aria-hidden="true"></div>
+    <div class="section-gap" aria-hidden="true"></div>
 
     <section class="section-block" v-if="!loading && mangaMain">
       <div class="section-heading section-heading-manga">
@@ -285,9 +351,18 @@ onMounted(async () => {
           <h3 class="news-title">{{ mangaMain.title }}</h3>
           <p class="news-excerpt">{{ truncate(mangaMain.excerpt, 170) }}</p>
           <p class="news-author">Autor: {{ mangaMain.author_name || 'Staff MAL' }}</p>
-          <RouterLink :to="getNewsDetailRoute(mangaMain)" class="button-primary small-link" @click.stop>
-            Continuar leyendo
-          </RouterLink>
+          <div class="news-actions">
+            <button
+              class="news-action-btn"
+              :class="{ 'is-active': isSaved(mangaMain) }"
+              @click.stop="toggleSave(mangaMain)"
+            >
+              {{ isSaved(mangaMain) ? 'Guardada' : 'Guardar' }}
+            </button>
+            <RouterLink :to="getNewsDetailRoute(mangaMain)" class="button-primary small-link" @click.stop>
+              Continuar leyendo
+            </RouterLink>
+          </div>
         </article>
 
         <div class="manga-side-list">
@@ -297,7 +372,16 @@ onMounted(async () => {
               <h4>{{ item.title }}</h4>
               <p>{{ truncate(item.excerpt, 90) }}</p>
               <p class="news-author">Autor: {{ item.author_name || 'Staff MAL' }}</p>
-              <RouterLink :to="getNewsDetailRoute(item)" @click.stop>Leer más</RouterLink>
+              <div class="news-actions">
+                <button
+                  class="news-action-btn"
+                  :class="{ 'is-active': isSaved(item) }"
+                  @click.stop="toggleSave(item)"
+                >
+                  {{ isSaved(item) ? 'Guardada' : 'Guardar' }}
+                </button>
+                <RouterLink :to="getNewsDetailRoute(item)" @click.stop>Leer más</RouterLink>
+              </div>
             </div>
           </article>
         </div>
@@ -310,11 +394,20 @@ onMounted(async () => {
         <p>{{ truncate(detailManga.excerpt, 220) }}</p>
         <p class="news-author">Autor: {{ detailManga.author_name || 'Staff MAL' }}</p>
         <span class="detail-meta">{{ formatDateTime(detailManga.date) }} · {{ detailManga.comments }} comentarios</span>
+        <div class="news-actions">
+          <button
+            class="news-action-btn"
+            :class="{ 'is-active': isSaved(detailManga) }"
+            @click.stop="toggleSave(detailManga)"
+          >
+            {{ isSaved(detailManga) ? 'Guardada' : 'Guardar' }}
+          </button>
+        </div>
         <RouterLink :to="getNewsDetailRoute(detailManga)" class="button-primary">Leer más</RouterLink>
       </aside>
     </section>
 
-    <div class="section-separator" aria-hidden="true"></div>
+    <div class="section-gap" aria-hidden="true"></div>
 
     <div class="load-more-wrap" v-if="!loading && hasVisibleNews">
       <button class="button-primary" :disabled="loadingMore" @click="loadMoreNews">
@@ -367,6 +460,11 @@ onMounted(async () => {
   background: #d0d0d0;
   border-top: var(--border-thin);
   border-bottom: var(--border-thin);
+  margin-bottom: var(--spacing-lg);
+}
+
+.section-gap {
+  height: 10px;
   margin-bottom: var(--spacing-lg);
 }
 
@@ -631,8 +729,50 @@ onMounted(async () => {
   margin-top: auto;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   gap: var(--spacing-sm);
+}
+
+.news-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(110px, 1fr));
+  align-items: stretch;
+  gap: 6px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.news-action-btn {
+  border: var(--border-thin);
+  background: var(--color-white-snow);
+  font-family: var(--font-heading);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  padding: 7px 8px;
+  min-height: 34px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.news-action-btn.is-active {
+  background: var(--color-primary);
+  color: var(--color-white-snow);
+}
+
+.news-actions :deep(a),
+.news-actions .small-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 7px 8px;
+  text-align: center;
+  line-height: 1.1;
+  text-decoration: none;
 }
 
 .news-date {
@@ -644,7 +784,7 @@ onMounted(async () => {
 .small-link {
   text-decoration: none;
   font-size: 0.7rem;
-  padding: 8px 12px;
+  padding: 7px 8px;
 }
 
 .manga-layout {
@@ -717,6 +857,10 @@ onMounted(async () => {
   font-size: 0.7rem;
 }
 
+.manga-side-content .news-actions a {
+  color: var(--color-black-carbon);
+}
+
 .detail-panel {
   display: flex;
   flex-direction: column;
@@ -783,6 +927,10 @@ onMounted(async () => {
   .review-grid {
     grid-template-columns: 1fr;
   }
+
+  .news-actions {
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -799,6 +947,15 @@ onMounted(async () => {
   .search-form {
     min-width: 100%;
     margin-left: 0;
+  }
+
+  .news-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .news-actions :deep(a),
+  .news-actions .small-link {
+    grid-column: auto;
   }
 
   .manga-side-card,

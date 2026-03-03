@@ -2,6 +2,10 @@
 import { RouterView } from 'vue-router'
 import NavBar from "./components/Layout/NavBar.vue";
 import Footer from "./components/Layout/Footer.vue";
+import Programanding2Loader from "./components/Common/Programanding2Loader.vue";
+import { useTrackingStore } from "./stores/trackingStore";
+
+const trackingStore = useTrackingStore();
 </script>
 
 <template>
@@ -11,6 +15,8 @@ import Footer from "./components/Layout/Footer.vue";
       <RouterView />
     </main>
     <Footer />
+    
+    <Programanding2Loader :show="trackingStore.isProgramanding2Loading" />
   </div>
 </template>
 

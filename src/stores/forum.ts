@@ -18,6 +18,7 @@ export interface Reply {
 
 export interface CommunityComment {
   id: string
+  title: string
   author: string
   content: string
 }
@@ -35,7 +36,10 @@ export const useForumStore = defineStore('forum', {
       this.loading = true
       try {
         const response = await fetch('http://localhost:5174/topics')
-        this.topics = await response.json()
+        const data = await response.json()
+        this.topics = data.sort((a: Topic, b: Topic) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )
       } catch (error) {
         console.error('Error fetching topics:', error)
       } finally {
@@ -78,7 +82,7 @@ export const useForumStore = defineStore('forum', {
           body: JSON.stringify(newTopic),
         })
         const data = await response.json()
-        this.topics.push(data)
+        this.topics.unshift(data)
         return data
       } catch (error) {
         console.error('Error creating topic:', error)
@@ -106,16 +110,17 @@ export const useForumStore = defineStore('forum', {
 
     async fetchLatestComments(limit = 3): Promise<CommunityComment[]> {
       try {
-        const response = await fetch('http://localhost:5174/replies')
-        const data = (await response.json()) as Reply[]
+        const response = await fetch('http://localhost:5174/topics')
+        const data = (await response.json()) as Topic[]
         return data
           .slice()
           .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
           .slice(0, limit)
-          .map((reply) => ({
-          id: reply.id,
-          author: reply.author,
-          content: reply.content,
+          .map((topic) => ({
+            id: topic.id,
+            title: topic.title,
+            author: topic.author,
+            content: topic.content,
           }))
       } catch (error) {
         console.error('Error fetching latest comments:', error)
