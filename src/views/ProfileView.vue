@@ -103,6 +103,7 @@ const handleConfirmDelete = () => {
               <p class="detail-value">{{ user?.email }}</p>
             </div>
           </div>
+          <img src="@/assets/images/gif/eatingcheetos.gif" alt="Decoration" class="eating-gif" />
         </div>
       </section>
 
@@ -179,8 +180,10 @@ const handleConfirmDelete = () => {
 
 /* User Card */
 .profile-card {
+  position: relative;
   background-color: var(--color-white-snow);
   padding: var(--spacing-xl);
+  overflow: hidden;
 }
 
 .user-info-layout {
@@ -188,6 +191,16 @@ const handleConfirmDelete = () => {
   grid-template-columns: 200px 1fr;
   gap: var(--spacing-xl);
   align-items: center;
+}
+
+.eating-gif {
+  position: absolute;
+  right: 15px;
+  bottom: -10px;
+  width: 140px;
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
 }
 
 .avatar-display-wrapper {
@@ -298,6 +311,13 @@ const handleConfirmDelete = () => {
 
   .detail-value {
     font-size: 1.2rem;
+  }
+
+  .eating-gif {
+    width: 100px;
+    right: 5px;
+    bottom: -5px;
+    opacity: 0.8;
   }
 }
 </style>

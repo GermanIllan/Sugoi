@@ -7,6 +7,7 @@ import { useAnimeStore } from '@/stores/animeStore'
 import { useMangaStore } from '@/stores/mangaStore'
 import { useForumStore } from '@/stores/forum'
 import { storeToRefs } from 'pinia'
+import ramenGif from '@/assets/images/gif/eatingramen.gif'
 import fallbackAvatar from '@/assets/images/image/sugoi-avatar.png'
 import type { Anime } from '@/types/anime'
 import type { Manga } from '@/types/manga'
@@ -249,6 +250,8 @@ const syncCommentsFromForum = async (): Promise<void> => {
       </div>
 
       <div class="ratings-list">
+        <!-- Mirrored GIF above the first rating box -->
+        <img :src="ramenGif" class="ratings-ramen-gif" alt="Eating Ramen" />
         <article
           v-for="item in ratings"
           :key="`${item.title}-${item.detailType}-${item.detailId}`"
@@ -321,6 +324,7 @@ const syncCommentsFromForum = async (): Promise<void> => {
 
 /* Hero Section */
 .hero {
+  position: relative;
   background-color: var(--color-primary);
   box-shadow: 0 10px 7px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background-image: repeating-linear-gradient(
@@ -595,6 +599,8 @@ const syncCommentsFromForum = async (): Promise<void> => {
 }
 
 .section-kanji {
+  position: relative;
+  z-index: 3;
   font-size: 5rem;
   margin: 0;
   color: var(--color-primary);
@@ -603,6 +609,8 @@ const syncCommentsFromForum = async (): Promise<void> => {
 }
 
 .section-subtitle {
+  position: relative;
+  z-index: 3;
   font-family: var(--font-heading);
   font-size: 1rem;
   letter-spacing: 6px;
@@ -633,14 +641,37 @@ const syncCommentsFromForum = async (): Promise<void> => {
 }
 
 .ratings-list {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 16px;
   max-width: 900px;
   margin: 0 auto;
+  z-index: 1; /* Create stacking context for z-index -1 children */
+}
+
+.ratings-ramen-gif {
+  position: absolute;
+  top: -110px;
+  right: 0;
+  width: 130px;
+  transform: scaleX(-1);
+  pointer-events: none;
+  z-index: 5;
+}
+
+@media (max-width: 768px) {
+  .ratings-ramen-gif {
+    top: -110px; /* Keep the same top position */
+    width: 130px; /* Keep constant size */
+    z-index: -1; /* Behind text on responsive */
+    opacity: 1; 
+  }
 }
 
 .rating-item {
+  position: relative;
+  z-index: 2; /* Content above the GIF */
   background: var(--color-white-snow);
   border: var(--border-thick);
   box-shadow: var(--shadow-offset-sm);

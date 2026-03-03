@@ -36,6 +36,13 @@
       "createdAt": "2026-03-01T22:27:42.559Z"
     },
     {
+      "id": "lopzqpvac",
+      "title": "Preguntas Varias",
+      "author": "Ginoko",
+      "content": "¿Por que se llama CARLOS si solo es uno?\n",
+      "createdAt": "2026-03-02T10:46:30.837Z"
+    },
+    {
       "id": "tb3r9lyro",
       "title": "JOI",
       "author": "Sugoi",
@@ -62,6 +69,13 @@
       "author": "Kevin",
       "content": "El anime One piece es como muy sobre valorado no? ",
       "createdAt": "2026-03-02T12:30:19.793Z"
+    },
+    {
+      "id": "jy6edvl2y",
+      "title": "PREGUNTAS VARIAS",
+      "author": "Ginoko",
+      "content": "¿Porque \"separado\" se escribe todo junto y \"todo junto\" separado?\n",
+      "createdAt": "2026-03-03T08:42:07.271Z"
     }
   ],
   "replies": [
@@ -99,12 +113,6 @@
       "username": "Kevin",
       "email": "kevingerardoruiz.2001@gmail.com",
       "password": "kevin123"
-    },
-    {
-      "id": "1772440060890",
-      "username": "Ginoko",
-      "email": "ginomaranha@gmail.com",
-      "password": "sugoi123"
     },
     {
       "id": "1772440265337",
@@ -331,6 +339,51 @@
       "watchStatus": "plan_to_watch",
       "notes": "",
       "addedAt": "2026-03-03T08:47:48.506Z"
+    },
+    {
+      "id": "32cd",
+      "userId": 1772440265337,
+      "malId": 48,
+      "category": "anime",
+      "title": ".hack//Sign",
+      "imageUrl": "https://cdn.myanimelist.net/images/anime/1443/94665.webp",
+      "score": 6.94,
+      "personalScore": 7,
+      "type": "TV",
+      "status": "Finished Airing",
+      "watchStatus": "plan_to_watch",
+      "notes": "",
+      "addedAt": "2026-03-02T12:32:14.255Z"
+    },
+    {
+      "id": "d7a8",
+      "userId": 1772440265337,
+      "malId": 299,
+      "category": "anime",
+      "title": ".hack//Liminality",
+      "imageUrl": "https://myanimelist.net/images/anime/7/23079.webp",
+      "score": 6.58,
+      "personalScore": 9,
+      "type": "OVA",
+      "status": "Finished Airing",
+      "watchStatus": "watching",
+      "notes": "",
+      "addedAt": "2026-03-02T12:37:14.039Z"
+    },
+    {
+      "id": "2d92",
+      "userId": 1772440265337,
+      "malId": 58934,
+      "category": "anime",
+      "title": "Mashle: Sanma Taisou Shinkakusha Saishuu Shiken-hen",
+      "imageUrl": "https://myanimelist.net/images/anime/1085/154496.webp",
+      "score": null,
+      "personalScore": null,
+      "type": "TV",
+      "status": "Not yet aired",
+      "watchStatus": "plan_to_watch",
+      "notes": "",
+      "addedAt": "2026-03-03T08:54:48.211Z"
     }
   ]
 }
