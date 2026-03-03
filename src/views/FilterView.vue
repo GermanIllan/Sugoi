@@ -11,6 +11,7 @@ import { useScrollToTopOnUpdate } from '@/composables/useScroll';
 import FilterCategoryCard from '@/components/Filter/FilterCategoryCard.vue';
 import FilterControls from '@/components/Filter/FilterControls.vue';
 import FilterResultsGrid from '@/components/Filter/FilterResultsGrid.vue';
+import scaleCat from '@/assets/images/gif/cleannigcat.gif';
 
 const router = useRouter();
 
@@ -185,6 +186,9 @@ const goToDetail = (payload: { type: string, id: number }) => {
 
 <template>
     <div class="filter-view">
+        <!-- Hanging Cat -->
+        <img v-if="!selectedCategory" :src="scaleCat" alt="Scaling Cat" class="hanging-cat" aria-hidden="true" />
+
         <div class="container" :class="{ 'container-wide': !!selectedCategory }">
             <header class="view-header" :class="{ 'header-minimized': selectedCategory }">
                 <h1 class="view-kanji">フィルター</h1>
@@ -359,4 +363,23 @@ const goToDetail = (payload: { type: string, id: number }) => {
         font-size: 3rem;
     }
 }
+
+.hanging-cat {
+    position: absolute;
+    bottom: 0;
+    left: 70%;
+    width: 200px;
+    height: auto;
+    z-index: 5; /* Detrás del footer (z-index: 20) */
+    pointer-events: none;
+    transform: translateY(50%); /* Asomando la mitad */
+    /* Mantenemos una ligera animación para que se note vivo */
+    animation: cat-bounce 2s ease-in-out infinite alternate;
+}
+
+@keyframes cat-bounce {
+    from { transform: translateY(45%) translateX(0); }
+    to { transform: translateY(55%) translateX(5px); }
+}
 </style>
+```
