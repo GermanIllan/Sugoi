@@ -71,8 +71,8 @@ import { Youtube, Twitter, Instagram } from 'lucide-vue-next';
       <div class="container bottom-content">
         <p class="copyright">© {{ new Date().getFullYear() }} SUGOI — TODOS LOS DERECHOS RESERVADOS</p>
         <div class="legal-links">
-          <a href="#">POLÍTICA DE PRIVACIDAD</a>
-          <a href="#">TÉRMINOS DE SERVICIO</a>
+          <router-link to="/privacidad">POLÍTICA DE PRIVACIDAD</router-link>
+          <router-link to="/terminos">TÉRMINOS DE SERVICIO</router-link>
         </div>
       </div>
     </div>
