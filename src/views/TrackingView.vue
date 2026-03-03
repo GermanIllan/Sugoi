@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useTrackingStore } from '@/stores/trackingStore';
 import { useAuthStore } from '@/stores/authStore';
+import { useNewsStore } from '@/stores/newsStore';
 import { useScrollToTopOnUpdate } from '@/composables/useScroll';
 import TrackingDashboard from '@/components/Tracking/TrackingDashboard.vue';
 import TrackingFilters from '@/components/Tracking/TrackingFilters.vue';
 import TrackingGrid from '@/components/Tracking/TrackingGrid.vue';
 import ConfirmModal from '@/components/Common/ConfirmModal.vue';
 import type { TrackingRecord, WatchStatus } from '@/types/tracking';
+import type { SavedNewsItem } from '@/types/news';
 
 const trackingStore = useTrackingStore();
 const authStore = useAuthStore();
+const newsStore = useNewsStore();
 
 // Modal state
 const showRemoveModal = ref(false);
@@ -28,6 +31,7 @@ const sortOrder = ref<'newest' | 'score' | 'title'>('newest');
 onMounted(async () => {
     if (authStore.user) {
         await trackingStore.loadUserTracking(Number(authStore.user.id));
+        newsStore.loadSavedNews(Number(authStore.user.id));
     }
 });
 
@@ -81,6 +85,35 @@ const cancelRemove = () => {
     showRemoveModal.value = false;
     itemToRemoveId.value = null;
 };
+
+const pendingNews = computed<SavedNewsItem[]>(() =>
+    newsStore.savedNews
+        .filter((item) => item.status === 'pending')
+        .sort((a, b) => new Date(b.savedAt).getTime() - new Date(a.savedAt).getTime())
+);
+
+const seenNews = computed<SavedNewsItem[]>(() =>
+    newsStore.savedNews
+        .filter((item) => item.status === 'seen')
+        .sort((a, b) => new Date(b.savedAt).getTime() - new Date(a.savedAt).getTime())
+);
+
+const formatSavedDate = (dateString: string): string =>
+    new Date(dateString).toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    });
+
+const setNewsStatus = (newsKey: string, status: 'pending' | 'seen'): void => {
+    if (!authStore.user) return;
+    newsStore.setSavedNewsStatusByKey(newsKey, status, Number(authStore.user.id));
+};
+
+const removeSavedNews = (newsKey: string): void => {
+    if (!authStore.user) return;
+    newsStore.removeSavedNewsByKey(newsKey, Number(authStore.user.id));
+};
 </script>
 
 <template>
@@ -110,6 +143,57 @@ const cancelRemove = () => {
                 @update="handleUpdate"
                 @remove="handleRemove"
             />
+
+            <section class="saved-news-block border-thick shadow-md">
+                <div class="saved-news-head">
+                    <h2>MIS NOTICIAS GUARDADAS</h2>
+                    <p>Gestiona lo pendiente y lo visto desde tu tracking.</p>
+                </div>
+
+                <div class="saved-news-columns">
+                    <article class="saved-news-column border-thin">
+                        <h3>PENDIENTES</h3>
+                        <div v-if="pendingNews.length === 0" class="saved-news-empty border-thin">
+                            No tienes noticias pendientes.
+                        </div>
+                        <div v-else class="saved-news-list">
+                            <div v-for="item in pendingNews" :key="item.newsKey" class="saved-news-item border-thin">
+                                <div class="saved-news-meta">
+                                    <span class="source-badge">{{ item.source === 'anime' ? 'Anime' : 'Manga' }}</span>
+                                    <span>{{ formatSavedDate(item.savedAt) }}</span>
+                                </div>
+                                <h4>{{ item.title }}</h4>
+                                <p>{{ item.excerpt }}</p>
+                                <div class="saved-news-actions">
+                                    <button class="saved-btn" @click="setNewsStatus(item.newsKey, 'seen')">Marcar visto</button>
+                                    <button class="saved-btn saved-btn-danger" @click="removeSavedNews(item.newsKey)">Quitar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="saved-news-column border-thin">
+                        <h3>VISTAS</h3>
+                        <div v-if="seenNews.length === 0" class="saved-news-empty border-thin">
+                            Aún no tienes noticias marcadas como vistas.
+                        </div>
+                        <div v-else class="saved-news-list">
+                            <div v-for="item in seenNews" :key="item.newsKey" class="saved-news-item border-thin">
+                                <div class="saved-news-meta">
+                                    <span class="source-badge">{{ item.source === 'anime' ? 'Anime' : 'Manga' }}</span>
+                                    <span>{{ formatSavedDate(item.savedAt) }}</span>
+                                </div>
+                                <h4>{{ item.title }}</h4>
+                                <p>{{ item.excerpt }}</p>
+                                <div class="saved-news-actions">
+                                    <button class="saved-btn" @click="setNewsStatus(item.newsKey, 'pending')">Mover a pendiente</button>
+                                    <button class="saved-btn saved-btn-danger" @click="removeSavedNews(item.newsKey)">Quitar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
         </div>
 
         <!-- Confirm Removal Modal -->
@@ -130,10 +214,11 @@ const cancelRemove = () => {
     min-height: 100vh;
     padding: var(--spacing-xxl) var(--spacing-md);
     background-image: 
-        linear-gradient(rgba(246, 247, 247, 0.95), rgba(255, 255, 255, 0.95)),
-        url('/assets/images/image/lineas4.jpg');
+        linear-gradient(rgba(246, 247, 247, 0.85), rgba(255, 255, 255, 0.85)),
+        url('@/assets/images/image/lineas4.jpg');
     background-attachment: fixed;
     background-size: cover;
+    background-position: center;
 }
 
 .container {
@@ -176,6 +261,119 @@ const cancelRemove = () => {
     font-weight: 500;
 }
 
+.saved-news-block {
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background: var(--color-white-snow);
+}
+
+.saved-news-head {
+    margin-bottom: var(--spacing-md);
+}
+
+.saved-news-head h2 {
+    margin: 0 0 var(--spacing-xs);
+    font-size: 1.4rem;
+    text-transform: uppercase;
+}
+
+.saved-news-head p {
+    margin: 0;
+    font-size: var(--font-size-sm);
+}
+
+.saved-news-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+}
+
+.saved-news-column {
+    background: #fefefe;
+    padding: var(--spacing-md);
+}
+
+.saved-news-column h3 {
+    margin: 0 0 var(--spacing-sm);
+    text-transform: uppercase;
+    font-size: var(--font-size-md);
+}
+
+.saved-news-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    max-height: 420px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.saved-news-item {
+    background: #fff;
+    padding: var(--spacing-sm);
+}
+
+.saved-news-item h4 {
+    margin: 0 0 6px;
+    font-size: var(--font-size-sm);
+}
+
+.saved-news-item p {
+    margin: 0 0 var(--spacing-sm);
+    font-size: var(--font-size-xs);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.saved-news-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    font-family: var(--font-heading);
+}
+
+.source-badge {
+    border: var(--border-thin);
+    padding: 2px 6px;
+    background: var(--color-primary);
+    color: var(--color-white-snow);
+}
+
+.saved-news-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.saved-btn {
+    border: var(--border-thin);
+    background: var(--color-white-snow);
+    padding: 6px 8px;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    font-family: var(--font-heading);
+    cursor: pointer;
+}
+
+.saved-btn-danger {
+    background: var(--color-black-carbon);
+    color: var(--color-white-snow);
+}
+
+.saved-news-empty {
+    padding: var(--spacing-md);
+    font-size: var(--font-size-sm);
+    text-align: center;
+    text-transform: uppercase;
+    font-family: var(--font-heading);
+}
+
 @media (max-width: 768px) {
     .main-title {
         font-size: 2.5rem;
@@ -183,6 +381,10 @@ const cancelRemove = () => {
     
     .kanji-vertical {
         display: none;
+    }
+
+    .saved-news-columns {
+        grid-template-columns: 1fr;
     }
 }
 </style>
