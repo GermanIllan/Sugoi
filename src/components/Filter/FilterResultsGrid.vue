@@ -11,6 +11,7 @@ interface Props {
     items: Array<Anime | Manga>;
     category: 'anime' | 'manga';
     isLoading: boolean;
+    error: string | null;
     currentPage: number;
     totalPages: number;
 }
@@ -109,6 +110,11 @@ const handlePageChange = (page: number) => {
                 Buscando...
             </div>
             
+            <div v-else-if="error" class="error-results shadow-md" key="error">
+                <p>{{ error }}</p>
+                <button @click="$emit('changePage', currentPage)" class="retry-btn">REINTENTAR</button>
+            </div>
+            
             <div v-else-if="!isLoading" class="no-results" key="empty">
                 No se encontraron resultados.
             </div>
@@ -176,6 +182,39 @@ const handlePageChange = (page: number) => {
     color: var(--color-primary);
     font-weight: bold;
     font-size: 1.2rem;
+}
+
+.error-results {
+    margin: var(--spacing-xxl) auto;
+    padding: var(--spacing-xl);
+    background: white;
+    border: var(--border-thick);
+    border-color: var(--color-primary);
+    text-align: center;
+    max-width: 600px;
+}
+
+.error-results p {
+    font-family: var(--font-heading);
+    color: var(--color-black-carbon);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.4;
+}
+
+.retry-btn {
+    background: var(--color-primary);
+    color: white;
+    border: var(--border-thick);
+    padding: 8px 16px;
+    font-family: var(--font-heading);
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.retry-btn:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 var(--color-black-carbon);
 }
 
 /* Transitions */

@@ -46,7 +46,6 @@ class MangaService {
             const response = await apiClient.get<MangaSearchResponse>('/manga', { params });
             return response.data;
         } catch (error) {
-            console.error('MangaService.getMangaList Error:', error);
             throw error;
         }
     }
@@ -59,7 +58,6 @@ class MangaService {
             const response = await apiClient.get<MangaSingleResponse>(`/manga/${id}`);
             return response.data;
         } catch (error) {
-            console.error(`MangaService.getMangaById (${id}) Error:`, error);
             throw error;
         }
     }
@@ -72,7 +70,6 @@ class MangaService {
             const response = await apiClient.get<MangaSearchResponse>('/top/manga', { params: { page } });
             return response.data;
         } catch (error) {
-            console.error('MangaService.getMangaRanking Error:', error);
             throw error;
         }
     }
@@ -85,7 +82,6 @@ class MangaService {
             const response = await apiClient.get<GenreResponse>('/genres/manga');
             return response.data;
         } catch (error) {
-            console.error('MangaService.getMangaGenres Error:', error);
             throw error;
         }
     }
@@ -99,7 +95,6 @@ class MangaService {
             const response = await apiClient.get<NewsResponse>(`/manga/${id}/news`);
             return response.data;
         } catch (error) {
-            console.error(`MangaService.getMangaNews (${id}) Error:`, error);
             throw error;
         }
     }
@@ -112,7 +107,6 @@ class MangaService {
             const response = await apiClient.get<RecommendationResponse>('/recommendations/manga');
             return response.data;
         } catch (error) {
-            console.error('MangaService.getMangaRecommendations Error:', error);
             throw error;
         }
     }
@@ -125,7 +119,6 @@ class MangaService {
             const response = await apiClient.get<MangaReviewResponse>('/reviews/manga', { params: { page } });
             return response.data;
         } catch (error) {
-            console.error('MangaService.getMangaReviews Error:', error);
             throw error;
         }
     }

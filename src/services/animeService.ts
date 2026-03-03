@@ -78,7 +78,6 @@ class AnimeService {
             const response = await apiClient.get<AnimeSearchResponse>('/anime', { params });
             return response.data;
         } catch (error) {
-            console.error('AnimeService.getAnimeList Error:', error);
             throw error; // Re-throw to be handled by the caller (like Pinia store)
         }
     }
@@ -93,7 +92,6 @@ class AnimeService {
             const response = await apiClient.get<AnimeSingleResponse>(`/anime/${id}`);
             return response.data;
         } catch (error) {
-            console.error(`AnimeService.getAnimeById (${id}) Error:`, error);
             throw error;
         }
     }
@@ -108,7 +106,6 @@ class AnimeService {
             const response = await apiClient.get<AnimeSearchResponse>('/top/anime', { params: { page } });
             return response.data;
         } catch (error) {
-            console.error('AnimeService.getAnimeRanking Error:', error);
             throw error;
         }
     }
@@ -122,7 +119,6 @@ class AnimeService {
             const response = await apiClient.get<GenreResponse>('/genres/anime');
             return response.data;
         } catch (error) {
-            console.error('AnimeService.getAnimeGenres Error:', error);
             throw error;
         }
     }
@@ -136,7 +132,6 @@ class AnimeService {
             const response = await apiClient.get<NewsResponse>(`/anime/${id}/news`);
             return response.data;
         } catch (error) {
-            console.error(`AnimeService.getAnimeNews (${id}) Error:`, error);
             throw error;
         }
     }
@@ -149,7 +144,6 @@ class AnimeService {
             const response = await apiClient.get<RecommendationResponse>('/recommendations/anime');
             return response.data;
         } catch (error) {
-            console.error('AnimeService.getAnimeRecommendations Error:', error);
             throw error;
         }
     }
@@ -163,7 +157,6 @@ class AnimeService {
             const response = await apiClient.get<AnimeSearchResponse>('/seasons/upcoming', { params: { page } });
             return response.data;
         } catch (error) {
-            console.error('AnimeService.getUpcomingSeason Error:', error);
             throw error;
         }
     }
@@ -176,7 +169,6 @@ class AnimeService {
             const response = await apiClient.get<AnimeSearchResponse>('/schedules', { params: { page } });
             return response.data;
         } catch (error) {
-            console.error('AnimeService.getSchedules Error:', error);
             throw error;
         }
     }
@@ -189,7 +181,6 @@ class AnimeService {
             const response = await apiClient.get<PromoResponse>('/watch/promos');
             return response.data;
         } catch (error) {
-            console.error('AnimeService.getWatchPromos Error:', error);
             throw error;
         }
     }
@@ -202,7 +193,6 @@ class AnimeService {
             const response = await apiClient.get<PromoResponse>('/watch/promos/popular');
             return response.data;
         } catch (error) {
-            console.error('AnimeService.getPopularWatchPromos Error:', error);
             throw error;
         }
     }
@@ -215,7 +205,6 @@ class AnimeService {
             const response = await apiClient.get<AnimeReviewResponse>('/reviews/anime', { params: { page } });
             return response.data;
         } catch (error) {
-            console.error('AnimeService.getAnimeReviews Error:', error);
             throw error;
         }
     }

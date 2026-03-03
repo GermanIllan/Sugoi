@@ -33,7 +33,6 @@ export const useTrackingStore = defineStore('tracking', () => {
             userTracking.value = await trackingService.getByUserId(userId);
         } catch (err: any) {
             error.value = err.message || 'Error al cargar el seguimiento';
-            console.error(err);
         } finally {
             isLoading.value = false;
         }
