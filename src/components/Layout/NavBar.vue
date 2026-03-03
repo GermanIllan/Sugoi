@@ -110,8 +110,8 @@ function isActive(path: string): boolean {
         </li>
       </ul>
 
-      <!-- Auth Section -->
-      <div class="auth-section">
+      <!-- Auth Section (Desktop Only) -->
+      <div class="auth-section desktop-only">
         <!-- Not Authenticated: Login Icon -->
         <router-link v-if="!isAuthenticated" to="/sign-in" class="auth-btn" title="Iniciar sesión">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="auth-icon">
@@ -194,27 +194,33 @@ function isActive(path: string): boolean {
           </div>
         </li>
 
-        <li v-if="isAuthenticated">
-          <router-link to="/profile" class="mobile-nav-item" @click="isMobileMenuOpen = false">
-            <span class="kanji-item">プロフィール</span>
-            PERFIL
-          </router-link>
-        </li>
-        <li v-if="isAuthenticated">
-          <router-link to="/tracking" class="mobile-nav-item" @click="isMobileMenuOpen = false">
-            <span class="kanji-item">トラッキング</span>
-            TRACKING
-          </router-link>
-        </li>
-
         <li v-for="item in menuItems" :key="item.label">
           <router-link 
             :to="item.link" 
             class="mobile-nav-item" 
-            :class="{ 'button-primary mobile-btn active-btn': isActive(item.link) }" 
+            :class="{ 'active-mobile': isActive(item.link) }" 
             @click="handleNavigation(item.link)"
           >
             {{ item.label }}
+          </router-link>
+        </li>
+
+        <!-- Divider for Auth Section -->
+        <li v-if="isAuthenticated" class="mobile-divider">
+          <span class="divider-kanji">ユーザー</span>
+          <div class="divider-line"></div>
+        </li>
+
+        <li v-if="isAuthenticated">
+          <router-link to="/profile" class="mobile-nav-item auth-item" :class="{ 'active-mobile': isActive('/profile') }" @click="isMobileMenuOpen = false">
+            <span class="kanji-item">プロフィール</span>
+            MI PERFIL
+          </router-link>
+        </li>
+        <li v-if="isAuthenticated">
+          <router-link to="/tracking" class="mobile-nav-item auth-item" :class="{ 'active-mobile': isActive('/tracking') }" @click="isMobileMenuOpen = false">
+            <span class="kanji-item">トラッキング</span>
+            MI TRACKING
           </router-link>
         </li>
 
@@ -315,16 +321,18 @@ function isActive(path: string): boolean {
 /* Base styles are bare, active state adds button styles */
 .active-btn.small-btn {
     background-color: var(--color-primary);
-    box-shadow: 2px 2px 0 var(--color-white-snow); /* Contrast shadow on black header */
-    border-color: var(--color-black-carbon);
+    color: var(--color-black-carbon) !important;
+    box-shadow: 4px 4px 0 var(--color-white-snow);
+    border: 2px solid var(--color-black-carbon);
+    transform: translateY(-2px);
 }
 .active-btn.small-btn:hover {
-    box-shadow: 4px 4px 0 var(--color-white-snow);
-    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-white-snow);
+    transform: translate(-2px, -4px);
 }
 .active-btn.small-btn:active {
     box-shadow: 1px 1px 0 var(--color-white-snow);
-    transform: translate(1px, 1px);
+    transform: translate(1px, 0px);
 }
 
 
@@ -406,27 +414,61 @@ function isActive(path: string): boolean {
   color: var(--color-white-snow);
   text-decoration: none;
   font-family: var(--font-heading);
-  font-size: var(--font-size-xl);
+  font-size: 1.25rem; /* Reduced for better mobile fit */
+  font-weight: var(--font-weight-black);
   text-transform: uppercase;
-  padding: var(--spacing-lg) 0; /* Vertical padding */
+  padding: var(--spacing-md) 0;
   border: none;
   background: none;
-  transition: transform 0.2s ease, color 0.2s ease;
+  transition: all 0.2s ease;
+  letter-spacing: 2px;
+}
+
+.mobile-nav-item.auth-item {
+  color: var(--color-accent-gris-azulado);
+  font-size: 1.1rem;
 }
 
 .mobile-nav-item:hover {
-  transform: translateY(3px);
-  
+  color: var(--color-primary);
+  padding-left: 10px;
 }
 
-/* Apply active styles */
-.active-btn.mobile-btn {
-    background-color: transparent;
-    color: var(--color-white-snow);
-    border: none; 
-    border-top: 4px solid var(--color-primary);
-    border-bottom: 4px solid var(--color-primary);
-    width: 100%;
+/* Active Mobile State - Neo Brutalist style */
+.active-mobile {
+  color: var(--color-primary) !important;
+  background-color: var(--color-white-snow);
+  color: var(--color-black-carbon) !important;
+  transform: skewX(-5deg);
+  box-shadow: 8px 8px 0 var(--color-primary);
+  margin: 5px 20px;
+  width: auto !important;
+  padding: 10px !important;
+}
+
+.mobile-divider {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.divider-kanji {
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  font-weight: var(--font-weight-black);
+}
+
+.divider-line {
+  flex-grow: 1;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-primary) 5px,
+    transparent 5px,
+    transparent 10px
+  );
 }
 
 
@@ -602,6 +644,10 @@ function isActive(path: string): boolean {
   
   .navbar-container {
       padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .desktop-only {
+    display: none !important;
   }
 }
 </style>

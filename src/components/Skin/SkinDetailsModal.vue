@@ -54,8 +54,8 @@ defineEmits<{
                     DESCARGAR
                   </button>
                   <button class="button-primary action-btn home-btn" @click="$emit('setHome', item.url)">
-                    <span class="kanji-btn">ホームに設定</span>
-                    USAR EN HOME
+                    <span class="kanji-btn">アバターを使用する</span>
+                    USAR AVATAR
                   </button>
                   <button class="button-primary action-btn delete-btn" @click="$emit('delete', item.url)">
                     <span class="kanji-btn">削除する</span>

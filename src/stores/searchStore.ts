@@ -8,7 +8,7 @@ export const useSearchStore = defineStore('search', () => {
     const currentPage = ref<number>(1);
     const totalPages = ref<number>(1);
 
-    const orderBy = ref<string>('');
+    const orderBy = ref<string>('start_date');
     const sort = ref<'desc' | 'asc'>('desc');
 
     const resetFilters = () => {
@@ -17,7 +17,7 @@ export const useSearchStore = defineStore('search', () => {
         selectedGenre.value = '';
         currentPage.value = 1;
         totalPages.value = 1;
-        orderBy.value = '';
+        orderBy.value = 'start_date';
         sort.value = 'desc';
     };
 

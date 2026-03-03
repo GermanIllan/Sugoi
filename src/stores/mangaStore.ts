@@ -51,10 +51,10 @@ export const useMangaStore = defineStore('manga', () => {
      * Fetch initial manga list.
      */
     const fetchMangaList = async (
-        query: string = '', 
-        genres: string = '', 
-        page: number = 1, 
-        limit: number = 25,
+        query: string = '',
+        genres: string = '',
+        page: number = 1,
+        limit: number = 15,
         orderBy: string = '',
         sort: 'desc' | 'asc' = 'desc'
     ) => {
@@ -63,8 +63,8 @@ export const useMangaStore = defineStore('manga', () => {
         currentSearchQuery.value = query;
 
         try {
-            const response = await mangaService.getMangaList({ 
-                q: query, 
+            const response = await mangaService.getMangaList({
+                q: query,
                 page: page,
                 limit: limit,
                 genres: genres || undefined,

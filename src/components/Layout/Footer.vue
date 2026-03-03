@@ -37,10 +37,10 @@ import { Youtube, Twitter, Instagram } from 'lucide-vue-next';
         <div class="footer-links">
           <h4 class="links-title">Navegación</h4>
           <ul class="links-list">
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Calificaciones</a></li>
-            <li><a href="#">Videojuegos</a></li>
-            <li><a href="#">Merchandising</a></li>
+            <li><router-link to="/noticias">Noticias</router-link></li>
+            <li><router-link to="/filtros">Filtros</router-link></li>
+            <li><router-link to="/tracking">Tracking</router-link></li>
+            <li><router-link to="/create-skin">Crear Avatar</router-link></li>
           </ul>
         </div>
 
@@ -48,7 +48,7 @@ import { Youtube, Twitter, Instagram } from 'lucide-vue-next';
         <div class="footer-links">
           <h4 class="links-title">Comunidad</h4>
           <ul class="links-list">
-            <li><a href="#">Foro</a></li>
+            <li><router-link to="/forum">Foro</router-link></li>
             <li><a href="#">Discord</a></li>
             <li><a href="#">Contribuir</a></li>
           </ul>
@@ -201,7 +201,7 @@ import { Youtube, Twitter, Instagram } from 'lucide-vue-next';
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
   letter-spacing: 1px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   transition: color 0.2s ease;
 }
 

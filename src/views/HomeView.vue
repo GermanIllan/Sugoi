@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSkinStore } from '@/stores/skinStore'
 import { useAuthStore } from '@/stores/authStore'
 import { useAnimeStore } from '@/stores/animeStore'
 import { useMangaStore } from '@/stores/mangaStore'
+import { useForumStore } from '@/stores/forum'
 import { storeToRefs } from 'pinia'
 import fallbackAvatar from '@/assets/images/image/sugoi-avatar.png'
 import type { Anime } from '@/types/anime'
@@ -18,6 +19,7 @@ const { activeHomeAvatarUrl } = storeToRefs(skinStore)
 const { isAuthenticated } = storeToRefs(authStore)
 const animeStore = useAnimeStore()
 const mangaStore = useMangaStore()
+const forumStore = useForumStore()
 const { animeRanking } = storeToRefs(animeStore)
 const { mangaRanking } = storeToRefs(mangaStore)
 
@@ -32,7 +34,9 @@ interface RatingItem {
 }
 
 interface CommentItem {
+  id: string
   initials: string
+  title: string
   name: string
   text: string
 }
@@ -109,27 +113,73 @@ onMounted(async () => {
   setTimeout(() => {
     visible.value = true
   }, 100)
-  await Promise.all([animeStore.fetchAnimeRanking(), mangaStore.fetchMangaRanking()])
+  await Promise.all([
+    animeStore.fetchAnimeRanking(),
+    mangaStore.fetchMangaRanking(),
+    syncCommentsFromForum(),
+  ])
   syncRatingsFromApi()
+  commentsPollingId = window.setInterval(() => {
+    void syncCommentsFromForum()
+  }, 5000)
 })
 
-const comments: CommentItem[] = [
+onUnmounted(() => {
+  if (commentsPollingId !== null) {
+    window.clearInterval(commentsPollingId)
+    commentsPollingId = null
+  }
+})
+
+const comments = ref<CommentItem[]>([
   {
+    id: 'fallback-1',
     initials: 'TY',
+    title: '¡Increíble comunidad!',
     name: 'Takeshi Yamamoto',
     text: 'SUGOI es increíble. Encuentro todas las noticias de anime que necesito y la comunidad es muy activa.',
   },
   {
+    id: 'fallback-2',
     initials: 'SN',
+    title: 'Mi web favorita',
     name: 'Sakura Nakamura',
     text: 'La mejor web de anime en español. Las calificaciones son muy precisas y no puedo dejar de visitar.',
   },
   {
+    id: 'fallback-3',
     initials: 'CO',
+    title: 'Grandes recomendaciones',
     name: 'Carlos Otaku',
     text: 'Los videojuegos recomendados siempre son los mejores. Gracias a SUGOI descubrí Persona 5.',
   },
-]
+])
+
+let commentsPollingId: number | null = null
+
+const getInitials = (name: string): string => {
+  const parts = name.trim().split(/\s+/).filter(Boolean)
+  if (parts.length === 0) return '??'
+  const first = parts[0] ?? ''
+  const second = parts[1] ?? ''
+  if (!second) return first.slice(0, 2).toUpperCase()
+  return `${first[0] ?? ''}${second[0] ?? ''}`.toUpperCase()
+}
+
+const syncCommentsFromForum = async (): Promise<void> => {
+  const latestComments = await forumStore.fetchLatestComments(3)
+  if (latestComments.length === 0) return
+
+  const liveComments = latestComments.map((topic) => ({
+    id: topic.id,
+    initials: getInitials(topic.author),
+    title: topic.title,
+    name: topic.author,
+    text: topic.content,
+  }))
+
+  comments.value = [...liveComments, ...comments.value].slice(0, 3)
+}
 </script>
 
 <template>
@@ -235,10 +285,10 @@ const comments: CommentItem[] = [
       </div>
 
       <div class="comments-list">
-        <article v-for="item in comments" :key="item.name" class="comment-item">
+        <article v-for="item in comments" :key="item.id" class="comment-item">
           <div class="comment-avatar">{{ item.initials }}</div>
           <div class="comment-content">
-            <h3 class="comment-name">{{ item.name }}</h3>
+            <h3 class="comment-name">{{ item.title }}</h3>
             <p class="comment-text">{{ item.text }}</p>
           </div>
         </article>

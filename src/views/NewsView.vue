@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useNewsStore } from '@/stores/newsStore'
+import { useScrollToTopOnUpdate } from '@/composables/useScroll'
 import type { NewsCard } from '@/stores/newsStore'
 
 type NewsFilter = 'latest' | 'weekly' | 'strategy' | 'popular'
 
 const activeFilter = ref<NewsFilter>('latest')
+
+// Auto-scroll on filter change
+useScrollToTopOnUpdate(activeFilter)
 const searchQuery = ref<string>('')
 const newsStore = useNewsStore()
 const {
@@ -147,10 +151,6 @@ const loadNews = async (): Promise<void> => {
 
 const loadMoreNews = async (): Promise<void> => {
   await newsStore.loadMoreNewsFeed()
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth',
-  })
 }
 
 onMounted(async () => {

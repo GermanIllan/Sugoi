@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores/authStore';
 import SkinGenerator from '@/components/Skin/SkinGenerator.vue';
 import SkinGallery from '@/components/Skin/SkinGallery.vue';
 import SkinDetailsModal from '@/components/Skin/SkinDetailsModal.vue';
-import SkinConfirmModal from '@/components/Skin/SkinConfirmModal.vue';
+import ConfirmModal from '@/components/Common/ConfirmModal.vue';
 import type { GalleryItem } from '@/types/skin';
 
 const skinStore = useSkinStore();
@@ -32,14 +32,15 @@ const handleConfirmDelete = () => {
 
 <template>
   <div class="skin-view container">
-    <!-- Global Confirmation Modal -->
-    <SkinConfirmModal
-      :show="!!itemToDelete"
-      title="¿ELIMINAR ESTA CREACIÓN?"
-      message="Esta acción no se puede deshacer y liberará espacio en tu galería."
-      @confirm="handleConfirmDelete"
-      @cancel="itemToDelete = null"
-    />
+      <!-- Confirmation Modal -->
+      <ConfirmModal 
+        :show="!!itemToDelete"
+        title="¿ELIMINAR ESTA CREACIÓN?"
+        message="Esta acción no se puede deshacer de forma manual."
+        confirmText="SÍ, ELIMINAR"
+        @confirm="handleConfirmDelete"
+        @cancel="itemToDelete = null"
+      />
     <header class="skin-header">
       <h1 class="title"><span class="kanji">アバターを作成しましょう</span> <br> Crea tu Avatar</h1>
       <p class="subtitle">Genera un avatar único estilo anime en pixel art</p>
@@ -87,7 +88,7 @@ const handleConfirmDelete = () => {
   pointer-events: none;
   background-image:
     linear-gradient(rgba(246, 247, 247, 0.85), rgba(255, 255, 255, 0.85)),
-    url('@/assets/images/image/lineas4.jpg');
+    url('@/assets/images/image/lineas5.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

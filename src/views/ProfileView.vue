@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
 import { useSkinStore } from '@/stores/skinStore';
+import { useTrackingStore } from '@/stores/trackingStore';
+import { useForumStore } from '@/stores/forum';
 import { storeToRefs } from 'pinia';
 import SkinGallery from '@/components/Skin/SkinGallery.vue';
 import SkinDetailsModal from '@/components/Skin/SkinDetailsModal.vue';
-import SkinConfirmModal from '@/components/Skin/SkinConfirmModal.vue';
+import ConfirmModal from '@/components/Common/ConfirmModal.vue';
 import { User as UserIcon, Activity, MessageSquare } from 'lucide-vue-next';
 import type { GalleryItem } from '@/types/skin';
 
@@ -14,6 +16,9 @@ import ProfileForum from '@/components/Profile/ProfileForum.vue';
 
 const authStore = useAuthStore();
 const skinStore = useSkinStore();
+const trackingStore = useTrackingStore();
+const forumStore = useForumStore();
+
 const { user } = storeToRefs(authStore);
 const { activeHomeAvatarUrl } = storeToRefs(skinStore);
 
@@ -22,6 +27,15 @@ const itemToDelete = ref<string | null>(null);
 
 onMounted(async () => {
   await skinStore.loadFromServer();
+  if (authStore.user) {
+    await trackingStore.loadUserTracking(Number(authStore.user.id));
+    await forumStore.fetchTopics();
+  }
+});
+
+const userTopics = computed(() => {
+  if (!user.value) return [];
+  return forumStore.topics.filter(t => t.author === user.value?.username);
 });
 
 const handleDeleteRequest = (url: string) => {
@@ -39,11 +53,11 @@ const handleConfirmDelete = () => {
 
 <template>
   <div class="profile-view container">
-    <!-- Modals (Reused from SkinView) -->
-    <SkinConfirmModal
+    <!-- Confirmation Modal -->
+    <ConfirmModal 
       :show="!!itemToDelete"
-      title="¿ELIMINAR ESTA CREACIÓN?"
-      message="Esta acción no se puede deshacer."
+      title="¿ELIMINAR AVATAR?"
+      message="¿Estás seguro de que quieres eliminar este avatar de tu galería? Esta acción no se puede deshacer."
       @confirm="handleConfirmDelete"
       @cancel="itemToDelete = null"
     />
@@ -93,7 +107,7 @@ const handleConfirmDelete = () => {
       </section>
 
       <!-- Section 2: Tracking (Component) -->
-      <ProfileTracking />
+      <ProfileTracking :stats="trackingStore.stats" />
 
       <!-- Section 3: Gallery (Dynamic) -->
       <section class="gallery-section">
@@ -105,7 +119,7 @@ const handleConfirmDelete = () => {
       </section>
 
       <!-- Section 4: Forum (Component) -->
-      <ProfileForum />
+      <ProfileForum :topics="userTopics" />
     </main>
   </div>
 </template>
