@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import pikachuGif from '@/assets/images/gif/pikachucat.gif';
+import programanding2Gif from '@/assets/images/gif/programanding2.gif';
 
 defineProps<{
     show: boolean;
@@ -8,13 +8,13 @@ defineProps<{
 
 <template>
   <Transition name="fade">
-    <div v-if="show" class="pikachu-overlay">
-        <div class="pikachu-card border-thick shadow-lg">
+    <div v-if="show" class="programanding2-overlay">
+        <div class="programanding2-card border-thick shadow-lg">
             <div class="gif-container border-thin">
-                <img :src="pikachuGif" alt="Adding..." class="pikachu-img" />
+                <img :src="programanding2Gif" alt="Adding..." class="programanding2-img" />
             </div>
             <div class="text-content">
-                <p class="pikachu-text">¡AÑADIENDO A TU LISTA...!</p>
+                <p class="programanding2-text">¡AÑADIENDO A TU LISTA...!</p>
                 <span class="kanji-text">リストに追加中</span>
             </div>
         </div>
@@ -23,7 +23,7 @@ defineProps<{
 </template>
 
 <style scoped>
-.pikachu-overlay {
+.programanding2-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -37,7 +37,7 @@ defineProps<{
     backdrop-filter: blur(4px);
 }
 
-.pikachu-card {
+.programanding2-card {
     background: var(--color-white-snow);
     padding: var(--spacing-xl);
     text-align: center;
@@ -58,7 +58,7 @@ defineProps<{
     justify-content: center;
 }
 
-.pikachu-img {
+.programanding2-img {
     width: 180px;
     height: auto;
 }
@@ -69,7 +69,7 @@ defineProps<{
     gap: 4px;
 }
 
-.pikachu-text {
+.programanding2-text {
     font-family: var(--font-heading);
     font-weight: var(--font-weight-black);
     font-size: 1.3rem;

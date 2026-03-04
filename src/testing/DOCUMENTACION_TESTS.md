@@ -53,7 +53,7 @@ Validación de la integridad de los datos generados por IA.
 Gestión de la lista personal de anime/manga.
 
 *   **Agregar y Validar en Tracking**:
-    *   **Visual**: Durante esta prueba se gestionan los temporizadores del "Pikachu Loader" (`vi.useFakeTimers`).
+    *   **Visual**: Durante esta prueba se gestionan los temporizadores del "Programanding2 Loader" (`vi.useFakeTimers`).
     *   **Lógica**: Se añade un anime (ej: *Beck*) al seguimiento.
     *   **Validación**: 
         1.  El objeto existe en la lista `userTracking`.
@@ -87,7 +87,7 @@ beforeEach(() => {
 Configura el entorno de pruebas para que la función estándar `fetch` (la que usa el navegador para pedir datos) sea un espía controlado por nosotros. Gracias a esto, podemos simular el éxito o fallo de la API del foro sin conectarnos a internet.
 
 ### 5. `vi.runAllTimers()`
-Se utiliza en combinación con `vi.useFakeTimers()`. Si el código tiene un retardo (como el `setTimeout` de 2 segundos de nuestro **Pikachu Loader**), esta función le dice a Vitest: *"No esperes de verdad, salta el tiempo e ignora la espera"*. Esto hace que los tests sean ultrarrápidos.
+Se utiliza en combinación con `vi.useFakeTimers()`. Si el código tiene un retardo (como el `setTimeout` de 2 segundos de nuestro **Programanding2 Loader**), esta función le dice a Vitest: *"No esperes de verdad, salta el tiempo e ignora la espera"*. Esto hace que los tests sean ultrarrápidos.
 
 ---
 
