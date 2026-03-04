@@ -233,6 +233,11 @@ Documentación detallada en `src/testing/DOCUMENTACION_TESTS.md`.
 
 ## 👥 Equipo
 
+- [JuniorGino](https://github.com/JuniorGino)
+- [GermanIllan](https://github.com/GermanIllan)
+- [troyanojoi-sour](https://github.com/troyanojoi-sour)
+- [Kevingedev](https://github.com/Kevingedev)
+
 Repositorio: [github.com/GermanIllan/Sugoi](https://github.com/GermanIllan/Sugoi)
 
 ---
