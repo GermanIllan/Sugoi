@@ -152,6 +152,7 @@ const removeSavedNews = (newsKey: string): void => {
 
                 <div class="saved-news-columns">
                     <article class="saved-news-column border-thin">
+                        <img src="@/assets/images/gif/boxcat.gif" alt="Box Cat" class="boxcat-gif">
                         <h3>PENDIENTES</h3>
                         <div v-if="pendingNews.length === 0" class="saved-news-empty border-thin">
                             No tienes noticias pendientes.
@@ -289,8 +290,19 @@ const removeSavedNews = (newsKey: string): void => {
 }
 
 .saved-news-column {
+    position: relative;
     background: #fefefe;
     padding: var(--spacing-md);
+}
+
+.boxcat-gif {
+    position: absolute;
+    top: -563px;
+    right: -460px;
+    width: 150px;
+    height: auto;
+    z-index: 5;
+    pointer-events: none;
 }
 
 .saved-news-column h3 {
@@ -385,6 +397,12 @@ const removeSavedNews = (newsKey: string): void => {
 
     .saved-news-columns {
         grid-template-columns: 1fr;
+    }
+
+    .boxcat-gif {
+        width: 60px;
+        top: -35px;
+        right: 5px;
     }
 }
 </style>

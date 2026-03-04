@@ -150,6 +150,7 @@ const goBack = () => {
                         </div>
                     </section>
                 </main>
+                <img src="@/assets/images/gif/sleepcat.gif" alt="Sleep Cat" class="sleepcat-gif">
             </div>
 
             <div v-else class="error-container">
@@ -198,6 +199,7 @@ const goBack = () => {
 }
 
 .detail-grid {
+    position: relative;
     display: grid;
     grid-template-columns: 300px 1fr;
     gap: var(--spacing-xxl);
@@ -346,6 +348,16 @@ const goBack = () => {
     to { opacity: 1; }
 }
 
+.sleepcat-gif {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 150px;
+    height: auto;
+    pointer-events: none;
+    z-index: 10;
+}
+
 @media (max-width: 768px) {
     .detail-grid {
         grid-template-columns: 1fr;
@@ -369,6 +381,12 @@ const goBack = () => {
     
     .info-strip {
         justify-content: center;
+    }
+
+    .sleepcat-gif {
+        width: 80px;
+        bottom: 5px;
+        right: 5px;
     }
     
     .section-title {
