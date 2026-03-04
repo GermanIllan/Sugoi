@@ -34,6 +34,9 @@ const handleLoginSuccess = () => {
 
 <template>
   <div class="auth-view container" :class="{ 'view-blurred': showLoader }">
+    <!-- Rombacat Animation -->
+    <img src="@/assets/images/gif/rombacat.gif" alt="Rombacat" class="rombacat" />
+
     <!-- Loader Overlay -->
     <div v-if="showLoader" class="loader-overlay">
       <div class="loader-content">
@@ -77,17 +80,44 @@ const handleLoginSuccess = () => {
 </template>
 
 <style scoped>
+.rombacat {
+  position: absolute;
+  top: -140px;
+  left: 45%;
+  transform: translateX(-50%);
+  width: 170px;
+  height: auto;
+  z-index: 15; /* Above card (5), below NavBar (1000) and Footer (20) */
+  pointer-events: none;
+  animation: rombaSweep 16s linear infinite;
+  animation-delay: 15s;
+  
+}
+
+@keyframes rombaSweep {
+  0% {
+    top: -150px;
+  }
+  100% {
+    top: calc(100% + 150px);
+  }
+}
+
 .auth-view {
   min-height: calc(100vh - 80px); /* Adjust based on navbar height */
   display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--spacing-xl);
+  position: relative;
+  overflow: hidden;
 }
 
 .auth-card-container {
   width: 100%;
   max-width: 900px;
+  position: relative;
+  z-index: 5; /* Ensure it's below the rombacat (z-index 15) */
 }
 
 .auth-card {
@@ -256,6 +286,10 @@ const handleLoginSuccess = () => {
 }
 
 @media (max-width: 768px) {
+  .rombacat {
+    z-index: 1; /* Pass behind the card (z-index 5) in mobile */
+  }
+
   .auth-card {
     grid-template-columns: 1fr;
   }

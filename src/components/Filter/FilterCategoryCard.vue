@@ -288,7 +288,7 @@ const handleClose = (e: Event) => {
     /* Total 74s: L->R(20s) + Wait(17s) + R->L(20s) + Wait(17s) */
     
     /* 1. Walk Left to Right (across the screen) */
-    0% { left: -20vw; transform: scaleX(1); }
+    0% { left: -40vw; transform: scaleX(1); }
     27% { left: 120vw; transform: scaleX(1); }
     
     /* 2. Wait at Right (Stay outside at 120vw) */
@@ -296,9 +296,9 @@ const handleClose = (e: Event) => {
     
     /* 3. Walk Right to Left (mirrored) */
     50% { left: 120vw; transform: scaleX(-1); }
-    77% { left: -20vw; transform: scaleX(-1); }
+    77% { left: -40vw; transform: scaleX(-1); }
     
-    /* 4. Wait at Left (Stay outside at -20vw) */
-    77.1%, 100% { left: -20vw; transform: scaleX(1); }
+    /* 4. Wait at Left (Stay outside at -40vw) */
+    77.1%, 100% { left: -40vw; transform: scaleX(1); }
 }
 </style>
