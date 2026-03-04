@@ -4,12 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-<<<<<<< HEAD
-    "dev": "vite",
-=======
     "dev": "run-p dev:api dev:client",
     "start": "npm run dev",
->>>>>>> edd5fa99573f389941e08e64e8cde37ebfc22f21
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",

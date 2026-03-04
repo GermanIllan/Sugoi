@@ -52,14 +52,26 @@
         <p>Dado que es un proyecto en constante evolución académica, estos términos pueden ser modificados en cualquier momento para reflejar nuevos aprendizajes o requisitos del curso.</p>
       </section>
     </main>
+    <img src="@/assets/images/gif/seriuscat.gif" alt="Serious Cat" class="seriuscat-gif">
   </div>
 </template>
 
 <style scoped>
 .legal-view {
+  position: relative;
   min-height: 100vh;
   padding-bottom: var(--spacing-xxl);
   background-color: var(--color-white-snow);
+}
+
+.seriuscat-gif {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 120px;
+  height: auto;
+  pointer-events: none;
+  z-index: 10;
 }
 
 .legal-header {
@@ -154,6 +166,12 @@ p {
   
   .legal-section {
     box-shadow: 4px 4px 0 var(--color-black-carbon);
+  }
+
+  .seriuscat-gif {
+    width: 80px;
+    bottom: 5px;
+    right: 5px;
   }
 }
 </style>
